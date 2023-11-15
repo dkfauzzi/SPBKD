@@ -1,0 +1,24 @@
+.accordion-pendaftaran-header{
+    padding: 1rem 0 ;
+    cursor: pointer;
+}
+
+.accordion-pendaftaran-header::after{
+    content: "\002B";
+    font-size: 2rem;
+    position: absolute;
+    right: 5rem;
+    transition: transform 0.2s ease-in-out;
+}
+
+.accordion-pendaftaran-header.active::after{
+    /* content: "\2212"; */
+    transform: rotate(45deg);
+}
+
+.accordion-pendaftaran-item-body{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+

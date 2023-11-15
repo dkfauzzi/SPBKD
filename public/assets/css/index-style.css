@@ -1,0 +1,119 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins';
+}
+
+nav{
+    min-height: 70px;
+}
+
+.logo img{
+    width: 80px;
+}
+
+.nav-links{
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li{
+    list-style: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.nav-links a{
+    padding: 25px;
+    text-decoration: none;
+    color: black;
+}
+
+.nav-links li:hover{
+    background-color: black;
+    border-radius: 10px;
+    transition: 0.3s ease;
+}
+
+.nav-links a:hover{
+    color: white;
+    transition: 0.3s ease;
+}
+
+.banner{
+    min-height: 600px;
+    background-image: url('.../assets/img/learning.jpg');
+}
+
+.about{
+    max-width: 50%;
+}
+
+.about p{
+    text-align: justify;
+}
+
+.image-container{
+    max-width: 50%;
+}
+
+.image-container img{
+    width: 100%;
+}
+
+.skema-tugas-akhir-content-wrap{
+    border: 1px solid black;
+    border-radius: 10px;
+    min-width: 23%;
+    max-width: 23%;
+}
+
+.skema-image-container{
+    max-height: 70%;
+    margin-bottom: 3rem;
+}
+
+.skema-image-container img{
+    width: 100%;
+}
+
+.skema-tugas-akhir-content-wrap h2{
+    padding: 1rem;
+    text-align: center;
+}
+
+.skema-tugas-akhir-content-wrap p{
+    padding: 2rem;
+}
+
+.langkah-sidang-title{
+    border-bottom: 1px solid black;
+    margin-top: 5rem;
+}
+
+.langkah-sidang-subtitle{
+    max-width: 30%;
+}
+
+.langkah-sidang h3{
+    margin-bottom: 5rem;
+}
+
+.downloadables-content{
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 3rem;
+    max-width: 20%;
+}
+
+footer{
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-content{
+    padding: 3rem;
+
+}

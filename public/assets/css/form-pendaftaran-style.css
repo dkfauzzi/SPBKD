@@ -1,0 +1,95 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins';
+}
+
+nav{
+    min-height: 70px;
+}
+
+.nav-links{
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li{
+    list-style: none;
+    cursor: pointer;
+
+}
+
+.dropdown-button{
+    background-color: black;
+}
+
+.dropdown-button:hover{
+    background-color: white;
+    color: black;
+    border: .5px solid black;
+    transition: .3s ease;
+}
+
+.list-menu{
+    max-width: 20%;
+    border-radius: 10px;
+}
+
+.list-menu a:hover{
+    background-color: black;
+    transition: 0.3s ease;
+    color: white;
+}
+
+.form-pendaftaran-wrapper{
+    max-width: 80%;
+    margin-left: 10%;
+    padding: 4rem;
+    border: 1px solid black;
+    border-radius: 2rem;
+}
+
+.form-input{
+    margin-bottom: 1rem;
+    height: 35px;
+    border: 1.5px solid black;
+    border-radius: 7.5px;
+}
+
+.form-pendaftaran-content a{
+    text-decoration: none;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border-radius: 7.5px;
+}
+
+.form-pendaftaran-content a:hover{
+    background-color: white;
+    border: .5px solid black;
+    color: black;
+    transition: .3s ease;
+}
+
+.dropdown-menu a{
+    border-radius: 0;
+}
+
+.form-pembimbing input{
+    width: 100%;
+}
+
+.form-tgl-hp input{
+    width: 100%;
+}
+
+footer{
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-content{
+    padding: 3rem;
+}

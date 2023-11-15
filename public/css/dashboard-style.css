@@ -1,0 +1,207 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins';
+}
+
+nav{
+    min-height: 70px;
+}
+
+.nav-links{
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li{
+    list-style: none;
+    cursor: pointer;
+
+}
+
+.dropdown-button{
+    background-color: black;
+}
+
+.dropdown-button:hover{
+    background-color: white;
+    color: black;
+    border: .5px solid black;
+    transition: .3s ease;
+}
+
+/*.nav-links a{
+    text-decoration: none;
+    color: black;
+}
+
+.nav-links li:hover{
+    background-color: black;
+    border-radius: 10px;
+    transition: 0.3s ease;
+}
+
+.nav-links a:hover{
+    color: white;
+    transition: 0.3s ease;
+}
+*/
+.page-title{
+    border-bottom: .5px solid black;
+    margin-bottom: 1rem;
+    margin-left: 0;
+}
+
+.page-title h1{
+    font-size: 32px;
+
+}
+
+.list-menu{
+    max-width: 20%;
+    border-radius: 10px;
+}
+
+.list-menu a:hover{
+    background-color: black;
+    transition: 0.3s ease;
+    color: white;
+}
+
+.menu-title{
+    margin: 0;
+}
+
+
+.btn-add{
+    width: fit-content;
+    margin-top: 2rem;
+}
+
+.btn-add a{
+    text-decoration: none;
+    background-color: black;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.btn-add a:hover{
+    background-color: white;
+    transition: 0.3s ease;
+    color: black;
+    border: .5px solid black;
+}
+
+.button-modify-delete a{
+    text-decoration: none;
+    background-color: black;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    margin-right: .75rem;
+}
+
+.button-modify-delete a:hover{
+    background-color: white;
+    transition: 0.3s ease;
+    color: black;
+    border: .5px solid black;
+}
+
+.daftar-buttons{
+    padding: 2rem;
+}
+
+.daftar-buttons a{
+    padding: 3rem;
+    border: .5px solid black;
+    border-radius: 15px;
+    text-decoration: none;
+    color: black;
+    max-width: 24%;
+}
+
+.daftar-buttons a:hover{
+    background-color: black;
+    color: white;
+    transition: .3s ease;
+}
+
+.btn-masuk-dashboard a{
+    text-decoration: none;
+    color: gray;
+}
+
+.btn-masuk-dashboard a:hover{
+    color: black;
+    transition: .3s ease;
+}
+
+.dashboard-content{
+    width: 80%;
+    margin-left: 10%;
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 3rem;
+}
+
+.dashboard-content-data{
+    padding: 4rem;
+}
+
+.form-input{
+    margin-bottom: 1rem;
+    height: 35px;
+    border: 1.5px solid black;
+    border-radius: 7.5px;
+}
+
+.form-pembimbing input{
+    width: 100%;
+}
+
+.form-tgl-hp input{
+    width: 100%;
+}
+
+.btn-daftar-wrapper{
+    margin-top: 2rem;
+    margin-right: 7rem;
+}
+
+.btn-daftar-wrapper .btn-daftar{
+    padding: 1rem;
+    text-decoration: none;
+    color: white;
+    background-color: black;
+    border-radius: 10px;
+}
+
+.btn-daftar-wrapper .btn-daftar:hover{
+    color: black;
+    background-color: white;
+    border: .5px solid black;
+    transition: .3s ease;
+}
+
+footer{
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-container{
+    background-color: darkgray;
+}
+
+.footer-content{
+    padding: 3rem;
+}
+
+.list-group .list-menu .active a{
+    background-color: black;
+}
+
