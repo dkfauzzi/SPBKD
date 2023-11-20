@@ -9,21 +9,25 @@
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header">Main Menu</li>
-            <li class="{{ Request::is('dashboard-mahasiswa') ? 'active' : '' }}"><a class="nav-link"
-                    href=<?php echo url('dashboard-mahasiswa'); ?>><i class="	fa fa-line-chart"></i><span>Dashboard</span></a></li>
-            {{-- <li class="menu-header">Management Pendaftaran Tugas Akhir</li> --}}
-            {{-- <li class="{{ Request::is('dashboard-mahasiswa-residensi-ta') ? 'active' : '' }}"><a class="nav-link"
-                    href=<?php echo url('dashboard-mahasiswa-residensi-ta'); ?>><i class="fas fa-camera"></i>
-                    <span>Data Master</span></a></li>
-            <li class="{{ Request::is('dashboard-mahasiswa-proposal-ta') ? 'active' : '' }}"><a class="nav-link"
-                    href=<?php echo url('dashboard-mahasiswa-proposal-ta'); ?>><i class="fas fa-sticky-note"></i>
-                    <span>Data</span></a></li> --}}
-            <li class="{{ Request::is('dashboard-mahasiswa-seminar-ta') ? 'active' : '' }}"><a class="nav-link"
-                    href=<?php echo url('dashboard-mahasiswa-seminar-ta'); ?>><i class="fas fa-book-open"></i>
-                    <span>Data Dosen</span></a></li>
-            <li class="{{ Request::is('dashboard-mahasiswa-sidang-ta') ? 'active' : '' }}"><a class="nav-link"
-                    href=<?php echo url('dashboard-mahasiswa-sidang-ta'); ?>><i class="fas fa-book-reader"></i>
-                    <span>Data Dosen</span></a></li>
+
+            <li class="{{ Request::is('') ? 'active' : '' }}"><a class="nav-link"
+                href=<?php echo url(''); ?>><i class="	fa fa-line-chart">
+                    </i><span>Dashboard</span></a>
+            </li>
+            <li class="{{ Request::is('sekretariat2-search') ? 'active' : '' }}"><a class="nav-link"
+                    href=<?php echo url('sekretariat2-search'); ?>><i class="	fa fa-line-chart">
+                        </i><span>Assign Data</span></a>
+                </li>
+
+            <li class="{{ Request::is('sekretariat2-dashboard') ? 'active' : '' }}"><a class="nav-link"
+                    href=<?php echo url('sekretariat2-dashboard'); ?>>
+                    <i class="fas fa-book-open"></i><span>Data Dosen</span></a>
+                </li>
+
+            {{-- <li class="{{ Request::is('dashboard-mahasiswa-sidang-ta') ? 'active' : '' }}"><a class="nav-link"
+                    href=<?php echo url('dashboard-mahasiswa-sidang-ta'); ?>>
+                    <i class="fas fa-book-reader"></i><span>Data Dosen</span></a>
+                </li> --}}
 
 
             {{-- <li class="{{ Request::is('dashboard-mahasiswa-bimbingan-ta') ? 'active' : '' }}"><a class="nav-link"

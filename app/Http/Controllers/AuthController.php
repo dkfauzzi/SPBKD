@@ -21,6 +21,12 @@ class AuthController extends Controller
         return view('sekretariat.sekretariat-login');
     }
 
+    //Sekretariat 2
+    public function loginSekretariat2()
+    {
+        return view('sekretariat2.sekretariat2-login');
+    }
+
     //Dosen
     public function loginDosen()
     {
@@ -66,6 +72,26 @@ class AuthController extends Controller
             $request->session('')->regenerate();
 
             return redirect()->intended('sekretariat-dashboard');
+        }
+
+        return back()->withErrors([
+            'NIP' => 'The provided credentials do not match our records.',
+        ])->onlyInput('NIP');
+    }
+
+    //SEKRETARIAT 2
+    public function PostLoginSekretariat2(Request $request)
+    {
+
+        $credentials = $request->validate([
+            'NIP' => ['required'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session('')->regenerate();
+
+            return redirect()->intended('sekretariat2-dashboard');
         }
 
         return back()->withErrors([

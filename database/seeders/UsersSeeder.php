@@ -20,6 +20,7 @@ class UsersSeeder extends Seeder
         User::create([
             'nama' => 'Haikal Sucipto',
             'JAD' => 'Lektor',
+            'Prodi' => 'S1 Teknik Industri',
             'KK' => 'CYBERNET',
             'NIP' => '162019016', //NIP as Username
             'email' => 'yasser20@gmail.com',
@@ -31,6 +32,7 @@ class UsersSeeder extends Seeder
         User::create([
             'nama' => 'Rafa Alvito',
             'JAD' => 'Lektor',
+            'Prodi' => 'S1 Teknik Industri',
             'KK' => 'CYBERNET',
             'NIP' => '162019018', //NIP as Username
             'email' => 'rafa1gmail.com',
@@ -41,6 +43,7 @@ class UsersSeeder extends Seeder
         User::create([
             'nama' => 'Raya',
             'JAD' => 'Lektor',
+            'Prodi' => 'S1 Teknik Industri',
             'KK' => 'CYBERNET',
             'NIP' => '162019019', //NIP as Username
             'email' => 'raya@gmail.com',
@@ -52,10 +55,22 @@ class UsersSeeder extends Seeder
         User::create([
             'nama' => 'Yasser Sumarno',
             'JAD' => 'Asisten Ahli',
+            'Prodi' => 'S1 Teknik Industri',
             'KK' => 'CYBERNET',
             'NIP' => '162019017', //NIP as Username
             'email' => 'yasser10@gmail.com',
             'level' => 'dosen',
+            'password' => bcrypt('123'),
+        ]);
+
+        User::create([
+            'nama' => 'Diky',
+            'JAD' => 'Asisten Ahli',
+            'Prodi' => 'S1 Teknik Industri',
+            'KK' => 'CYBERNET',
+            'NIP' => '162019020', //NIP as Username
+            'email' => 'diky@gmail.com',
+            'level' => 'sekretariat2',
             'password' => bcrypt('123'),
         ]);
 

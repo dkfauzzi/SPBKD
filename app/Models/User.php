@@ -23,6 +23,7 @@ class User extends Authenticatable
         'nama',
         'JAD',
         'NIP',
+        'Prodi',
         'KK',
         'email',
         'username',

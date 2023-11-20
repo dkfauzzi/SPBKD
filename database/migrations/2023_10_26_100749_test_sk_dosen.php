@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('sks');
             $table->string('sk');
+            $table->string('jenis_sk');
+            $table->string('keterangan_sk');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->date('q1_start')->nullable();
@@ -25,6 +27,8 @@ return new class extends Migration
             $table->date('q3_end')->nullable();
             $table->date('q4_start')->nullable();
             $table->date('q4_end')->nullable();
+            $table->string('start_sk')->nullable();
+            $table->string('end_sk')->nullable();
             // $table->timestamps();
            
         });

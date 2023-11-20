@@ -5,7 +5,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DekanController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\SekretariatController;
+use App\Http\Controllers\SekretariatController2;
 use App\Http\Controllers\QuarterDateController;
+use App\Http\Controllers\DataDosenController;
+use App\Http\Controllers\CardController;
+
+
 
 
 
@@ -54,6 +59,10 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
 });
 
+Route::get('/dekan-register', function () {
+    return view('dekan.dekan-register');
+});
+
 //Login Dekan
 Route::get('/dekan-login', [AuthController::class, 'LoginDekan'])->middleware('guest');
 Route::post('/post-login-dekan', [AuthController::class, 'PostLoginDekan']);
@@ -61,6 +70,11 @@ Route::post('/post-login-dekan', [AuthController::class, 'PostLoginDekan']);
 //Login Sekretariat
 Route::get('/sekretariat-login', [AuthController::class, 'LoginSekretariat'])->middleware('guest');
 Route::post('/post-login-sekretariat', [AuthController::class, 'PostLoginSekretariat']);
+
+//Login Sekretariat2
+Route::get('/sekretariat2-login', [AuthController::class, 'LoginSekretariat2'])->middleware('guest');
+Route::post('/post-login-sekretariat2', [AuthController::class, 'PostLoginSekretariat2']);
+
 
 //Login Dosen
 Route::get('/dosen-login', [AuthController::class, 'LoginDosen'])->middleware('guest');
@@ -81,6 +95,22 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat']], function () {
     Route::get('sekretariat-tambah-sk', [SekretariatController::class, 'create']); // tambah data sk dosen
     Route::post('sekretariat-dashboard', [SekretariatController::class, 'store']); // simpan data sk dosen
 
+});
+
+Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
+    
+    Route::get('sekretariat2-dashboard', [SekretariatController2::class, 'index']); //tampil dashboard
+    Route::get('sekretariat2-tambah-sk', [SekretariatController2::class, 'create']); // tambah data sk dosen
+    Route::post('sekretariat2-dashboard', [SekretariatController2::class, 'store']); // simpan data sk dosen
+
+    Route::get('print', [SekretariatController2::class, 'pdf']); 
+
+
+    Route::get('card', [CardController::class, 'index']);
+    Route::get('sekretariat2/{user}', [CardController::class, 'show'])->name('sekretariat2.show');
+
+
+    Route::get('sekretariat2-search', [DataDosenController::class, 'index']); //tampil search
 });
 
 Route::group(['middleware' => ['auth', 'rolecek:dosen']], function () {

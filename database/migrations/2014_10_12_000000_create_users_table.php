@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('JAD');
+            $table->string('Prodi');
             $table->string('KK'); // Kelompok keahlian
             $table->string('NIP')->unique(); //NIP as username
             $table->string('email')->unique();

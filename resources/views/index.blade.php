@@ -53,6 +53,7 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="dekan-login">Dekan</a></li>
                             <li><a class="dropdown-item" href="sekretariat-login">Sekretariat</a></li>
+                            <li><a class="dropdown-item" href="sekretariat2-login">Sekretariat 2</a></li>
                             <li><a class="dropdown-item" href="dosen-login">Dosen</a></li>
                             <li><a class="dropdown-item" href="dekan-admin">Admin</a></li>
                             {{-- <li><a class="dropdown-item" href="login-koordinator-kp">Koordinator KP</a></li>

@@ -43,7 +43,15 @@ class LoginController extends Controller
             Session::put('loggedNIP', $NIP);
             $loggedNIP = Session::get('loggedNIP');
             return redirect()->intended('dosen.dosen-dashboard');
-        } 
+
+        } elseif (Auth::attempt(['NIP' => $NIP, 'password' => $password, 'level' => 'sekretariat2'])) {
+            Session::regenerate();
+            Session::put('loggedNIP', $NIP);
+            $loggedNIP = Session::get('loggedNIP');
+            return redirect()->intended('sekretariat2.sekretariat2-dashboard');
+
+        }
+        
     }
 
     public function logout()
