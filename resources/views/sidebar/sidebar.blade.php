@@ -3,9 +3,13 @@
         <div class="sidebar-brand">
             <h4></h4>
             <a href="/"><img width="180" src="assets_index/assets/img/logo-fri-hijau.png"></a>
+            {{-- <img class="rounded-circle img-fluid" src="assets_index/assets/img/logo-fri-hijau.png" alt="NOPE"  style="width: 80%"/> --}}
+
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="/"><img width="40" src="assets_index/assets/img/logo-fri-hijau-2.png" width="70"></a>
+            <a href="/"><img width="40" src="assets_index/assets/img/logo-fri-hijau-2.png" width="70">
+                {{-- <img class="rounded-circle img-fluid" src="assets_index/assets/img/about/1.jpg" alt="..."  style="width: 80%"/> --}}
+            </a>
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header">Main Menu</li>
@@ -16,7 +20,7 @@
             </li>
             <li class="{{ Request::is('sekretariat2-search') ? 'active' : '' }}"><a class="nav-link"
                     href=<?php echo url('sekretariat2-search'); ?>><i class="	fa fa-line-chart">
-                        </i><span>Assign Data</span></a>
+                        </i><span>Search Data</span></a>
                 </li>
 
             <li class="{{ Request::is('sekretariat2-dashboard') ? 'active' : '' }}"><a class="nav-link"

@@ -136,5 +136,20 @@ class SekretariatController2 extends Controller
         $pdf = PDF::loadView('sekretariat2.print', $data, compact('data'));
         return $pdf->stream();
     }
+
+    //Pindah ke halaman detail dosen
+
+    public function DosenDetails($id)
+    {
+        $data = Users::find($id); 
+        return view('sekretariat2.sekretariat-dosen-details', ['data' => $data]);
+
+
+        $username = Auth::user()->username;
+        $data['ta'] = TA::all()->where('username', '=', $username);
+        $data['proposal'] = Proposal::all()->where('id_proposal', '=', "PTA$username");
+        // $data['dosen'] = Dosen::all();
+        return view('mahasiswa.dashboard-mahasiswa-proposal-ta', $data);
+    }
 }
 

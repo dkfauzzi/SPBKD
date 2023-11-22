@@ -10,7 +10,7 @@ class QuarterDate extends Model
     use HasFactory;
     protected $table = "test_sk_dosen";
     public $timestamps = false;
-    protected $fillable = ['sks','sk','jenis_sk','keterangan_sk',
+    protected $fillable = ['sks','sk','jenis_sk','keterangan_sk','NIP',
     'start_date','end_date',
     'q1_start','q1_end',
     'q2_start','q2_end',

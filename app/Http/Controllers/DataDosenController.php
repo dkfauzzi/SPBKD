@@ -15,38 +15,101 @@ class DataDosenController extends Controller
 {
     public function index()
     {
-        $data = User::select([
-        'nama',
-        'JAD',
-        'NIP',
-        'Prodi',
-        'KK',
-        'email'])->get();
+        // // Fetch unique 'NIP' values
+        // $uniqueNIPs = User::join('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+        //     ->distinct()
+        //     ->pluck('users.NIP');
 
-        return view('sekretariat2.sekretariat2-search', compact('data'));
+        // // Fetch user data with the related SK information for the unique 'NIP' values
+        // $data = User::whereIn('users.NIP', $uniqueNIPs)
+        //     ->join('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+        //     ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk')
+        //     ->get();
 
+        // // Hitung jumlah SK with specific NIP (per-dosen)
+        // $totalSKS = $data->groupBy('NIP')->map(function ($group) {
+        //     return [
+        //         'NIP' => $group->first()->NIP,
+        //         'nama' => $group->first()->nama,
+        //         'JAD' => $group->first()->JAD,
+        //         'Prodi' => $group->first()->Prodi,
+        //         'KK' => $group->first()->KK,
+        //         'email' => $group->first()->email,
+        //         // 'sk' => $group->first()->sk,
+        //         'total_sk' => $group->count(), // Count of rows with the same 'NIP'
+        //         'total_sks' => $group->sum('sks'),
+        //     ];
+        // });
+
+
+
+        // Fetch all users and their related SK information
+        $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+        ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk')
+        ->get();
+
+         // Count the number of rows for each unique NIP in the test_sk_dosen table
+        // $countNIPRows = $data->groupBy('NIP')->map(function ($group) {
+        //     return [
+        //         'NIP' => $group->first()->NIP,
+        //         'count_rows' => $group->count(), // Count of rows with the same 'NIP' in test_sk_dosen
+        //     ];
+        // });
+
+        $countNIPRows = QuarterDate::select('NIP')
+        ->selectRaw('COUNT(*) as count_rows')
+        ->groupBy('NIP')
+        ->pluck('count_rows', 'NIP')
+        ->toArray();
+
+        // Hitung jumlah SK with specific NIP (per-dosen)
+        $totalSKS = $data->groupBy('NIP')->map(function ($group) {
+            return [
+                'NIP' => $group->first()->NIP,
+                'nama' => $group->first()->nama,
+                'JAD' => $group->first()->JAD,
+                'Prodi' => $group->first()->Prodi,
+                'KK' => $group->first()->KK,
+                'email' => $group->first()->email,
+                'total_sk' => $group->count(), // Count of rows with the same 'NIP'
+                'total_sks' => $group->sum('sks'),
+            ];
+        });
+
+        return view('sekretariat2.sekretariat2-search', compact('data','totalSKS','countNIPRows'));
     }
 
-    public function create()
+    public function create($NIP)
     {
-       
-        $data['test_sk_dosen'] = QuarterDate::all();
-        return view('sekretariat2.sekretariat2-tambah-sk', $data);
+        // Fetch the user
+        $user = User::where('NIP', $NIP)->first();
+
+        return view('sekretariat2.sekretariat2-tambah-sk', compact('user','NIP'));
+
+        // return redirect()->route('sekretariat2-tambah-sk', ['NIP' => $NIP])
+        // ->with('success', 'New data added successfully');
     }
 
     public function store(Request $request){
-        
+
+
+        // set data yang di store
         $data = $request->validate([
             'start_date' => 'required|date',
             'end_date' => 'required|date',
             'sk'  => 'required',
             'sks'  => 'required',
             'jenis_sk'  => 'required',
+            'keterangan_sk' => 'required',
+            'NIP' => 'required',
         ]);
+
+        $nip = $data['NIP'];
 
         $start_date = \Carbon\Carbon::parse($data['start_date']);
         $end_date = \Carbon\Carbon::parse($data['end_date']);
 
+        // Set mulainya bulan dan tanggal TW. Contoh 1(1,1) = TW1 (bulan januari, tanngal 1)
         $quarterStarts = [
             1 => \Carbon\Carbon::createFromDate($start_date->year, 1, 1),
             2 => \Carbon\Carbon::createFromDate($start_date->year, 4, 1),
@@ -54,6 +117,7 @@ class DataDosenController extends Controller
             4 => \Carbon\Carbon::createFromDate($start_date->year, 10, 1),
         ];
 
+        // Set berakhirnya bulan dan tanggal TW. Contoh 1(3,31) = TW1(bulan maret, tanngal 31)
         $quarterEnds = [
             1 => \Carbon\Carbon::createFromDate($start_date->year, 3, 31),
             2 => \Carbon\Carbon::createFromDate($start_date->year, 6, 30),
@@ -61,28 +125,19 @@ class DataDosenController extends Controller
             4 => \Carbon\Carbon::createFromDate($start_date->year, 12, 31),
         ];
 
-        // $quartersData = [
-        //     'start_date' => $start_date,
-        //     'end_date' => $end_date,
-        //     'sk' => $data['sk'],
-        //     'sks' => $data['sks'],
-        // ];
-
-        // // Loop for quarter starts and ends
-        // for ($quarter = 1; $quarter <= 4; $quarter++) {
-        // $quartersData["q{$quarter}_start"] = $quarterStarts[$quarter];
-        // $quartersData["q{$quarter}_end"] = $quarterEnds[$quarter];
-        // }
-
         //Untuk tanggal
-        $quartersData = [];
+        $quartersData['NIP'] = $nip;
 
-         //Untuk SK dan SKS
-         $quartersData['start_date'] = $data['start_date'];
-         $quartersData['end_date'] = $data['end_date'];
-         $quartersData['sks'] = $data['sks'];
-         $quartersData['sk'] = $data['sk'];
-         $quartersData['jenis_sk'] = $data['jenis_sk'];
+        //Untuk SK dan SKS dll.
+        $quartersData['start_date'] = $data['start_date'];
+        $quartersData['end_date'] = $data['end_date'];
+        $quartersData['sks'] = $data['sks'];
+        $quartersData['sk'] = $data['sk'];
+        $quartersData['jenis_sk'] = $data['jenis_sk'];
+        $quartersData['keterangan_sk'] = $data['keterangan_sk'];
+        // $quartersData['NIP'] = $data['NIP'];
+
+
 
         //Loop untuk penentuan restriction tiap kolom Triwulan (tw1,tw2,tw3,tw4)
         for ($quarter = 1; $quarter <= 4; $quarter++) {
@@ -90,11 +145,11 @@ class DataDosenController extends Controller
             $qEnd = $quarterEnds[$quarter];
 
             if ($end_date < $qStart || $start_date > $qEnd) {
-                // Dates are outside the quarter, leave the columns empty
+                // Jika tanggal berada diluar TW, leave the columns empty
                 $quartersData["q{$quarter}_start"] = null;
                 $quartersData["q{$quarter}_end"] = null;
             } else {
-                // Dates are inside the quarter, set the columns accordingly
+                //Jika tanggal berada di dalam TW, insert into column
                 $quartersData["q{$quarter}_start"] = max($start_date, $qStart);
                 $quartersData["q{$quarter}_end"] = min($end_date, $qEnd);
             }
@@ -107,7 +162,23 @@ class DataDosenController extends Controller
 
         QuarterDate::create($quartersData);
 
-        return redirect('sekretariat2-dashboard');  
+        // return redirect('sekretariat2-dosen-details');  
+        return redirect()->route('sekretariat2-dosen-details', ['NIP' => $request->input('NIP')]);
 
+
+    }
+
+
+    public function detailDosen($NIP)
+    {
+        
+        // cari dosen dengan NIP
+        $data = User::where('NIP', $NIP)->first();
+
+        // ambil data SK dengan NIP yang di pilih
+        $test = QuarterDate::where('NIP', $NIP)->get(); 
+
+
+        return view('sekretariat2.sekretariat2-dosen-details', compact('data','test'));
     }
 }

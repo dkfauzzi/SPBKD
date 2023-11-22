@@ -22,7 +22,7 @@ class UsersSeeder extends Seeder
             'JAD' => 'Lektor',
             'Prodi' => 'S1 Teknik Industri',
             'KK' => 'CYBERNET',
-            'NIP' => '162019016', //NIP as Username
+            'NIP' => '12030001', //NIP as Username
             'email' => 'yasser20@gmail.com',
             'KK' => 'CYBERNET',
             'level' => 'dekan',
@@ -33,8 +33,8 @@ class UsersSeeder extends Seeder
             'nama' => 'Rafa Alvito',
             'JAD' => 'Lektor',
             'Prodi' => 'S1 Teknik Industri',
-            'KK' => 'CYBERNET',
-            'NIP' => '162019018', //NIP as Username
+            'KK' => 'EINS',
+            'NIP' => '12030002', //NIP as Username
             'email' => 'rafa1gmail.com',
             'level' => 'sekretariat',
             'password' => bcrypt('123'),
@@ -44,8 +44,8 @@ class UsersSeeder extends Seeder
             'nama' => 'Raya',
             'JAD' => 'Lektor',
             'Prodi' => 'S1 Teknik Industri',
-            'KK' => 'CYBERNET',
-            'NIP' => '162019019', //NIP as Username
+            'KK' => 'ENGINEERING MANAGEMENT',
+            'NIP' => '12030003', //NIP as Username
             'email' => 'raya@gmail.com',
             'level' => 'sekretariat',
             'password' => bcrypt('123'),
@@ -57,7 +57,7 @@ class UsersSeeder extends Seeder
             'JAD' => 'Asisten Ahli',
             'Prodi' => 'S1 Teknik Industri',
             'KK' => 'CYBERNET',
-            'NIP' => '162019017', //NIP as Username
+            'NIP' => '12030004', //NIP as Username
             'email' => 'yasser10@gmail.com',
             'level' => 'dosen',
             'password' => bcrypt('123'),
@@ -67,8 +67,8 @@ class UsersSeeder extends Seeder
             'nama' => 'Diky',
             'JAD' => 'Asisten Ahli',
             'Prodi' => 'S1 Teknik Industri',
-            'KK' => 'CYBERNET',
-            'NIP' => '162019020', //NIP as Username
+            'KK' => 'PROMASYS',
+            'NIP' => '12030005', //NIP as Username
             'email' => 'diky@gmail.com',
             'level' => 'sekretariat2',
             'password' => bcrypt('123'),

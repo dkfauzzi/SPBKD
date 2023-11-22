@@ -13,7 +13,7 @@
         <!-- Main Content -->
         <div class="main-content">
             <div class="card card-primary">
-                <form class="needs-validation" action="sekretariat2-dashboard" method="POST" enctype="multipart/form-data" novalidate>
+                <form class="needs-validation" action="{{ route('sekretariat2-dosen-details', ['NIP' => $user ->NIP]) }}" method="POST" enctype="multipart/form-data" novalidate>
                     {{ csrf_field() }}
                     <div class="card-header row">
                         <h3 class="section-title col-8">Tambah SK Dosen</h2>
@@ -38,6 +38,22 @@
                                                 <div class="form-col">
                                                     <h3 class="section-title"></h3>
                                                     <div class="form-row">
+
+                                                        <div class="form-group col-md-6">
+                                                            <label for="inputJudul">NIP</label><br>
+                                                            <input class="form-control" type="text" value="{{$NIP}}" name="NIP" readonly>
+                                                            <div class="invalid-feedback">
+                                                                Isi NIP
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group col-md-6">
+                                                            <label for="inputJudul">Nama Dosen</label><br>
+                                                            <input class="form-control" type="text" value="{{$user->nama}}" readonly>
+                                                            <div class="invalid-feedback">
+                                                                Isi NIP
+                                                            </div>
+                                                        </div>
 
                                                         <div class="form-group col-md-6">
                                                             <label for="inputJudul">Kegiatan SK Dosen</label><br>

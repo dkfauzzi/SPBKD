@@ -90,7 +90,7 @@
                                             <td class="text-center">
                                                 {{$sk->end_sk}}
                                             </td>
-                                            <td>{{link_to('print'.$sk,'Download',['class'=>'btn btn-success', 'target'=>'_blank'])}}</td>
+                                            {{-- <td>{{link_to('print'.$sk,'Download',['class'=>'btn btn-success', 'target'=>'_blank'])}}</td> --}}
                                             
                                             {{-- //Tombol Action --}}
                                             {{-- <td>

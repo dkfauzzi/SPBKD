@@ -29,6 +29,8 @@ return new class extends Migration
             $table->date('q4_end')->nullable();
             $table->string('start_sk')->nullable();
             $table->string('end_sk')->nullable();
+            $table->string('NIP')->nullable();
+            $table->foreign('NIP')->references('NIP')->on('users')->onDelete('cascade');
             // $table->timestamps();
            
         });

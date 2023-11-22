@@ -14,35 +14,15 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-12">
-                        {{-- <div class="card">
-                            <div class="card-header">
-                                <h4>Profile Dosen</h4>
-                            </div>
-                            <div class="card-body table-responsive">
-                                <div class="row">
-                                    <div class="col-1 " >
-                                        <img src="" alt="">
-                                        <img class="rounded-circle img-fluid" src="assets_index/assets/img/about/1.jpg" alt="..."  style="width: 80%"/>
-                                    </div>
-                                    <div class="col">   
-                                        <h6>Nama: M Yasser Yusuf</h6>
-                                        <h6>NIP : 123456789</h6>
-                                        <h6>JAD : Assisten Ahli </h6>
-                                        <h6>Kelompok Keahlian : PROMASYS</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
                     </div>
                 </div>
-            </div>
+            </div> 
             <div class="col-12">
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                {{-- <h4>(THIS IS ROLE SEKRETARIAT 2222)</h4> --}}
-                                <h4>Cari Data Dosen</h4>
+                            <h3 class="header-nav">Cari Data Dosen</h3>
                             </div>
                             <div class="card-body table-responsive">
                                 {{-- <a href=<?php echo url('sekretariat2-tambah-sk') ?>
@@ -51,53 +31,66 @@
                                     <thead style="border-color:black">
                                         <tr >
                                             <th class="text-center" style=" width:10px;">No</th>
-                                            <th class="text-center" style="width:90px;">Nama</th>
-                                            <th class="text-center"style="width:90px; ">JAD</th>
-                                            <th class="text-center"style="width:auto">Prodi</th>
-                                            <th class="text-center"style="width:auto">Kelompok Keahlian</th>
-                                            <th class="text-center"style="width:auto">NIP</th>
-                                            <th class="text-center" style="width:auto">Email</th>
+                                            <th class="text-center" style="width:auto;">Nama</th>
+                                            <th class="text-center"style="width:auto; ">NIP</th>
+                                            <th class="text-center"style="width:180px">Kelompok Keahlian</th>
+                                            <th class="text-center"style="width:180px">Prodi</th>
+                                            <th class="text-center"style="width:auto">JAD</th>
+                                            {{-- <th class="text-center" style="width:auto">Email</th> --}}
+                                            <th class="text-center" style="width:auto;">SKS</th>
+                                            <th class="text-center" style="width:auto;">Total SK</th>
+                                            <th class="text-center" style="width:auto">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php $no = 0?>
-                                        @foreach ($data as $sk)
+                                        {{-- @foreach ($totalSKS as $sk)
                                         <tr>    
                                             <td>{{1+$no++}}</td>
-                                            <td>{{$sk->nama}}</td>
-                                            <td>{{$sk->JAD}}</td>
-                                            {{-- <td>tEST</td> --}}
-                                            {{-- <td class="text-center">{{$sk->q1_start_indonesian}} TEST {{$sk->q1_end_indonesian}}</td> --}}
+                                            <td class="text-center">{{$sk->nama}}</td>
+                                            <td class="text-center">{{$sk->NIP}}</td>
+                                            <td class="text-center">{{$sk->JAD}}</td>
+                                            <td class="text-center">{{$sk->Prodi}}</td>
+                                            <td class="text-center">{{$sk->KK}} </td>
                                             <td class="text-center">
-                                                {{$sk->Prodi}}
-                                            </td>
+                                                @if(isset($totalSKS[$sk->NIP]))
+                                                {{ $totalSKS[$sk->NIP]['total_sks'] }}
+                                            @else
+                                                0
+                                            @endif</td>
+                                            <td class="text-center">{{$sk->sk}}</td>
+                                            <td>{{ $sk['NIP'] }}</td>
+                                            <td class="text-center">{{ $sk['total_sks'] }}</td>  
                                             <td class="text-center">
-                                                {{$sk->KK}}
-                                            <td class="text-center">
-                                                {{$sk->NIP}}
-                                                {{-- {{$sk->q2_start ? Carbon\Carbon::parse($sk->q2_start)->translatedFormat('d F Y', 'id') : ''}}  --}}
-
+                                                {{link_to('sekretariat-dosen-details/'.$sk->id,'Lihat',['class'=>'btn btn-success'])}}
                                             </td>
-                                            <td class="text-center">
-                                                {{$sk->email}}
-                                            </td>
-                                            {{-- <td class="text-center">
-                                                {{$sk->end_sk}}
-                                            </td> --}}
-                                            
-                                            {{-- //Tombol Action --}}
-                                            {{-- <td>
-                                                {{link_to('dashboard-koordinator-edit-kp/'.$kp->id,'Edit',['class'=>'btn btn-warning'])}}
-                                            </td>
-                                            <td>
-                                                {!! 
-                                                Form::open(['url'=>'dashboard-koordinator-kp/'.$kp->id,'method'=>'delete'])!!}
-                                                {!! Form::submit('Delete',['class'=>'btn
-                                                btn-danger','onclick'=>'return confirm("Are you sure?")'])!!}
-                                                {!! Form::close()!!}
-                                            </td> --}}
                                         </tr>
-                                        @endforeach
+                                        @endforeach --}}
+                                        @foreach ($totalSKS as $total)
+                                        @php
+                                            // Check if the current NIP exists in $countNIPRows
+                                            // $countRows = $countNIPRows->has($total['NIP']) ? $countNIPRows[$total['NIP']]['count_rows'] : 0;
+                                            $countRows = isset($countNIPRows[$total['NIP']]) ? $countNIPRows[$total['NIP']] : 0;
+                                        @endphp
+                                        <tr>   
+                                            <td class="text-center">{{1+$no++}}</td>
+                                            <td class="text-center">{{ $total['nama'] }}</td>
+                                            <td class="text-center">{{ $total['NIP'] }}</td>
+                                            <td class="text-center">{{ $total['KK'] }}</td>
+                                            <td class="text-center">{{ $total['Prodi'] }}</td>
+                                            <td class="text-center">{{ $total['JAD'] }}</td>
+                                            <td class="text-center">{{ $total['total_sks'] }}</td>
+                                            {{-- <td class="text-center">{{ $total['total_sk'] }}</td>  --}}
+                                            <td class="text-center">{{ $countRows }}</td>
+                                            <td class="text-center">
+                                                <!-- Pindah ke halaman detail sesuai'NIP' -->
+                                                
+                                                {{ link_to(route('sekretariat2-dosen-details', ['NIP' => $total['NIP']]), 'Lihat', ['class' => 'btn btn-success']) }}
+
+                                                {{-- {{ link_to('sekretariat2-dosen-details/'.$total['NIP'], 'Lihat', ['class' => 'btn btn-success']) }} --}}
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
