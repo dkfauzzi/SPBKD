@@ -34,6 +34,11 @@
         }
     </style>
 
+    <!-- CHARTS-->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 </head>
     
 <body>
@@ -71,6 +76,7 @@
                     // DataTable initialization with options
                     var table = $('#table1').DataTable({
                         dom: '<"d-flex justify-content-center"f>', // Center the search box
+                        pageLength: -1, // Display all rows on a single page
                         // DataTable options go here
                     });
 
@@ -93,7 +99,7 @@
                 $('.media').collapse('show');
             });
         </script>
-        <script>
+        {{-- <script>
             $('#table3').css('display', 'table');
             $('#table3').DataTable(
                 paging: false,
@@ -119,9 +125,9 @@
                 $('.media').collapse('show');
             });
 
-        </script>
+        </script> --}}
 
-        <script>
+        {{-- <script>
             var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
                 "November", "December"
             ];
@@ -130,12 +136,12 @@
             var m = n.getMonth();
             var d = n.getDate();
             document.getElementById("date").innerHTML = d + " " + months[m] + " " + y;
-        </script>
+        </script> --}}
 
         <!-- Template JS File -->
         <script src="/assets/js/scripts.js"></script>
         <script src="/assets/js/custom.js"></script>
-        <script src="/js/qr-code-scanner.js"></script>
+        {{-- <script src="/js/qr-code-scanner.js"></script> --}}
 
         <script>
             $(function() {

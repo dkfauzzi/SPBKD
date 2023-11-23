@@ -20,46 +20,10 @@ class DataDosenController extends Controller
 {
     public function index()
     {
-        // // Fetch unique 'NIP' values
-        // $uniqueNIPs = User::join('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-        //     ->distinct()
-        //     ->pluck('users.NIP');
-
-        // // Fetch user data with the related SK information for the unique 'NIP' values
-        // $data = User::whereIn('users.NIP', $uniqueNIPs)
-        //     ->join('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-        //     ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk')
-        //     ->get();
-
-        // // Hitung jumlah SK with specific NIP (per-dosen)
-        // $totalSKS = $data->groupBy('NIP')->map(function ($group) {
-        //     return [
-        //         'NIP' => $group->first()->NIP,
-        //         'nama' => $group->first()->nama,
-        //         'JAD' => $group->first()->JAD,
-        //         'Prodi' => $group->first()->Prodi,
-        //         'KK' => $group->first()->KK,
-        //         'email' => $group->first()->email,
-        //         // 'sk' => $group->first()->sk,
-        //         'total_sk' => $group->count(), // Count of rows with the same 'NIP'
-        //         'total_sks' => $group->sum('sks'),
-        //     ];
-        // });
-
-
-
         // Fetch all users and their related SK information
         $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
         ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk')
         ->get();
-
-         // Count the number of rows for each unique NIP in the test_sk_dosen table
-        // $countNIPRows = $data->groupBy('NIP')->map(function ($group) {
-        //     return [
-        //         'NIP' => $group->first()->NIP,
-        //         'count_rows' => $group->count(), // Count of rows with the same 'NIP' in test_sk_dosen
-        //     ];
-        // });
 
         $countNIPRows = QuarterDate::select('NIP')
         ->selectRaw('COUNT(*) as count_rows')
@@ -96,7 +60,6 @@ class DataDosenController extends Controller
     }
 
     public function store(Request $request){
-
 
         // set data yang di store
         $data = $request->validate([
@@ -182,6 +145,13 @@ class DataDosenController extends Controller
         $data->delete();
 
         return redirect()->back()->with('success', 'Record deleted successfully');
+    }
+
+    public function edit($NIP){
+        $data = QuarterDate::find($NIP);
+        // return view('mahasiswa.dashboard-mahasiswa-edit-kp', $data);
+        return redirect()->route('sekretariat2-dosen-edit', ['NIP' => $request->input('NIP')]);
+
     }
 
 

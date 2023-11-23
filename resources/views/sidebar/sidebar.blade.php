@@ -14,18 +14,23 @@
         <ul class="sidebar-menu">
             <li class="menu-header">Main Menu</li>
 
-            <li class="{{ Request::is('') ? 'active' : '' }}"><a class="nav-link"
-                href=<?php echo url(''); ?>><i class="	fa fa-line-chart">
+            <li class="{{ Request::is('sekretariat2-charts') ? 'active' : '' }}"><a class="nav-link"
+                href=<?php echo url('sekretariat2-charts'); ?>><i class="	fa fa-line-chart">
                     </i><span>Dashboard</span></a>
             </li>
             <li class="{{ Request::is('sekretariat2-search') ? 'active' : '' }}"><a class="nav-link"
-                    href=<?php echo url('sekretariat2-search'); ?>><i class="	fa fa-line-chart">
-                        </i><span>Search Data</span></a>
+                    href=<?php echo url('sekretariat2-search'); ?>><i class="	fa fa-search">
+                        </i><span>Search Data Dosen</span></a>
                 </li>
 
-            <li class="{{ Request::is('sekretariat2-dashboard') ? 'active' : '' }}"><a class="nav-link"
+            {{-- <li class="{{ Request::is('sekretariat2-dashboard') ? 'active' : '' }}"><a class="nav-link"
                     href=<?php echo url('sekretariat2-dashboard'); ?>>
                     <i class="fas fa-book-open"></i><span>Data Dosen</span></a>
+                </li> --}}
+
+            <li class="{{ Request::is('sekretariat2-register') ? 'active' : '' }}"><a class="nav-link"
+                    href=<?php echo url('sekretariat2-register'); ?>>
+                    <i class="fas fa-plus-circle"></i><span>Register Akun Dosen</span></a>
                 </li>
 
             {{-- <li class="{{ Request::is('dashboard-mahasiswa-sidang-ta') ? 'active' : '' }}"><a class="nav-link"

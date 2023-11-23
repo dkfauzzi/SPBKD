@@ -13,7 +13,7 @@
         <!-- Main Content -->
         <div class="main-content">
             <div class="card card-primary">
-                {{-- <form class="needs-validation" action="{{ route('sekretariat2-dosen-details', ['NIP' => $user ->NIP]) }}" method="POST" enctype="multipart/form-data" novalidate>
+                <form class="needs-validation" action="{{ route('sekretariat2-dosen-edit', ['NIP' => $user ->NIP]) }}" method="POST" enctype="multipart/form-data" novalidate>
                     {{ csrf_field() }}
                     <div class="card-header row">
                         <h3 class="section-title col-8">Tambah SK Dosen</h2>
@@ -124,7 +124,7 @@
                             </div>
                         </div>
                     </div>
-                </form> --}}
+                </form>
             </div>
             {{-- @include('footer') --}}
         </div>

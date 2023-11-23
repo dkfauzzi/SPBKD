@@ -9,12 +9,8 @@ use App\Http\Controllers\SekretariatController2;
 use App\Http\Controllers\QuarterDateController;
 use App\Http\Controllers\DataDosenController;
 use App\Http\Controllers\CardController;
-
-
-
-
-
-
+use App\Http\Controllers\ChartController;
+use App\Http\Controllers\RegisterController;
 
 
 /*
@@ -112,6 +108,20 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     Route::delete('sekretariat2-dosen-details/{NIP}', [DataDosenController::class, 'delete'])->name('sekretariat2-dosen-details-delete');
     Route::get('sekretariat2-search', [DataDosenController::class, 'index'])->name('sekretariat2-search'); //kembali ke halaman search
     Route::get('print/{NIP}', [DataDosenController::class, 'pdf'])->name('print');
+
+
+    Route::get('sekretariat2-charts', [ChartController::class, 'index']);
+    Route::get('/chart/bar-data', [ChartController::class, 'getData']);
+    Route::get('/chart/line-data', [ChartController::class, 'getData']);
+
+    // Route::get('/user/create', [RegisterController::class, 'create'])->name('user.create');
+    // Route::post('/user', [RegisterController::class, 'store'])->name('user.store');
+    Route::get('sekretariat2-register', [RegisterController::class, 'create']); // Display the registration form
+    Route::post('sekretariat2-search', [RegisterController::class, 'store'])->name('sekretariat2-search'); // Handle the form submission and create the user
+    
+    Route::post('sekretariat2-dosen-edit', [RegisterController::class, 'store'])->name('sekretariat2-dosen-edit'); // Handle the form submission and create the user
+
+
 
 
 

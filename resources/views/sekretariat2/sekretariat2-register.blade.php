@@ -7,21 +7,20 @@
     <title>Register - Dekan</title>
 
     <!-- General CSS Files -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ URL::asset('assets/modules/bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ URL::asset('assets/modules/fontawesome/css/all.min.css') }}">
+    <link rel="stylesheet" href="/assets/modules/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/modules/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/modules/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/qr-code-scanner.css">
 
     <!-- CSS Libraries -->
-    <!-- <link rel="stylesheet" href="../node_modules/bootstrap-social/bootstrap-social.css"> -->
+    <link rel="stylesheet" href="/assets/modules/datatables/datatables.min.css">
+    <link rel="stylesheet" href="/assets/modules/sweetalert2/sweetalert2.scss">
+    <link rel="stylesheet" href="/assets/modules/summernote/summernote-bs4.css">
 
     <!-- Template CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/components.css">
-    <link rel="stylesheet" href="{{ URL::asset('assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ URL::asset('assets/css/components.css') }}">
-    <link rel="stylesheet" href="assets_index/assets/css/style.css">
-    <link rel="stylesheet" href="assets_index/assets/css/components.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
     @stack('template-css')
 
     <!-- Plugins -->
@@ -41,16 +40,16 @@
                         <div class="card mt-5" style="width: 600px">
                             <img class="card-img-top bg-transparent" src="assets_index/assets/img/logo-fri-hijau.png" alt="Card image cap" width="150px">
                             <div class="card-header ">
-                                <h4>Register Dekan</h4>
+                                <h4>Register Akun </h4>
                             </div>
                             <div class="card-body">
-                                <form action="{{ route('user.store') }}" method="post">
+                                <form action="{{ route('sekretariat2-search') }}" method="POST">
                                 {{-- <form action="post-login-dekan" method="POST"> --}}
                                     {{ csrf_field() }}
 
                                     <div class="form-group">
                                         <label for="username">NIP</label>
-                                        <input id="username" type="username" class="form-control" name="NIP" tabindex="1" required autofocus>
+                                        <input  type="text" class="form-control" name="NIP" tabindex="1" required autofocus>
                                         <div class="invalid-feedback">
                                             Isi NIP Dosen
                                         </div>
@@ -58,7 +57,7 @@
 
                                     <div class="form-group">
                                         <label for="username">Nama</label>
-                                        <input id="username" type="username" class="form-control" name="nama" tabindex="1" required autofocus>
+                                        <input type="text" class="form-control" name="nama" tabindex="1" required autofocus>
                                         <div class="invalid-feedback">
                                             Isi Nama Dosen
                                         </div>
@@ -66,7 +65,10 @@
 
                                     <div class="form-group">
                                         <label for="username">JAD</label>
-                                        <input id="username" type="username" class="form-control" name="JAD" tabindex="1" required autofocus>
+                                        <select class="form-select" aria-label="Default select example" name="JAD">
+                                            <option value="Lektor">Lektor</option>
+                                            <option value="Asisten Ahli">Asisten Ahli</option>
+                                        </select>
                                         <div class="invalid-feedback">
                                             Isi JAD Dosen
                                         </div>
@@ -74,24 +76,47 @@
                                     
                                     <div class="form-group">
                                         <label for="username">Program Studi</label>
-                                        <input id="username" type="username" class="form-control" name="Prodi" tabindex="1" required autofocus>
+                                        <select class="form-select" aria-label="Default select example" name="Prodi">
+                                            <option value="S1 Teknik Industri">S1 Teknik Industri</option>
+                                            <option value="S2 Teknik Industri">S2 Teknik Industri</option>
+                                        </select>
                                         <div class="invalid-feedback">
                                             Isi Prodi Dosen
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="username">Kelompok Keahlian</label>
-                                        <input id="username" type="username" class="form-control" name="KK" tabindex="1" required autofocus>
+                                        <label for="">Kelompok Keahlian</label>
+                                        <select class="form-select" aria-label="Default select example" name="KK">
+                                            <option value="CYBERNET">CYBERNET</option>
+                                            <option value="EINS">EINS</option>
+                                            <option value="PROMASYS">PROMASYS</option>
+                                            <option value="ENGINEERING MANAGEMENT">ENGINEERING MANAGEMENT</option>
+                                        </select>
                                         <div class="invalid-feedback">
                                             Isi Kelompok Keahlian Dosen
                                         </div>
                                     </div>
 
+                                    <div class="form-group">
+                                        <label for="username">Role Pada Website</label>
+                                        <select class="form-select" aria-label="Default select example" name="level">
+                                            <option value="dekan">Dekan</option>
+                                            <option value="wd1">Wakil Dekan 1</option>
+                                            <option value="wd2">Wakil Dekan 2</option>
+                                            <option value="kaprodi">Ketua Program Studi</option>
+                                            <option value="ketuaKK">Ketua Kelompok Keahlian</option>
+                                            <option value="dosen">Dosen</option>
+                                            <option value="sekretariat">Sekretariat</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Isi Role Dosen
+                                        </div>
+                                    </div>
                                     
                                     <div class="form-group">
                                         <label for="username">Email</label>
-                                        <input id="username" type="username" class="form-control" name="email" tabindex="1" required autofocus>
+                                        <input type="text" class="form-control" name="email" tabindex="1" required autofocus>
                                         <div class="invalid-feedback">
                                             Isi Email Dosen
                                         </div>
@@ -106,15 +131,7 @@
                                             Isi Passwordd Dosen
                                         </div>
                                     </div>
-
-                                    <div class="form-group">
-                                        <label for="username">Role</label>
-                                        <input id="username" type="username" class="form-control" name="level" tabindex="1" required autofocus>
-                                        <div class="invalid-feedback">
-                                            Isi Role Dosen
-                                        </div>
-                                    </div>
-
+                                    
                                     <div class="row-group">
                                         <div class="col-xs-8"></div>
                                         <div class="col-xs-4">
