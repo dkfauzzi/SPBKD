@@ -102,12 +102,17 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     Route::get('sekretariat2-dashboard', [SekretariatController2::class, 'index']); //tampil dashboard
     Route::get('sekretariat2-tambah-sk', [SekretariatController2::class, 'create']); // tambah data sk dosen
     Route::post('sekretariat2-dashboard', [SekretariatController2::class, 'store']); // simpan data sk dosen
-    Route::get('print', [SekretariatController2::class, 'pdf']); 
+    // Route::get('generate-pdf/{NIP}', 'YourController@generatePDF');
+
 
     Route::get('sekretariat2-search', [DataDosenController::class, 'index']); //tampil search
     Route::get('sekretariat2-dosen-details/{NIP}', [DataDosenController::class, 'detailDosen'])->name('sekretariat2-dosen-details');
     Route::get('sekretariat2-tambah-sk/{NIP}', [DataDosenController::class, 'create'])->name('sekretariat2-tambah-sk');
     Route::post('sekretariat2-dosen-details/{NIP}', [DataDosenController::class, 'store'])->name('store-more-data');
+    Route::delete('sekretariat2-dosen-details/{NIP}', [DataDosenController::class, 'delete'])->name('sekretariat2-dosen-details-delete');
+    Route::get('sekretariat2-search', [DataDosenController::class, 'index'])->name('sekretariat2-search'); //kembali ke halaman search
+    Route::get('print/{NIP}', [DataDosenController::class, 'pdf'])->name('print');
+
 
 
 

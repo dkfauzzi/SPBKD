@@ -32,6 +32,9 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="card-footer">
+                                <a href="{{ route('sekretariat2-search') }}" class="btn btn-success"><i class="fas fa-arrow-left"></i> Kembali</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -46,9 +49,9 @@
                             <div class="card-body table-responsive">
                                 {{-- <a href=<?php echo url('sekretariat2-tambah-sk') ?> class="btn btn-primary mb-3"> <i class="fas fa-plus"></i> Tambah Data</a> --}}
 
-                                <a href="{{ route('sekretariat2-tambah-sk', ['NIP' => $data->NIP]) }}" class="btn btn-primary mb-3"> <i class="fas fa-plus"></i> Tambah Data SK</a>
+                                <a href="{{ route('sekretariat2-tambah-sk', ['NIP' => $data->NIP]) }}" class="btn btn-success mb-3"> <i class="fas fa-plus"></i> Tambah Data SK</a>
+                                <a href="{{ url('print/' . $data->NIP) }}" class="btn btn-success mb-3" target="_blank" >Generate PDF</a>
 
-                                <a href="/print" class="btn btn-primary">Export PDF</a>
                                 <table class="table table-bordered" id="table1">
                                     <thead style="border-color:black">
                                         <tr >
@@ -78,9 +81,14 @@
                                             <td class="text-center">{{ $record->start_sk }}</td>
                                             <td class="text-center">{{ $record->end_sk}}</td>
                                             <td>
-                                                {{-- {{ link_to(route('sekretariat2-dosen-details', ['NIP' => $total['NIP']]), 'Hapus SK', ['class' => 'btn btn-success']) }} --}}
-                                                {{ link_to('sekretariat2-dosen-details/'.$record['NIP'], 'Hapus SK', ['class' => 'btn btn-danger']) }}
-
+                                                {{-- <form action="{{ route('sekretariat2-dosen-details-delete', ['NIP' => $record->NIP]) }}" method="post">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit" class="btn btn-danger">Hapus SK</button>
+                                                </form> --}}
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal" data-action="{{ route('sekretariat2-dosen-details-delete', ['NIP' => $record->NIP]) }}">
+                                                    Hapus SK
+                                                </button>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -96,7 +104,39 @@
     </div>
 
 </div>
+<!-- Konfiirmasi penghapusan dengan modal -->
+<div class="modal" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin menghapus Data SK ini?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post" action="">
+                    @csrf
+                    @method('delete')
+                    <button type="submit" class="btn btn-danger">Hapus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Script  jQuery untuk penghapusan dengan mmodal -->
+<script>
+    $('#confirmDeleteModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var action = button.data('action');
+        var modal = $(this);
 
-
+        modal.find('#deleteForm').attr('action', action);
+    });
+</script>
 @endsection

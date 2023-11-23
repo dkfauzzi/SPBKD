@@ -9,6 +9,11 @@ use App\Models\QuarterDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Illuminate\Support\Facades\DB;
+
+
+
 
 
 class DataDosenController extends Controller
@@ -169,6 +174,18 @@ class DataDosenController extends Controller
     }
 
 
+    public function delete($NIP)
+    {
+        $data = QuarterDate::where('NIP', $NIP)->firstOrFail();
+
+        // Delete the record
+        $data->delete();
+
+        return redirect()->back()->with('success', 'Record deleted successfully');
+    }
+
+
+
     public function detailDosen($NIP)
     {
         
@@ -180,5 +197,20 @@ class DataDosenController extends Controller
 
 
         return view('sekretariat2.sekretariat2-dosen-details', compact('data','test'));
+    }
+
+
+    public function pdf($NIP){
+
+        
+        // Fetch the QuarterDate model for the given NIP
+        $quarterDate = QuarterDate::where('NIP', $NIP)->get();
+
+        // Load the PDF view with the fetched data
+        $pdf = PDF::loadView('sekretariat2.print', compact('quarterDate'));
+        
+        return $pdf->stream(); // Stream the PDF to the browser
+        // return $pdf->download('filename.pdf'); // Download the PDF
+       
     }
 }

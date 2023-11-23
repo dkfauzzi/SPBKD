@@ -118,20 +118,28 @@ class SekretariatController2 extends Controller
 
     }
 
-    public function pdf(){
+    public function pdf($NIP){
         // $pdf = App::make('dompdf.wrapper');
         // // $pdf->loadHTML('<h1>Test</h1>');
         // $pdf = PDF::loadView('mahasiswa.mahasiswa-generate-form-001', $data);
         // return $pdf->stream();
 
-        $data = QuarterDate::select([
-            'sk','sks','jenis_sk','keterangan_sk',
-            'start_date','end_date',
-            'q1_start','q1_end',
-            'q2_start','q2_end',
-            'q3_start','q3_end',
-            'q4_start','q4_end',
-            'start_sk','end_sk'])->get()->toArray();
+        // $data = QuarterDate::select([
+        //     'sk','sks','jenis_sk','keterangan_sk','NIP',
+        //     'start_date','end_date',
+        //     'q1_start','q1_end',
+        //     'q2_start','q2_end',
+        //     'q3_start','q3_end',
+        //     'q4_start','q4_end',
+        //     'start_sk','end_sk'])->get()->toArray();
+
+        // $data = QuarterDate::findOrFail($id)
+        // ->select('sk','sks','jenis_sk','keterangan_sk','NIP',
+        // 'start_date','end_date','start_sk','end_sk')
+        // ->where('id', '=', $id)
+        // ->get($id);
+
+        $data = QuarterDate::where('NIP', $NIP)->first()->toArray();
 
         $pdf = PDF::loadView('sekretariat2.print', $data, compact('data'));
         return $pdf->stream();

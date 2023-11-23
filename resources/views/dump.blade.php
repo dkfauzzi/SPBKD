@@ -1,64 +1,85 @@
 <?
 
-public function index()
+
+use Barryvdh\DomPDF\Facade as PDF;
+use App\Models\QuarterDate; // Make sure to import the QuarterDate model
+
+public function generatePDF($NIP)
 {
-    // Fetch all users and their related SK information
-    $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-        ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk')
-        ->get();
+    // Fetch data and convert it to an array
+    $data = QuarterDate::where('NIP', $NIP)->first()->toArray();
 
-    // Hitung jumlah SK with specific NIP (per-dosen)
-    $totalSKS = $data->groupBy('NIP')->map(function ($group) {
-        return [
-            'NIP' => $group->first()->NIP,
-            'nama' => $group->first()->nama,
-            'JAD' => $group->first()->JAD,
-            'Prodi' => $group->first()->Prodi,
-            'KK' => $group->first()->KK,
-            'email' => $group->first()->email,
-            'total_sk' => $group->count(), // Count of rows with the same 'NIP'
-            'total_sks' => $group->sum('sks'),
-        ];
-    });
+    $pdf = PDF::loadView('your.view', compact('data'));
 
-    return view('sekretariat2.sekretariat2-search', compact('data', 'totalSKS'));
+    return $pdf->download('filename.pdf');
 }
 
-public function index()
-{
-    // Fetch all users and their related SK information
-    $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-        ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk')
-        ->get();
 
-    // Count the number of rows for each unique NIP in the test_sk_dosen table
-    $countNIPRows = $data->groupBy('NIP')->map(function ($group) {
-        return [
-            'NIP' => $group->first()->NIP,
-            'count_rows' => $group->count(), // Count of rows with the same 'NIP' in test_sk_dosen
-        ];
-    });
+public function pdf($NIP) {
+    try {
+        // Fetch the QuarterDate model for the given NIP
+        $quarterDate = QuarterDate::where('NIP', $NIP)->firstOrFail();
 
-    // Hitung jumlah SK with specific NIP (per-dosen)
-    $totalSKS = $data->groupBy('NIP')->map(function ($group) {
-        return [
-            'NIP' => $group->first()->NIP,
-            'nama' => $group->first()->nama,
-            'JAD' => $group->first()->JAD,
-            'Prodi' => $group->first()->Prodi,
-            'KK' => $group->first()->KK,
-            'email' => $group->first()->email,
-            'total_sk' => $group->count(), // Count of rows with the same 'NIP'
-            'total_sks' => $group->sum('sks'),
-        ];
-    });
+        // Debugging statement
+        dd($quarterDate);
 
-    return view('sekretariat2.sekretariat2-search', compact('data', 'totalSKS', 'countNIPRows'));
+        // Check if sk property exists in the model
+        if (!property_exists($quarterDate, 'sk')) {
+            throw new \Exception("Property 'sk' not found in QuarterDate model");
+        }
+
+        $data = $quarterDate->toArray();
+
+        $pdf = PDF::loadView('sekretariat2.print', compact('data'));
+        return $pdf->stream();
+    } catch (ModelNotFoundException $e) {
+        // Handle the case where no record is found for the given NIP
+        return redirect()->back()->with('error', 'Data not found for NIP: ' . $NIP);
+    } catch (\Exception $e) {
+        // Handle any other exceptions
+        return redirect()->back()->with('error', $e->getMessage());
+    }
 }
 
-// Prepare $countNIPRows to include all NIPs with count initialized to 0
-$countNIPRows = TestSkDosen::select('NIP')
-    ->selectRaw('COUNT(*) as count_rows')
-    ->groupBy('NIP')
-    ->pluck('count_rows', 'NIP')
-    ->toArray();
+
+public function pdf($NIP) {
+    try {
+        // Fetch the QuarterDate models for the given NIP
+        $quarterDates = QuarterDate::where('NIP', $NIP)->get();
+
+        // Debugging statement
+        dd($quarterDates->toArray());
+
+        $pdf = PDF::loadView('sekretariat2.print', compact('quarterDates'));
+        return $pdf->stream();
+    } catch (ModelNotFoundException $e) {
+        // Handle the case where no record is found for the given NIP
+        return redirect()->back()->with('error', 'Data not found for NIP: ' . $NIP);
+    } catch (\Exception $e) {
+        // Handle any other exceptions
+        return redirect()->back()->with('error', $e->getMessage());
+    }
+}
+
+
+$quarterDate = \Illuminate\Support\Facades\DB::table('test_sk_dosen')->where('NIP', $NIP)->first();
+
+// Debugging statement
+dd($quarterDate);
+
+$pdf = PDF::loadView('sekretariat2.print', compact('quarterDate'));
+
+if ($quarterDate) {
+    // The record was found
+    // Access properties like $quarterDate->sks here
+} else {
+    // The record was not found
+    return redirect()->back()->with('error', 'Data not found for NIP: ' . $NIP);
+}
+
+$data['kp_form001'] = Form001::findOrFail($id)
+            ->select('username', 'nama', 'perusahaan1', 'alamat_perusahaan1', 'bidang_perusahaan1', 'perusahaan2', 'alamat_perusahaan2', 'bidang_perusahaan2')
+            ->where('id', '=', $id)
+            ->get($id);
+        $pdf = PDF::loadView('tata-usaha.generate-form-001', $data);
+        return $pdf->stream();

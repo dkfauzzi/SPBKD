@@ -84,7 +84,6 @@
                                                             </div>
                                                         </div>
 
-                                                        
                                                         <div class="form-group col-md-6">
                                                             <label for="inputJudul">Keterangan SK</label><br>
                                                             <textarea class="form-control" type="text" name="keterangan_sk" id="keterangan_sk" placeholder="Keterangan" required></textarea>
@@ -92,24 +91,6 @@
                                                                 Keterangan SK
                                                             </div>
                                                         </div>
-                                                        
-                                                        <br>
-{{-- 
-                                                        <div class="form-group col-md-6">
-                                                            <label for="start_date">Tanggal Mulai SK</label><br>
-                                                            <input class="form-control" type="date" name="start_date" id="start_date" placeholder="Tanggal Mulai" required>
-                                                            <div class="invalid-feedback">
-                                                                Isi Tanggal Mulai SK.
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group col-md-6">
-                                                            <label for="inputJudul">Tanggal Berakhir SK</label><br>
-                                                            <input class="form-control" type="date" name="end_date" id="end_date" placeholder="Tanggal Berakhir" required>
-                                                            <div class="invalid-feedback">
-                                                                Isi Tanggal Berakhir SK.
-                                                            </div>
-                                                        </div> --}}
                                                     </div>
 
                                                     <div class="form-row">
