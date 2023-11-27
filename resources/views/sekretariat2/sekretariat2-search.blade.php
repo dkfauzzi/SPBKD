@@ -88,8 +88,7 @@
                                                 {{ link_to(route('sekretariat2-dosen-details', ['NIP' => $total['NIP']]), 'Lihat', ['class' => 'btn btn-success']) }}
                                                 {{ link_to(route('sekretariat2-dosen-edit', ['NIP' => $total['NIP']]), 'Edit', ['class' => 'btn btn-warning']) }}
 
-
-                                                {{-- {{ link_to('sekretariat2-dosen-details/'.$total['NIP'], 'Lihat', ['class' => 'btn btn-success']) }} --}}
+                                                {{-- {{ link_to('sekretariat2-dosen-edit/'.$total['NIP'], 'Edut', ['class' => 'btn btn-warning']) }} --}}
                                             </td>
                                         </tr>
                                     @endforeach

@@ -76,8 +76,8 @@
                                         @foreach ($test as $record)
                                         <tr>
                                             <td class="text-center">{{ $no++ }}</td>
-                                            <td class="text-center">{{ $record->sks }}</td>
                                             <td class="text-center">{{ $record->sk }}</td>
+                                            <td class="text-center">{{ $record->sks }}</td>
                                             <td class="text-center">{{ $record->jenis_sk }}</td>
                                             <td class="text-center">{{ $record->keterangan_sk }}</td>
                                             <td class="text-center">{{ $record->start_date ? Carbon\Carbon::parse($record->start_date)->translatedFormat('d F Y', 'id') : '' }}</td>
@@ -245,7 +245,31 @@
                                                             Isi Tanggal Berakhir SK.
                                                         </div>
                                                     </div>
-                                                </div>
+
+                                                    {{-- ======================
+                                                    <label for="inputType">Choose Input Type:</label>
+                                                    <select id="inputType" name="inputType"  class="form-select" aria-label="Default select example">
+                                                        <option value="select">Select</option>
+                                                        <option value="input">Input</option>
+                                                    </select>
+                                                
+                                                    <div id="selectInput" style="display: none;">
+                                                        <label for="selectField">Select Field:</label>
+                                                        <select id="selectField" class="form-select" aria-label="Default select example" name="selectField">
+                                                            <option value="option1">Option 1</option>
+                                                            <option value="option2">Option 2</option>
+                                                            <option value="option3">Option 3</option>
+                                                        </select>
+                                                    </div>
+                                                
+                                                    <div id="inputField" style="display: none;">
+                                                        <label for="textInput">Text Input:</label>
+                                                        <input type="text" id="textInput" name="textInput">
+                                                    </div>                                                   
+                                                </div> --}}
+
+
+                                               
 
                                                 <div class="form-row">
                                                     <div class="form-group col-md-6">
@@ -298,20 +322,36 @@
     </div>
 </div> --}}
 
-<!-- Script  jQuery untuk penghapusan dengan mmodal -->
-<script>
-    $('#confirmDeleteModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var action = button.data('action');
-        var modal = $(this);
 
-        modal.find('#deleteForm').attr('action', action);
-    });
-
-    $('#addSKModal').on('show.bs.modal', function (event) {
-        var modal = $(this);
-        modal.find('form').attr('action', "{{ route('sekretariat2-dosen-details', ['NIP' => $data->NIP]) }}");
-    });
-    
-</script>
 @endsection
+
+<!-- Script  jQuery untuk penghapusan dengan mmodal -->
+{{-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> --}}
+
+@push('scripts')
+    <script>
+        $('#confirmDeleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var action = button.data('action');
+            var modal = $(this);
+
+            modal.find('#deleteForm').attr('action', action);
+        });
+
+        $('#addSKModal').on('show.bs.modal', function (event) {
+            var modal = $(this);
+            modal.find('form').attr('action', "{{ route('sekretariat2-dosen-details', ['NIP' => $data->NIP]) }}");
+        });
+
+        // $('#inputType').change(function () {
+        //     if ($(this).val() === 'select') {
+        //         $('#selectInput').show();
+        //         $('#inputField').hide();
+        //     } else {
+        //         $('#selectInput').hide();
+        //         $('#inputField').show();
+        //     }
+        // });
+    </script>
+@endpush
+

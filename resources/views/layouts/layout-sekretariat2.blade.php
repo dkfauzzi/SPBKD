@@ -60,6 +60,7 @@
         <!-- JS Libraies -->
         <script src="/assets/modules/sweetalert2/sweetalert2.min.js"></script>
         <script src="/assets/modules/summernote/summernote-bs4.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
         <script>
             // $('#table1').css('display', 'table');
@@ -151,5 +152,18 @@
 
         <script src="//cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.min.js"></script>
     </div>
+    <script>
+
+
+        $('#inputType').change(function () {
+            if ($(this).val() === 'select') {
+                $('#selectInput').show();
+                $('#inputField').hide();
+            } else {
+                $('#selectInput').hide();
+                $('#inputField').show();
+            }
+        });
+    </script>
 </body>
 </html>

@@ -27,7 +27,7 @@
                 <img class="" src="assets_index/assets/img/Logo-fri-putih.png" alt="..." />
             </a>
             
-            <!--DEFAULTUNTUK GAMBAR DI NAVBAR-->
+            <!--DEFAULT UNTUK GAMBAR DI NAVBAR-->
             <!-- <img src="assets_index/assets/img/navbar-logo.svg" alt="..." /> -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,8 @@
                     {{-- <li class="nav-item"><a class="nav-link" href="#poster-tugas-akhir">Poster Tugas Akhir</a></li> --}}
                     {{-- <li class="nav-item"><a class="nav-link" href="/Draft_Proposal_TA/sample.pdf"
                             target="_blank">Download</a></li> --}}
-                    @if (auth()->check())
+                    @auth
+                    <li class="nav-item"><a class="nav-link" href="{{ URL::to('sekretariat2-search') }}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ URL::to('/logout') }}">Logout</a></li>
                     @else
                     <li class="nav-item dropdown">
@@ -49,7 +50,7 @@
                             data-bs-toggle="dropdown" aria-expanded="false">
                             Login
                         </a>
-
+    
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="dekan-login">Dekan</a></li>
                             <li><a class="dropdown-item" href="sekretariat-login">Sekretariat</a></li>
@@ -60,11 +61,12 @@
                             <li><a class="dropdown-item" href="login-koordinator-yudisium">Koordinator Yudisium</a></li> --}}
                         </ul>
                     </li>
-                    @endif
+                    @endauth
                 </ul>
             </div>
         </div>
     </nav>
+    
     <!-- Masthead-->
     <header class="masthead">
         <div class="container">

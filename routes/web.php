@@ -108,6 +108,9 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     Route::delete('sekretariat2-dosen-details/{NIP}', [DataDosenController::class, 'delete'])->name('sekretariat2-dosen-details-delete');
     Route::get('sekretariat2-search', [DataDosenController::class, 'index'])->name('sekretariat2-search'); //kembali ke halaman search
     Route::get('print/{NIP}', [DataDosenController::class, 'pdf'])->name('print');
+    Route::get('sekretariat2-dosen-edit/{NIP}', [DataDosenController::class, 'edit'])->name('sekretariat2-dosen-edit'); 
+    Route::patch('sekretariat2-dosen-edit/{NIP}', [DataDosenController::class, 'update'])->name('sekretariat2-dosen-update');
+
 
 
     Route::get('sekretariat2-charts', [ChartController::class, 'index']);
@@ -119,7 +122,6 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     Route::get('sekretariat2-register', [RegisterController::class, 'create']); // Display the registration form
     Route::post('sekretariat2-search', [RegisterController::class, 'store'])->name('sekretariat2-search'); // Handle the form submission and create the user
     
-    Route::post('sekretariat2-dosen-edit', [RegisterController::class, 'store'])->name('sekretariat2-dosen-edit'); // Handle the form submission and create the user
 
 
 

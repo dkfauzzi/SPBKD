@@ -148,9 +148,37 @@ class DataDosenController extends Controller
     }
 
     public function edit($NIP){
-        $data = QuarterDate::find($NIP);
-        // return view('mahasiswa.dashboard-mahasiswa-edit-kp', $data);
-        return redirect()->route('sekretariat2-dosen-edit', ['NIP' => $request->input('NIP')]);
+
+        $data = User::where('NIP', $NIP)->first();
+
+        // $test = QuarterDate::where('NIP', $NIP)->get(); 
+
+        // return redirect()->route('sekretariat2-dosen-edit', compact('data'));
+        // return redirect()->route('sekretariat2-dosen-edit', ['NIP' => $data->NIP]);
+        
+        return view('sekretariat2.sekretariat2-dosen-edit', compact('data'));
+
+
+    }
+
+    public function update($id, Request $request)
+    {
+         // Validate the form data
+        $data = $request->validate([
+            'NIP' => 'required',
+            'nama' => 'required',
+            'JAD' => 'required',
+            'Prodi' => 'required',
+            'KK' => 'required',
+            'email' => 'required',
+        ]);
+
+        // Find the user by NIP and update the data
+        $user = User::where('NIP', $NIP)->first();
+        $user->update($data);
+
+        // Redirect or perform any other action as needed
+        return redirect()->route('sekretariat2-search')->with('success', 'User updated successfully');
 
     }
 
@@ -164,7 +192,6 @@ class DataDosenController extends Controller
 
         // ambil data SK dengan NIP yang di pilih
         $test = QuarterDate::where('NIP', $NIP)->get(); 
-
 
         return view('sekretariat2.sekretariat2-dosen-details', compact('data','test'));
     }

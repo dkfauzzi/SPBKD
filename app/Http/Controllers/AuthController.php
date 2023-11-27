@@ -51,7 +51,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session('')->regenerate();
 
-            return redirect()->intended('dekan-dashboard');
+            return redirect()->intended('dekan-search');
         }
 
         return back()->withErrors([
@@ -71,7 +71,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session('')->regenerate();
 
-            return redirect()->intended('sekretariat-dashboard');
+            return redirect()->intended('sekretariat-search');
         }
 
         return back()->withErrors([
@@ -91,7 +91,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session('')->regenerate();
 
-            return redirect()->intended('sekretariat2-dashboard');
+            return redirect()->intended('sekretariat2-search');
         }
 
         return back()->withErrors([
@@ -110,7 +110,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session('')->regenerate();
 
-            return redirect()->intended('dosen-dashboard');
+            return redirect()->intended('dosen-search');
         }
 
         return back()->withErrors([

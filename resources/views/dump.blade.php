@@ -3,28 +3,24 @@
 
 // app/Http/Controllers/UserController.php
 
-public function create()
-{
-    return view('user.create');
-}
+<form action="{{ route('sekretariat2-update', ['NIP' => $user->NIP]) }}" method="POST">
+    {{ csrf_field() }}
+    {{ method_field('PATCH') }} <!-- Use PATCH method for updates -->
 
-$(document).ready(function () {
-    // Display the table
-    $('#table1').css('display', 'table');
+    <div class="form-group">
+        <label for="username">NIP</label>
+        <input type="text" class="form-control" name="NIP" value="{{ old('NIP', $user->NIP) }}" tabindex="1" required autofocus>
+        <div class="invalid-feedback">
+            Isi NIP Dosen
+        </div>
+    </div>
 
-    // DataTable initialization with options
-    var table = $('#table1').DataTable({
-        dom: '<"d-flex justify-content-center"f>', // Center the search box
-        pageLength: -1, // Display all rows on a single page
-        // Add other DataTable options as needed
-    });
+    <!-- Other input fields with similar modifications -->
 
-    // Click event on elements with the class "treeview"
-    $(".treeview").click(function () {
-        // Show or hide the DataTable row details based on your logic
-        $('.media').collapse('show');
-
-        // You may also need to redraw the DataTable if the content changes
-        table.draw();
-    });
-});
+    <div class="row-group">
+        <div class="col-xs-8"></div>
+        <div class="col-xs-4">
+            <button type="submit" class="btn btn-primary btn-block btn-flat">Update</button>
+        </div>
+    </div>
+</form>
