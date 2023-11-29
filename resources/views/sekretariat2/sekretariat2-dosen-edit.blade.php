@@ -15,7 +15,7 @@
             <div class="card card-primary">
                 <form class="needs-validation" action="{{ route('sekretariat2-dosen-details', ['NIP' => $data->NIP]) }}" method="POST" enctype="multipart/form-data" novalidate>
                     {{ csrf_field() }}
-                    {{ method_field('PATCH') }}
+                    {{ method_field('POST') }}
                     <div class="card-header row">
                         <h3 class="section-title col-8">Edit SK Dosen</h2>
                     </div>
@@ -96,6 +96,9 @@
                                                             <select class="form-select" aria-label="Default select example" name="Prodi">
                                                                 <option value="S1 Teknik Industri">S1 Teknik Industri</option>
                                                                 <option value="S2 Teknik Industri">S2 Teknik Industri</option>
+                                                                <option value="S2 Teknik Industri">S1 Sistem Informasi</option>
+                                                                <option value="S2 Teknik Industri">S2 Sistem Informasi</option>
+                                                                <option value="S2 Teknik Industri">S1 Digital Supply Chain</option>
                                                             </select>
                                                             <div class="invalid-feedback">
                                                                 Isi Prodi Dosen

@@ -161,7 +161,7 @@ class DataDosenController extends Controller
 
     }
 
-    public function update($id, Request $request)
+    public function update($NIP, Request $request)
     {
          // Validate the form data
         $data = $request->validate([

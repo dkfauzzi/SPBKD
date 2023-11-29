@@ -109,13 +109,18 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     Route::get('sekretariat2-search', [DataDosenController::class, 'index'])->name('sekretariat2-search'); //kembali ke halaman search
     Route::get('print/{NIP}', [DataDosenController::class, 'pdf'])->name('print');
     Route::get('sekretariat2-dosen-edit/{NIP}', [DataDosenController::class, 'edit'])->name('sekretariat2-dosen-edit'); 
-    Route::patch('sekretariat2-dosen-edit/{NIP}', [DataDosenController::class, 'update'])->name('sekretariat2-dosen-update');
+    Route::post('sekretariat2-dosen-edit/{NIP}', [DataDosenController::class, 'update'])->name('sekretariat2-dosen-update');
 
 
 
     Route::get('sekretariat2-charts', [ChartController::class, 'index']);
-    Route::get('/chart/bar-data', [ChartController::class, 'getData']);
-    Route::get('/chart/line-data', [ChartController::class, 'getData']);
+    Route::get('/chart/data-sk', [ChartController::class, 'getDataSK']);
+    Route::get('/chart/data-sks', [ChartController::class, 'getDataSKS']);
+
+    // Route::get('/chart/bar-data', [ChartController::class, 'getData']);
+    // Route::get('/chart/line-data', [ChartController::class, 'getData']);
+    // Route::get('/chart/prodi-data', [ChartController::class, 'getData']);
+
 
     // Route::get('/user/create', [RegisterController::class, 'create'])->name('user.create');
     // Route::post('/user', [RegisterController::class, 'store'])->name('user.store');

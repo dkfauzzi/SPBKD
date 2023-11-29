@@ -16,87 +16,228 @@
                     <div class="col-12 col-md-6 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Graphic SK Dosen</h4>
+                                <h4>Grafik DATA SK</h4>
                             </div>
                             <div class="card-body table-responsive">
                                 <div class="col">
                                     <div class="row d-flex justify-content-center">   
-
                                         <!-- CANVAS AND ID HERE -->
+                                        {{-- <canvas id="lineChart" width="400" height="300"></canvas> --}}
+                                        <canvas id="prodi_SK" width="400" height="300"></canvas>
+                                        <canvas id="kk_SK" width="400" height="300"></canvas>
                                         <canvas id="barChart" width="400" height="300"></canvas>
-                                        <canvas id="lineChart" width="400" height="300"></canvas>
+
 
                                         <script>
                                             document.addEventListener("DOMContentLoaded", function() {
-                                                    // Fetch data for the bar chart from the server using AJAX
-                                                    fetch('/chart/bar-data')
-                                                        .then(response => response.json())
-                                                        .then(data => {
-                                                            var ctxBar = document.getElementById('barChart').getContext('2d');
-                                                            var barChart = new Chart(ctxBar, {
-                                                                type: 'bar',
-                                                                data: {
-                                                                    labels: Object.keys(data),
-                                                                    datasets: [{
-                                                                        label: 'Bar Chart Title',
-                                                                        data: Object.values(data),
-                                                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                                                        borderColor: 'rgba(75, 192, 192, 1)',
-                                                                        borderWidth: 1
-                                                                    }]
-                                                                },
-                                                                options: {
-                                                                    responsive: false, // Set to true to allow resizing
-                                                                    maintainAspectRatio: false, // Set to false to allow chart to size dynamically
-                                                                    scales: {
-                                                                        x: {
-                                                                            // Adjust x-axis options as needed
-                                                                        },
-                                                                        y: {
-                                                                            // Adjust y-axis options as needed
-                                                                        }
-                                                                    }
+                                                // Fetch data for all charts from the server using AJAX
+                                                fetch('/chart/data-sk')
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                       
+                                                        // Use the data to create the 'prodi' chart
+                                                        var ctxProdi = document.getElementById('prodi_SK').getContext('2d');
+                                                        var prodiChart = new Chart(ctxProdi, {
+                                                            type: 'bar',
+                                                            data: {
+                                                                labels: Object.keys(data.prodi),
+                                                                datasets: [{
+                                                                    label: 'SK Tiap Kelompok Keahlian',
+                                                                    data: Object.values(data.prodi),
+                                                                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                                                    borderWidth: 1
+                                                                }]
+                                                            },
+                                                            options: {
+                                                                responsive: false,
+                                                                maintainAspectRatio: false,
+                                                                scales: {
+                                                                    x: {},
+                                                                    y: {}
                                                                 }
-                                                            });
+                                                            }
                                                         });
 
-                                                    // Fetch data for the line chart from the server using AJAX
-                                                    fetch('/chart/line-data')
-                                                        .then(response => response.json())
-                                                        .then(data => {
-                                                            var ctxLine = document.getElementById('lineChart').getContext('2d');
-                                                            var lineChart = new Chart(ctxLine, {
-                                                                type: 'line',
-                                                                data: {
-                                                                    labels: Object.keys(data),
-                                                                    datasets: [{
-                                                                        label: 'Line Chart Title',
-                                                                        data: Object.values(data),
-                                                                        fill: false,
-                                                                        borderColor: 'rgba(255, 99, 132, 1)',
-                                                                        borderWidth: 2
-                                                                    }]
-                                                                },
-                                                                options: {
-                                                                    responsive: false, // Set to true to allow resizing
-                                                                    maintainAspectRatio: false, // Set to false to allow chart to size dynamically
-                                                                    scales: {
-                                                                        x: {
-                                                                            // Adjust x-axis options as needed
-                                                                        },
-                                                                        y: {
-                                                                            // Adjust y-axis options as needed
-                                                                        }
-                                                                    }
+                                                        // Use the data to create the 'prodi' chart
+                                                        var ctxProdi = document.getElementById('kk_SK').getContext('2d');
+                                                        var prodiChart = new Chart(ctxProdi, {
+                                                            type: 'bar',
+                                                            data: {
+                                                                labels: Object.keys(data.kk),
+                                                                datasets: [{
+                                                                    label: 'SK Tiap Kelompok Keahlian',
+                                                                    data: Object.values(data.kk),
+                                                                    backgroundColor: 'rgba(0, 128, 0, 0.2)',
+                                                                    borderColor: 'rgba(0, 128, 0, 1)',
+                                                                    borderWidth: 1
+                                                                }]
+                                                            },
+                                                            options: {
+                                                                responsive: false,
+                                                                maintainAspectRatio: false,
+                                                                scales: {
+                                                                    x: {},
+                                                                    y: {}
                                                                 }
-                                                            });
+                                                            }
                                                         });
-                                                });
+
+                                                         // Use the data to create the 'bar' chart
+                                                         var ctxBar = document.getElementById('barChart').getContext('2d');
+                                                        var barChart = new Chart(ctxBar, {
+                                                            type: 'bar',
+                                                            data: {
+                                                                labels: Object.keys(data.bar),
+                                                                datasets: [{
+                                                                    label: 'SK Tiap Dosen',
+                                                                    data: Object.values(data.bar),
+                                                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                                                    borderWidth: 1
+                                                                }]
+                                                            },
+                                                            options: {
+                                                                responsive: false,
+                                                                maintainAspectRatio: false,
+                                                                scales: {
+                                                                    x: {},
+                                                                    y: {}
+                                                                }
+                                                            }
+                                                        });
+
+
+
+
+
+
+
+                                                    });
+                                            });
                                         </script>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Grafik DATA SKS</h4>
+                            </div>
+                            <div class="card-body table-responsive">
+                                <div class="col">
+                                    <div class="row d-flex justify-content-center">   
+                                        <!-- CANVAS AND ID HERE -->
+                                        <canvas id="prodi_SKS" width="400" height="300"></canvas>
+                                        <canvas id="kk_SKS" width="400" height="300"></canvas>
+                                        <canvas id="dosen_SKS" width="400" height="300"></canvas>
+
+
+                                        <script>
+                                            document.addEventListener("DOMContentLoaded", function() {
+                                                // Fetch data for all charts from the server using AJAX
+                                                fetch('/chart/data-sks')
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                        // Use the data to create the 'prodi' chart
+                                                        var ctxProdi = document.getElementById('prodi_SKS').getContext('2d');
+                                                        var prodiChart = new Chart(ctxProdi, {
+                                                            type: 'bar',
+                                                            data: {
+                                                                labels: Object.keys(data.prodi_sks),
+                                                                datasets: [{
+                                                                    label: 'SKS Tiap Prodi',
+                                                                    data: Object.values(data.prodi_sks),
+                                                                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                                                    borderWidth: 1
+                                                                }]
+                                                            },
+                                                            options: {
+                                                                responsive: false,
+                                                                maintainAspectRatio: false,
+                                                                scales: {
+                                                                    x: {},
+                                                                    y: {}
+                                                                }
+                                                            }
+                                                        });
+
+                                                        // Use the data to create the 'prodi' chart
+                                                        var ctxProdi = document.getElementById('kk_SKS').getContext('2d');
+                                                        var prodiChart = new Chart(ctxProdi, {
+                                                            type: 'bar',
+                                                            data: {
+                                                                labels: Object.keys(data.kk_sks),
+                                                                datasets: [{
+                                                                    label: 'SKS Tiap Kelompok Keahlian',
+                                                                    data: Object.values(data.kk_sks),
+                                                                    backgroundColor: 'rgba(0, 128, 0, 0.2)',
+                                                                    borderColor: 'rgba(0, 128, 0, 1)',
+                                                                    borderWidth: 1
+                                                                }]
+                                                            },
+                                                            options: {
+                                                                responsive: false,
+                                                                maintainAspectRatio: false,
+                                                                scales: {
+                                                                    x: {},
+                                                                    y: {}
+                                                                }
+                                                            }
+                                                        });
+
+
+                                                        // Use the data to create the 'prodi' chart
+                                                        var ctxProdi = document.getElementById('dosen_SKS').getContext('2d');
+                                                        var prodiChart = new Chart(ctxProdi, {
+                                                            type: 'bar',
+                                                            data: {
+                                                                labels: Object.keys(data.dosen_sks),
+                                                                datasets: [{
+                                                                    label: 'SKS Tiap Dosen',
+                                                                    data: Object.values(data.dosen_sks),
+                                                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                                                    borderWidth: 1
+                                                                }]
+                                                            },
+                                                            options: {
+                                                                responsive: false,
+                                                                maintainAspectRatio: false,
+                                                                scales: {
+                                                                    x: {},
+                                                                    y: {}
+                                                                }
+                                                            }
+                                                        });
+
+
+
+
+
+                                                    });
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+
                     </div>
                 </div>
             </div>
