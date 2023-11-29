@@ -14,7 +14,7 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-12">
-                        <div class="card">
+                        <div class="card border border-2">
                             <div class="card-header">
                                 <h4>Profile Dosen</h4>
                             </div>
@@ -40,7 +40,7 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-12">
-                        <div class="card">
+                        <div class="card border border-2">
                             <div class="card-header">
                                 <h4>(ROLE DEKAN HERE)</h4>
                                 <h4>Data Dosen</h4>

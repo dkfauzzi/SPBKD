@@ -83,6 +83,8 @@
                                                         <div class="form-group col-md-6">
                                                             <label for="username">JAD</label>
                                                             <select class="form-select" aria-label="Default select example" name="JAD">
+                                                                <option value="Guru Besar">Guru Besar</option>
+                                                                <option value="Kepala Lektor">Kepala Lektor</option>
                                                                 <option value="Lektor">Lektor</option>
                                                                 <option value="Asisten Ahli">Asisten Ahli</option>
                                                             </select>

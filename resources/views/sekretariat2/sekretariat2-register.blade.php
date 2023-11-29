@@ -66,6 +66,8 @@
                                     <div class="form-group">
                                         <label for="username">JAD</label>
                                         <select class="form-select" aria-label="Default select example" name="JAD">
+                                            <option value="Guru Besar">Guru Besar</option>
+                                            <option value="Kepala Lektor">Kepala Lektor</option>
                                             <option value="Lektor">Lektor</option>
                                             <option value="Asisten Ahli">Asisten Ahli</option>
                                         </select>
@@ -79,6 +81,9 @@
                                         <select class="form-select" aria-label="Default select example" name="Prodi">
                                             <option value="S1 Teknik Industri">S1 Teknik Industri</option>
                                             <option value="S2 Teknik Industri">S2 Teknik Industri</option>
+                                            <option value="S2 Teknik Industri">S1 Sistem Informasi</option>
+                                            <option value="S2 Teknik Industri">S2 Sistem Informasi</option>
+                                            <option value="S2 Teknik Industri">S1 Digital Supply Chain</option>
                                         </select>
                                         <div class="invalid-feedback">
                                             Isi Prodi Dosen

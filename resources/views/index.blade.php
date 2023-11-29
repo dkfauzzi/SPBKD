@@ -36,7 +36,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="#skema-tugas-akhir">Tentang SPKBD</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skema-tugas-akhir">Tentang SISTUPDOS</a></li>
                     <li class="nav-item"><a class="nav-link" href="#langkah-sidang">Contact Us</a></li>
                     {{-- <li class="nav-item"><a class="nav-link" href="#poster-tugas-akhir">Poster Tugas Akhir</a></li> --}}
                     {{-- <li class="nav-item"><a class="nav-link" href="/Draft_Proposal_TA/sample.pdf"
@@ -72,15 +72,15 @@
         <div class="container">
             <div class="masthead-subheading">Welcome To</div>
             <div class="masthead-heading text-uppercase">Sistem Informasi Tugas Penunjang Dosen</div>
-            <a class="btn btn-primary btn-xl text-uppercase" href="#skema-tugas-akhir">Lihat SPKBD</a>
+            <a class="btn btn-primary btn-xl text-uppercase" href="#skema-tugas-akhir">Lihat SISTUPDOS</a>
         </div>
     </header>
     <!-- Services-->
     <section class="page-section" id="skema-tugas-akhir">
         <div class="container">
             <div class="text-center">
-                <h2 class="section-heading text-uppercase">Tentang Sistem ... Beban Kerja Dosen</h2>
-                <h3 class="section-subheading text-muted">Pelajari Sistem ... Beban Kerja Dosen</h3>
+                <h2 class="section-heading text-uppercase">Tentang Sistem Informasi Tugas Penunjang Dosen</h2>
+                <h3 class="section-subheading text-muted">Pelajari Sistem Informasi Tugas Penunjang Dosen</h3>
             </div>
             <ul class="timeline">
                 <li>
@@ -89,10 +89,10 @@
                     <div class="timeline-panel">
                         <div class="timeline-heading">
                             <h4>#1</h4>
-                            <h4 class="subheading">Sistem ... Beban Kerja Dosen</h4>
+                            <h4 class="subheading">Sistem Informasi Tugas Penunjang Dosen</h4>
                         </div>
                         <div class="timeline-body">
-                            <p class="text-muted">Sistem ... Beban Kerja Dosen adalah adalah adalah 
+                            <p class="text-muted">Sistem Informasi Tugas Penunjang Dosen adalah adalah adalah 
                                 adalah adalah adalah adalah adalah adalah adalah adalah adalah adalah 
                                 adalah adalah adalah adalah adalah adalah adalah adalah adalah  </p>
                         </div>
@@ -104,10 +104,10 @@
                     <div class="timeline-panel">
                         <div class="timeline-heading">
                             <h4>#2</h4>
-                            <h4 class="subheading">Sistem ... Beban Kerja Dosen</h4>
+                            <h4 class="subheading">Sistem Informasi Tugas Penunjang Dosen</h4>
                         </div>
                         <div class="timeline-body">
-                            <p class="text-muted">Sistem ... Beban Kerja Dosen adalah adalah adalah 
+                            <p class="text-muted">Sistem Informasi Tugas Penunjang Dosen adalah adalah adalah 
                                 adalah adalah adalah adalah adalah adalah adalah adalah adalah adalah 
                                 adalah adalah adalah adalah adalah adalah adalah adalah adalah  </p>
                         </div>
@@ -119,10 +119,10 @@
                     <div class="timeline-panel">
                         <div class="timeline-heading">
                             <h4>#3</h4>
-                            <h4 class="subheading">Sistem ... Beban Kerja Dosen</h4>
+                            <h4 class="subheading">Sistem Informasi Tugas Penunjang Dosen</h4>
                         </div>
                         <div class="timeline-body">
-                            <p class="text-muted">Sistem ... Beban Kerja Dosen adalah adalah adalah 
+                            <p class="text-muted">Sistem Informasi Tugas Penunjang Dosen adalah adalah adalah 
                                 adalah adalah adalah adalah adalah adalah adalah adalah adalah adalah 
                                 adalah adalah adalah adalah adalah adalah adalah adalah adalah  </p>
                         </div>
@@ -134,10 +134,10 @@
                     <div class="timeline-panel">
                         <div class="timeline-heading">
                             <h4>#4</h4>
-                            <h4 class="subheading">Sistem ... Beban Kerja Dosen</h4>
+                            <h4 class="subheading">Sistem Informasi Tugas Penunjang Dosen</h4>
                         </div>
                         <div class="timeline-body">
-                            <p class="text-muted">Sistem ... Beban Kerja Dosen adalah adalah adalah 
+                            <p class="text-muted">Sistem Informasi Tugas Penunjang Dosen adalah adalah adalah 
                                 adalah adalah adalah adalah adalah adalah adalah adalah adalah adalah 
                                 adalah adalah adalah adalah adalah adalah adalah adalah adalah  </p>
                         </div>

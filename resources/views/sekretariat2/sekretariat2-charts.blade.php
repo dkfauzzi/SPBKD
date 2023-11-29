@@ -14,7 +14,7 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-12">
-                        <div class="card">
+                        <div class="card border border-2">
                             <div class="card-header">
                                 <h4>Grafik DATA SK</h4>
                             </div>
@@ -25,7 +25,7 @@
                                         {{-- <canvas id="lineChart" width="400" height="300"></canvas> --}}
                                         <canvas id="prodi_SK" width="400" height="300"></canvas>
                                         <canvas id="kk_SK" width="400" height="300"></canvas>
-                                        <canvas id="barChart" width="400" height="300"></canvas>
+                                        <canvas id="dosen_SK" width="400" height="300"></canvas>
 
 
                                         <script>
@@ -40,10 +40,10 @@
                                                         var prodiChart = new Chart(ctxProdi, {
                                                             type: 'bar',
                                                             data: {
-                                                                labels: Object.keys(data.prodi),
+                                                                labels: Object.keys(data.prodi_SK),
                                                                 datasets: [{
                                                                     label: 'SK Tiap Kelompok Keahlian',
-                                                                    data: Object.values(data.prodi),
+                                                                    data: Object.values(data.prodi_SK),
                                                                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                                                                     borderColor: 'rgba(255, 99, 132, 1)',
                                                                     borderWidth: 1
@@ -64,10 +64,10 @@
                                                         var prodiChart = new Chart(ctxProdi, {
                                                             type: 'bar',
                                                             data: {
-                                                                labels: Object.keys(data.kk),
+                                                                labels: Object.keys(data.kk_SK),
                                                                 datasets: [{
                                                                     label: 'SK Tiap Kelompok Keahlian',
-                                                                    data: Object.values(data.kk),
+                                                                    data: Object.values(data.kk_SK),
                                                                     backgroundColor: 'rgba(0, 128, 0, 0.2)',
                                                                     borderColor: 'rgba(0, 128, 0, 1)',
                                                                     borderWidth: 1
@@ -84,14 +84,14 @@
                                                         });
 
                                                          // Use the data to create the 'bar' chart
-                                                         var ctxBar = document.getElementById('barChart').getContext('2d');
+                                                         var ctxBar = document.getElementById('dosen_SK').getContext('2d');
                                                         var barChart = new Chart(ctxBar, {
                                                             type: 'bar',
                                                             data: {
-                                                                labels: Object.keys(data.bar),
+                                                                labels: Object.keys(data.dosen_SK),
                                                                 datasets: [{
                                                                     label: 'SK Tiap Dosen',
-                                                                    data: Object.values(data.bar),
+                                                                    data: Object.values(data.dosen_SK),
                                                                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                                                     borderColor: 'rgba(75, 192, 192, 1)',
                                                                     borderWidth: 1
@@ -132,7 +132,7 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-12">
-                        <div class="card">
+                        <div class="card border border-2">
                             <div class="card-header">
                                 <h4>Grafik DATA SKS</h4>
                             </div>

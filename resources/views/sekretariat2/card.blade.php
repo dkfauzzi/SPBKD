@@ -25,7 +25,7 @@
                     <div class="col-12">
                         <div class="row">
                             <div class="col-12 col-md-6 col-lg-12">
-                                <div class="card">
+                                <div class="card border border-2">
                                     <div class="card-header">
                                         <h4>Profile Dosen</h4>
                                     </div>
@@ -35,7 +35,7 @@
                                                 @foreach($data as $card)
                                                     <div class="col-md-4">
                                                         <a href="{{ route('sekretariat2.show', $card) }}" class="custom-card-link">
-                                                            <div class="card">
+                                                            <div class="card border border-2">
                                                                 <div class="card-body">
                                                                     <div class=" " >
                                                                         <img src="" alt="">
@@ -87,7 +87,7 @@
                     {{-- <div class="col-12">
                         <div class="row">
                             <div class="col-12 col-md-6 col-lg-12">
-                                <div class="card">
+                                <div class="card border border-2">
                                     <div class="card-header">
                                         <h4>(THIS IS ROLE SEKRETARIAT 2222)</h4>
                                         <h4>Data Dosen</h4>

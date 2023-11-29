@@ -14,7 +14,7 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-12">
-                        <div class="card">
+                        <div class="card border border-2">
                             <div class="card-header">
                                 <h4>Data Dosen (ROLE DOSEN HERE)</h4>
                                 <h4>Data Dosen</h4>
@@ -40,50 +40,6 @@
                                     
                                         </tr>
                                     </thead>
-
-                                    {{-- <tbody>
-                                        <tr>
-                                            <td style="text-align: right;">1</td>
-                                            <td style="text-align: left;">SK Wadek</td>
-                                            <td style="text-align: center; background-color:" colspan="4">Juni 2023 - Juni 2024 / 2 SKS</td>
-                                            <td style="text-align: center; display: none">Apr 2023</td>
-                                            <td style="text-align: center; display: none">Jul 2023</td>
-                                            <td style="text-align: center; display: none">Nov 2023</td>
-                                        </tr>
-                                         <tr>
-                                            <td style="text-align: right;">2</td>
-                                            <td style="text-align: left;">SK Ketua PKS</td>
-                                            <td style="text-align: center; background-color:" colspan="2">Januari 2023-Juni 2023 / 1 SKS</td>
-                                            <td style="text-align: center; display: none">-</td>
-                                            <td style="text-align: center;">-</td>
-                                            <td style="text-align: center; ">-</td>
-                                        </tr>
-                                         <tr>
-                                            <td style="text-align: right;">3</td>
-                                            <td style="text-align: left;">SK TPAK UNI</td>
-                                            <td style="text-align: center; background-color:" colspan="4">Januari 2023 - Desember 2024 / 1 SKS</td>
-                                            <td style="text-align: center; display: none"></td>
-                                            <td style="text-align: center; display: none"></td>
-                                            <td style="text-align: center; display: none"></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="text-align: right;">4</td>
-                                            <td style="text-align: left;">Pembimbing Tugas Akhir</td>
-                                            <td style="text-align: center; ">-</td>
-                                            <td style="text-align: center; ">-</td>
-                                            <td style="text-align: center; background-color: " colspan="2">September 2023 - Januari 2023 / 0,5 SKS</td>
-                                            <td style="text-align: center; display: none">-</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="text-align: right;">5</td>
-                                            <td style="text-align: left;">Pembimbing KP</td>
-                                            <td style="text-align: center;">-</td>
-                                            <td style="text-align: center;">-</td>
-                                            <td style="text-align: center;">-</td>
-                                            <td style="text-align: center;">-</td>
-                                        </tr>
-                                    </tbody> --}}
-
                                     <tbody>
                                         <?php $no = 0?>
                                         @foreach ($data as $sk)

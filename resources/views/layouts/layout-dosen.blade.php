@@ -44,7 +44,6 @@
         <script src="/assets/modules/moment.min.js"></script>
         <script src="/assets/js/stisla.js"></script>
 
-
         <!-- JS Libraies -->
         <script src="/assets/modules/sweetalert2/sweetalert2.min.js"></script>
         <script src="/assets/modules/summernote/summernote-bs4.js"></script>
@@ -108,15 +107,6 @@
         <!-- Template JS File -->
         <script src="/assets/js/scripts.js"></script>
         <script src="/assets/js/custom.js"></script>
-        <script src="/js/qr-code-scanner.js"></script>
-
-        <script>
-            $(function() {
-              $('#timepicker').timepicker();
-            });
-            </script>
-
-        <script src="//cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.min.js"></script>
     </div>
-</body>
+</body> 
 </html>

@@ -14,7 +14,7 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-12">
-                        <div class="card">
+                        <div class="card border border-2">
                             <div class="card-header">
                                 <h4>Profile Dosen</h4>
                             </div>
@@ -42,7 +42,7 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-12">
-                        <div class="card">
+                        <div class="card border border-2">
                             <div class="card-header">
                                 <h4>Data SK {{ $data->nama }}</h4>
                             </div>
@@ -326,8 +326,6 @@
 @endsection
 
 <!-- Script  jQuery untuk penghapusan dengan mmodal -->
-{{-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> --}}
-
 @push('scripts')
     <script>
         $('#confirmDeleteModal').on('show.bs.modal', function (event) {
@@ -337,21 +335,10 @@
 
             modal.find('#deleteForm').attr('action', action);
         });
-
         $('#addSKModal').on('show.bs.modal', function (event) {
             var modal = $(this);
             modal.find('form').attr('action', "{{ route('sekretariat2-dosen-details', ['NIP' => $data->NIP]) }}");
         });
-
-        // $('#inputType').change(function () {
-        //     if ($(this).val() === 'select') {
-        //         $('#selectInput').show();
-        //         $('#inputField').hide();
-        //     } else {
-        //         $('#selectInput').hide();
-        //         $('#inputField').show();
-        //     }
-        // });
     </script>
 @endpush
 
