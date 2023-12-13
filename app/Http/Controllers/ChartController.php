@@ -137,30 +137,24 @@ class ChartController extends Controller
         $data = QuarterDate::all();
 
         // Hitung SK Tiap Prodi
-        $skProdi = DB::table('test_sk_dosen')
-        ->join('users', 'test_sk_dosen.NIP', '=', 'users.NIP')
+        $skProdi = DB::table('users')
+        ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
         ->select('users.Prodi', DB::raw('COUNT(*) as count, SUM(test_sk_dosen.sks) as total_sks'))
         ->groupBy('users.Prodi')
         ->get();
         $chartSKProdi = $skProdi->pluck('count', 'Prodi');
         $chartTotalSKProdi = $skProdi->pluck('total_sks', 'Prodi');
 
+
         // Hitung SK Tiap Kelompok Keahlian
-        $skKK = DB::table('test_sk_dosen')
-        ->join('users', 'test_sk_dosen.NIP', '=', 'users.NIP')
+        $semuaKK = User::pluck('KK')->toArray();
+        $skKK = DB::table('users')
+        ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP') // LEFT JOIN agar dosen yang SKS nya 0 ikut terhitung
         ->select('users.KK', DB::raw('COUNT(*) as count'))
         ->groupBy('users.KK')
         ->get();
         $chartSKSKK = $skKK->pluck('count', 'KK');
 
-        // // Hitung SK Tiap Dosen
-        // $dosenSK = DB::table('test_sk_dosen')
-        // ->join('users', 'test_sk_dosen.NIP', '=', 'users.NIP')
-        // ->select('users.nama', 'test_sk_dosen.sks')
-        // ->get();
-        // $formattedSksData = $dosenSK->pluck('sks', 'nama');
-
-        // Hitung SKS Tiap Dosen
         $semuaDosen = User::pluck('nama')->toArray();
         $skDosen = DB::table('users')
             ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP') // LEFT JOIN agar dosen yang SKS nya 0 ikut terhitung
@@ -191,8 +185,10 @@ class ChartController extends Controller
         $data = QuarterDate::all();
 
         // Hitung SKS Tiap Prodi
-        $sksProdi = DB::table('test_sk_dosen')
-        ->join('users', 'test_sk_dosen.NIP', '=', 'users.NIP')
+        $semuaProdi = User::pluck('Prodi')->toArray();
+        $sksProdi = DB::table('users')
+        // ->join('users', 'test_sk_dosen.NIP', '=', 'users.NIP')
+        ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
         ->select('users.Prodi', DB::raw('COUNT(*) as count, SUM(test_sk_dosen.sks) as total_sks'))
         ->groupBy('users.Prodi')
         ->get();
@@ -200,12 +196,19 @@ class ChartController extends Controller
         $chartTotalSKSProdi = $sksProdi->pluck('total_sks', 'Prodi');
 
         // Hitung SKS Tiap Kelompok Keahlian
-        $sksKK = DB::table('test_sk_dosen')
-        ->join('users', 'test_sk_dosen.NIP', '=', 'users.NIP')
-        ->select('users.KK', DB::raw('SUM(test_sk_dosen.sks) as total_sks'))
-        ->groupBy('users.KK')
-        ->get();
+        $semuaKK = User::pluck('KK')->toArray();
+        $sksKK = DB::table('users')
+        ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP') // LEFT JOIN agar dosen yang SKS nya 0 ikut terhitung
+            ->select('users.KK', DB::raw('SUM(test_sk_dosen.sks) as total_sks'))
+            ->groupBy('users.KK')
+            ->get();
         $chartSKSKK = $sksKK->pluck('total_sks','KK');
+
+        // foreach ($semuaKK as $KK) {
+        //     if (!array_key_exists($KK, $chartSKSKK)) {
+        //         $chartSKSKK[$kk] = 0;
+        //     }
+        // }
 
         // Hitung SKS Tiap Dosen
         $semuaDosen = User::pluck('nama')->toArray();

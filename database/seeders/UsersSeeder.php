@@ -32,7 +32,7 @@ class UsersSeeder extends Seeder
         User::create([
             'nama' => 'Rafa Alvito',
             'JAD' => 'Lektor',
-            'Prodi' => 'S1 Teknik Industri',
+            'Prodi' => 'S2 Teknik Industri',
             'KK' => 'EINS',
             'NIP' => '12030002', //NIP as Username
             'email' => 'rafa1gmail.com',
@@ -43,7 +43,7 @@ class UsersSeeder extends Seeder
         User::create([
             'nama' => 'Raya',
             'JAD' => 'Lektor',
-            'Prodi' => 'S1 Teknik Industri',
+            'Prodi' => 'S1 Sistem Informasi',
             'KK' => 'ENGINEERING MANAGEMENT',
             'NIP' => '12030003', //NIP as Username
             'email' => 'raya@gmail.com',
@@ -55,7 +55,7 @@ class UsersSeeder extends Seeder
         User::create([
             'nama' => 'Yasser Sumarno',
             'JAD' => 'Asisten Ahli',
-            'Prodi' => 'S1 Teknik Industri',
+            'Prodi' => 'S2 Sistem Informasi',
             'KK' => 'CYBERNET',
             'NIP' => '12030004', //NIP as Username
             'email' => 'yasser10@gmail.com',
@@ -66,7 +66,7 @@ class UsersSeeder extends Seeder
         User::create([
             'nama' => 'Diky',
             'JAD' => 'Asisten Ahli',
-            'Prodi' => 'S1 Teknik Industri',
+            'Prodi' => 'S1 Digital Supply Chain',
             'KK' => 'PROMASYS',
             'NIP' => '12030005', //NIP as Username
             'email' => 'diky@gmail.com',
