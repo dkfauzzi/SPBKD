@@ -31,6 +31,9 @@
     <!-- CHARTS-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <!-- Include Chart.js datalabels plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
     <style>
         #table1_wrapper .dataTables_filter input {
             border: 1px solid #28a745; /* Change the border color to green */

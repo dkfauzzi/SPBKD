@@ -89,8 +89,9 @@
     <table>
         <thead>
             <tr>
-                <th colspan="8">Tahun 2023</th>
+                <th colspan="8">Tahun {{$year}}</th>
             </tr>
+
             <tr>
                 <th>Prodi</th>
                 <th>Jumlah SKS Semester 1</th>
@@ -122,7 +123,7 @@
     <table>
         <thead>
             <tr>
-                <th colspan="8">Tahun 2023</th>
+                <th colspan="8">Tahun {{$year}}</th>
             </tr>
             <tr>
                 <th>Prodi</th>
@@ -154,7 +155,7 @@
     <table>
         <thead>
             <tr>
-                <th colspan="8">Tahun 2023</th>
+                <th colspan="8">Tahun {{$year}}</th>
             </tr>
             <tr>
                 <th>NIP</th>

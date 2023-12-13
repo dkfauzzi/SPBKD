@@ -132,7 +132,7 @@ class ChartController extends Controller
 
     }
 
-    public function getDataSK()
+    public function data_SK()
     {
         $data = QuarterDate::all();
 
@@ -180,7 +180,7 @@ class ChartController extends Controller
 
     }
 
-    public function getDataSKS()
+    public function data_SKS()
     {
         $data = QuarterDate::all();
 
@@ -204,11 +204,6 @@ class ChartController extends Controller
             ->get();
         $chartSKSKK = $sksKK->pluck('total_sks','KK');
 
-        // foreach ($semuaKK as $KK) {
-        //     if (!array_key_exists($KK, $chartSKSKK)) {
-        //         $chartSKSKK[$kk] = 0;
-        //     }
-        // }
 
         // Hitung SKS Tiap Dosen
         $semuaDosen = User::pluck('nama')->toArray();
@@ -302,58 +297,319 @@ class ChartController extends Controller
     // ]);
 
 
-    public function getDataSKSemester()
-{
-    // Fetch data for Semester 1 (January to June)
-    $semester1Data = QuarterDate::whereBetween('start_date', ['2023-01-01', '2023-06-30'])->get();
-
-    // Fetch data for Semester 2 (July to December)
-    $semester2Data = QuarterDate::whereBetween('start_date', ['2023-07-01', '2023-12-31'])->get();
-
-    dd($semester1Data);
-    // Hitung SK Tiap Prodi
-    $skProdi = DB::table('test_sk_dosen')
-        ->join('users', 'test_sk_dosen.NIP', '=', 'users.NIP')
-        ->select('users.Prodi', DB::raw('COUNT(*) as count, SUM(test_sk_dosen.sks) as total_sks'))
-        ->groupBy('users.Prodi')
-        ->get();
-    $chartSKProdi = $skProdi->pluck('count', 'Prodi');
-    $chartTotalSKProdi = $skProdi->pluck('total_sks', 'Prodi');
-
-    // Hitung SK Tiap Kelompok Keahlian
-    $skKK = DB::table('test_sk_dosen')
-        ->join('users', 'test_sk_dosen.NIP', '=', 'users.NIP')
-        ->select('users.KK', DB::raw('COUNT(*) as count'))
-        ->groupBy('users.KK')
-        ->get();
-    $chartSKSKK = $skKK->pluck('count', 'KK');
-
-    // Hitung SKS Tiap Dosen
-    $semuaDosen = User::pluck('nama')->toArray();
-    $skDosen = DB::table('users')
-        ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-        ->select('users.nama', DB::raw('COUNT(test_sk_dosen.sk) as count'))
-        ->groupBy('users.nama')
-        ->get();
-    $chartSKDosen = $skDosen->pluck('count', 'nama')->toArray();
-
-    // LOOP agar dosen yang SKS nya 0 ikut terhitung
-    foreach ($semuaDosen as $nama) {
-        if (!array_key_exists($nama, $chartSKDosen)) {
-            $chartSKDosen[$nama] = 0;
+    public function SK_Prodi_Semester()
+    {
+        $data = QuarterDate::all();
+    
+        // Define date ranges for Semester 1 and Semester 2
+        $semester1StartDate = '2023-01-01';
+        $semester1EndDate = '2023-06-30';
+        $semester2StartDate = '2023-07-01';
+        $semester2EndDate = '2023-12-31';
+    
+        // Hitung SK Tiap Prodi for Semester 1
+        $skProdiSemester1 = $this->get_SK_Prodi_Semester($semester1StartDate, $semester1EndDate);
+    
+        // Hitung SK Tiap Prodi for Semester 2
+        $skProdiSemester2 = $this->get_SK_Prodi_Semester($semester2StartDate, $semester2EndDate);
+    
+        // Combine SK counts for each Prodi for both semesters
+        $chartSKProdi = [
+            'Semester 1' => $skProdiSemester1->pluck('count', 'Prodi')->toArray(),
+            'Semester 2' => $skProdiSemester2->pluck('count', 'Prodi')->toArray(),
+            'Combined' => [],
+        ];
+    
+        // Get a list of all 'Prodi'
+        $allProdi = User::pluck('Prodi')->toArray();
+    
+        // Initialize counts for missing 'Prodi' to zero for both semesters
+        foreach ($allProdi as $prodi) {
+            if (!isset($chartSKProdi['Semester 1'][$prodi])) {
+                $chartSKProdi['Semester 1'][$prodi] = 0;
+            }
+    
+            if (!isset($chartSKProdi['Semester 2'][$prodi])) {
+                $chartSKProdi['Semester 2'][$prodi] = 0;
+            }
         }
+    
+        // Populate the 'Combined' array
+        foreach ($skProdiSemester1 as $item) {
+            $prodiKey = $item->Prodi;
+            $chartSKProdi['Combined'][$prodiKey]['Semester 1'] = $item->count;
+            $chartSKProdi['Combined'][$prodiKey]['Semester 2'] = 0; // Initialize Semester 2 count to 0
+        }
+    
+        foreach ($skProdiSemester2 as $item) {
+            $prodiKey = $item->Prodi;
+    
+            if (!isset($chartSKProdi['Combined'][$prodiKey])) {
+                $chartSKProdi['Combined'][$prodiKey]['Semester 1'] = 0;
+            }
+    
+            $chartSKProdi['Combined'][$prodiKey]['Semester 2'] = $item->count;
+        }
+    
+        // Hitung SK Tiap Kelompok Keahlian
+        $skKK = DB::table('users')
+            ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+            ->where(function($query) use ($semester1StartDate, $semester2EndDate) {
+                $query->whereBetween('test_sk_dosen.start_date', [$semester1StartDate, $semester2EndDate]);
+            })
+            ->select('users.KK', DB::raw('COUNT(*) as count'))
+            ->groupBy('users.KK')
+            ->get();
+        $chartSKSKK = $skKK->pluck('count', 'KK');
+    
+        // Other SK calculations as needed
+    
+        return response()->json([
+            'prodi_SK' => $chartSKProdi,
+            'kk_SK' => $chartSKSKK,
+            // Add other SK data as needed
+        ]);
+    }
+    
+    private function get_SK_Prodi_Semester($startDate, $endDate) {
+        return DB::table('users')
+            ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+            ->whereBetween('test_sk_dosen.start_date', [$startDate, $endDate])
+            ->select('users.Prodi', DB::raw('COUNT(*) as count, SUM(test_sk_dosen.sks) as total_sks'))
+            ->groupBy('users.Prodi')
+            ->get();
+    }
+    
+    public function SK_KK_Semester()
+    {
+        $data = QuarterDate::all();
+    
+        // Define date ranges for Semester 1 and Semester 2
+        $semester1StartDate = '2023-01-01';
+        $semester1EndDate = '2023-06-30';
+        $semester2StartDate = '2023-07-01';
+        $semester2EndDate = '2023-12-31';
+    
+        // Hitung SK Tiap KK for Semester 1
+        $skKKSemester1 = $this->get_SK_KK_Semester($semester1StartDate, $semester1EndDate, 'KK');
+    
+        // Hitung SK Tiap KK for Semester 2
+        $skKKSemester2 = $this->get_SK_KK_Semester($semester2StartDate, $semester2EndDate, 'KK');
+    
+        // Combine SK counts for each KK for both semesters
+        $chartSKKK = [
+            'Semester 1' => $skKKSemester1->pluck('count', 'KK')->toArray(),
+            'Semester 2' => $skKKSemester2->pluck('count', 'KK')->toArray(),
+            'Combined' => [],
+        ];
+    
+        // Get a list of all 'KK'
+        $allKK = User::pluck('KK')->toArray();
+    
+        // Initialize counts for missing 'KK' to zero for both semesters
+        foreach ($allKK as $kk) {
+            if (!isset($chartSKKK['Semester 1'][$kk])) {
+                $chartSKKK['Semester 1'][$kk] = 0;
+            }
+    
+            if (!isset($chartSKKK['Semester 2'][$kk])) {
+                $chartSKKK['Semester 2'][$kk] = 0;
+            }
+        }
+    
+        // Populate the 'Combined' array
+        foreach ($skKKSemester1 as $item) {
+            $kkKey = $item->KK;
+            $chartSKKK['Combined'][$kkKey]['Semester 1'] = $item->count;
+            $chartSKKK['Combined'][$kkKey]['Semester 2'] = 0; // Initialize Semester 2 count to 0
+        }
+    
+        foreach ($skKKSemester2 as $item) {
+            $kkKey = $item->KK;
+    
+            if (!isset($chartSKKK['Combined'][$kkKey])) {
+                $chartSKKK['Combined'][$kkKey]['Semester 1'] = 0;
+            }
+    
+            $chartSKKK['Combined'][$kkKey]['Semester 2'] = $item->count;
+        }
+    
+        // Other SK calculations as needed
+    
+        return response()->json([
+            'kk_SK' => $chartSKKK,
+            // Add other SK data as needed
+        ]);
+    }
+    
+    private function get_SK_KK_Semester($startDate, $endDate, $groupField) {
+        return DB::table('users')
+            ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+            ->whereBetween('test_sk_dosen.start_date', [$startDate, $endDate])
+            ->select("users.{$groupField}", DB::raw('COUNT(*) as count, SUM(test_sk_dosen.sks) as total_sks'))
+            ->groupBy("users.{$groupField}")
+            ->get();
     }
 
-    return response()->json([
-        'prodi_SK' => $chartSKProdi,
-        'kk_SK' => $chartSKSKK,
-        'dosen_SK' => $chartSKDosen,
-        'semester1Data' => $semester1Data,
-        'semester2Data' => $semester2Data,
-    ]);
+    public function SKS_Prodi_Semester()
+    {
+        $data = QuarterDate::all();
+    
+        // Define date ranges for Semester 1 and Semester 2
+        $semester1StartDate = '2023-01-01';
+        $semester1EndDate = '2023-06-30';
+        $semester2StartDate = '2023-07-01';
+        $semester2EndDate = '2023-12-31';
+    
+        // Hitung SK Tiap Prodi for Semester 1
+        $skProdiSemester1 = $this->get_SK_Prodi_Semester($semester1StartDate, $semester1EndDate);
+    
+        // Hitung SK Tiap Prodi for Semester 2
+        $skProdiSemester2 = $this->get_SK_Prodi_Semester($semester2StartDate, $semester2EndDate);
+    
+        // Combine SK counts for each Prodi for both semesters
+        $chartSKProdi = [
+            'Semester 1' => $skProdiSemester1->pluck('total_sks', 'Prodi')->toArray(),
+            'Semester 2' => $skProdiSemester2->pluck('total_sks', 'Prodi')->toArray(),
+            'Combined' => [],
+        ];
+    
+        // Get a list of all 'Prodi'
+        $allProdi = User::pluck('Prodi')->toArray();
+    
+        // Initialize counts for missing 'Prodi' to zero for both semesters
+        foreach ($allProdi as $prodi) {
+            if (!isset($chartSKProdi['Semester 1'][$prodi])) {
+                $chartSKProdi['Semester 1'][$prodi] = 0;
+            }
+    
+            if (!isset($chartSKProdi['Semester 2'][$prodi])) {
+                $chartSKProdi['Semester 2'][$prodi] = 0;
+            }
+        }
+    
+        // Populate the 'Combined' array
+        foreach ($skProdiSemester1 as $item) {
+            $prodiKey = $item->Prodi;
+            $chartSKProdi['Combined'][$prodiKey]['Semester 1'] = $item->total_sks;
+            $chartSKProdi['Combined'][$prodiKey]['Semester 2'] = 0; // Initialize Semester 2 count to 0
+        }
+    
+        foreach ($skProdiSemester2 as $item) {
+            $prodiKey = $item->Prodi;
+    
+            if (!isset($chartSKProdi['Combined'][$prodiKey])) {
+                $chartSKProdi['Combined'][$prodiKey]['Semester 1'] = 0;
+            }
+    
+            $chartSKProdi['Combined'][$prodiKey]['Semester 2'] = $item->total_sks;
+        }
+    
+        // Hitung SK Tiap Kelompok Keahlian
+        $skKK = DB::table('users')
+            ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+            ->where(function($query) use ($semester1StartDate, $semester2EndDate) {
+                $query->whereBetween('test_sk_dosen.start_date', [$semester1StartDate, $semester2EndDate]);
+            })
+            ->select('users.KK', DB::raw('SUM(test_sk_dosen.sks) as total_sks'))
+            ->groupBy('users.KK')
+            ->get();
+        $chartSKSKK = $skKK->pluck('total_sks', 'KK');
+    
+        // Other SK calculations as needed
+    
+        return response()->json([
+            'prodi_SK' => $chartSKProdi,
+            // Add other SK data as needed
+        ]);
+    }
+    
+    private function get_SKS_Prodi_Semester($startDate, $endDate) {
+        return DB::table('users')
+            ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+            ->whereBetween('test_sk_dosen.start_date', [$startDate, $endDate])
+            ->select('users.Prodi', DB::raw('SUM(test_sk_dosen.sks) as total_sks'))
+            ->groupBy('users.Prodi')
+            ->get();
+    }
+    
+    public function SKS_KK_Semester()
+    {
+        $data = QuarterDate::all();
+    
+        // Define date ranges for Semester 1 and Semester 2
+        $semester1StartDate = '2023-01-01';
+        $semester1EndDate = '2023-06-30';
+        $semester2StartDate = '2023-07-01';
+        $semester2EndDate = '2023-12-31';
+    
+        // Hitung SK Tiap KK for Semester 1
+        $skKKSemester1 = $this->get_SK_KK_Semester($semester1StartDate, $semester1EndDate, 'KK');
+    
+        // Hitung SK Tiap KK for Semester 2
+        $skKKSemester2 = $this->get_SK_KK_Semester($semester2StartDate, $semester2EndDate, 'KK');
+    
+        // Combine SK counts for each KK for both semesters
+        $chartSKKK = [
+            'Semester 1' => $skKKSemester1->pluck('total_sks', 'KK')->toArray(),
+            'Semester 2' => $skKKSemester2->pluck('total_sks', 'KK')->toArray(),
+            'Combined' => [],
+        ];
+    
+        // Get a list of all 'KK'
+        $allKK = User::pluck('KK')->toArray();
+    
+        // Initialize counts for missing 'KK' to zero for both semesters
+        foreach ($allKK as $kk) {
+            if (!isset($chartSKKK['Semester 1'][$kk])) {
+                $chartSKKK['Semester 1'][$kk] = 0;
+            }
+    
+            if (!isset($chartSKKK['Semester 2'][$kk])) {
+                $chartSKKK['Semester 2'][$kk] = 0;
+            }
+        }
+    
+        // Populate the 'Combined' array
+        foreach ($skKKSemester1 as $item) {
+            $kkKey = $item->KK;
+            $chartSKKK['Combined'][$kkKey]['Semester 1'] = $item->total_sks;
+            $chartSKKK['Combined'][$kkKey]['Semester 2'] = 0; // Initialize Semester 2 count to 0
+        }
+    
+        foreach ($skKKSemester2 as $item) {
+            $kkKey = $item->KK;
+    
+            if (!isset($chartSKKK['Combined'][$kkKey])) {
+                $chartSKKK['Combined'][$kkKey]['Semester 1'] = 0;
+            }
+    
+            $chartSKKK['Combined'][$kkKey]['Semester 2'] = $item->total_sks;
+        }
+    
+        // Other SK calculations as needed
+    
+        return response()->json([
+            'kk_SK' => $chartSKKK,
+            // Add other SK data as needed
+        ]);
+    }
+    
+    private function get_SKS_KK_Semester($startDate, $endDate) {
+        return DB::table('users')
+            ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+            ->whereBetween('test_sk_dosen.start_date', [$startDate, $endDate])
+            ->select("users.{$groupField}", DB::raw('SUM(test_sk_dosen.sks) as total_sks'))
+            ->groupBy("users.{$groupField}")
+            ->get();
+    }
+    
+  
 }
 
-}
+
+
+
 
 
 

@@ -1,24 +1,62 @@
 <?
 
-public function report($year = null)
-{
-    // Use the provided year to filter the data
-    $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-        ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk', 'test_sk_dosen.start_date');
+document.addEventListener("DOMContentLoaded", function () {
+    // Fetch data for all charts from the server using AJAX
+    fetch('/chart/data-sk-semester')
+        .then(response => response.json())
+        .then(data => {
+            // Use the data to create the 'prodi' chart
+            var ctxProdi = document.getElementById('prodi_SK').getContext('2d');
+            var prodiChart = new Chart(ctxProdi, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data.prodi_SK['Semester 1']), // Use 'Semester 1' or 'Semester 2' as needed
+                    datasets: [{
+                        label: 'SK Tiap Prodi Semester 1', // Change label accordingly
+                        data: Object.values(data.prodi_SK['Semester 1']),
+                        backgroundColor: 'rgba(0, 0, 255, 0.2)', // Blue background color
+                        borderColor: 'rgba(0, 0, 255, 1)', // Blue border color
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'SK Tiap Prodi Semester 2', // Change label accordingly
+                        data: Object.values(data.prodi_SK['Semester 2']),
+                        backgroundColor: 'rgba(255, 0, 0, 0.2)', // Red background color
+                        borderColor: 'rgba(255, 0, 0, 1)', // Red border color
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {},
+                        y: {}
+                    },
+                    plugins: {
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'top',
+                            display: 'auto', // Display the label
+                            color: 'black', // Label color
+                            font: {
+                                weight: 'bold'
+                            },
+                            formatter: function(value, context) {
+                                return value; // Display the value of the bar as the label
+                            }
+                        }
+                    }
+                }
+            });
 
-    if ($year) {
-        $data = $data->whereYear('test_sk_dosen.start_date', $year);
-    }
+            // Add other charts as needed
 
-    $data = $data->get();
-
-    // The rest of your existing code for grouping and calculations...
-
-    $pdf = PDF::loadView('sekretariat2.print-report', compact('dosenData', 'prodiData', 'kkData', 'year'));
-
-    return $pdf->stream();
-}
-
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+});
 
 
 

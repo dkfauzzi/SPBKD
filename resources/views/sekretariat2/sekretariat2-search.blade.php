@@ -57,9 +57,9 @@
                                             <td class="text-center">{{ $countRows }}</td>
                                             <td class="text-center">
                                                 <!-- Pindah ke halaman detail sesuai'NIP' -->
-                                                {{ link_to(route('sekretariat2-dosen-details', ['NIP' => $total['NIP']]), '', ['class' => ' fa fa-eye btn btn-success', 'style'=>'font-size: 25px;']) }}
+                                                {{ link_to(route('sekretariat2-dosen-details', ['NIP' => $total['NIP']]), '', ['class' => ' fa fa-eye btn btn-success', 'style'=>'font-size: 20px;']) }}
 
-                                                {{ link_to(route('sekretariat2-dosen-edit', ['NIP' => $total['NIP']]), '', ['class' => 'fa fa-trash-o btn btn-danger', 'style'=>'font-size: 25px;']) }}
+                                                {{ link_to(route('sekretariat2-dosen-edit', ['NIP' => $total['NIP']]), '', ['class' => 'fa fa-pencil btn btn-warning', 'style'=>'font-size: 20px;']) }}
 
                                             </td>
                                         </tr>
