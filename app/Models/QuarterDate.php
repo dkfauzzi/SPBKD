@@ -17,4 +17,6 @@ class QuarterDate extends Model
     'q3_start', 'q3_end',
     'q4_start', 'q4_end', 
     'start_sk','end_sk'];
+
+
 }

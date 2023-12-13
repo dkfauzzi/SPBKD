@@ -26,7 +26,7 @@
     </style>
 </head>
 <body>
-    <table class="table table-bordered" >
+    {{-- <table class="table table-bordered" >
         <thead style="border-color:black">
             <tr >
                 <th class="text-center" style=" width:10px;">No</th>
@@ -56,6 +56,47 @@
             </tr>
             @endforeach
         </tbody>
-    </table>
+    </table> --}}
+
+    {{-- <table class="table table-bordered" >
+        <thead style="border-color:black">
+            <tr>
+                <th class="text-center" colspan="7" style=" width:10px;">2019</th>
+            </tr>
+            <tr >
+                <th class="text-center" style="width:10px;">No</th>
+                <th class="text-center" style="width:90px;">SK Semester 1</th>
+                <th class="text-center"style="width:90px; ">SK Semester 1</th>
+                <th class="text-center"style="width:auto">Total</th>
+                <th class="text-center" style="width:90px;">SKS Semester 1</th>
+                <th class="text-center"style="width:90px; ">SKS Semester 1</th>
+                <th class="text-center"style="width:auto">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php $no = 1 @endphp
+            @foreach ($quarterDate as $record)
+            <tr>
+                <td class="text-center">{{ $no++ }}</td>
+                <td class="text-center">{{ $record->sks }}</td>
+                <td class="text-center">{{ $record->sk }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table> --}}
+
+    
+        @foreach ($skCounts as $skCount)
+        <p>NIP: {{ $skCount->NIP }}</p>
+        <p>sk Count: {{ $skCount->sk_count }}</p>
+        <hr>
+        @endforeach
+
+        @foreach ($quarterDate as $quarterDate)
+        <p>NIP: {{ $quarterDate->NIP }}</p>
+        <p>sk: {{ $quarterDate->sk }}</p>
+        <p>sks: {{ $quarterDate->sks }}</p>
+        <hr>
+        @endforeach
 </body>
 </html>

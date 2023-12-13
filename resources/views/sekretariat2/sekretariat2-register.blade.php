@@ -81,9 +81,9 @@
                                         <select class="form-select" aria-label="Default select example" name="Prodi">
                                             <option value="S1 Teknik Industri">S1 Teknik Industri</option>
                                             <option value="S2 Teknik Industri">S2 Teknik Industri</option>
-                                            <option value="S2 Teknik Industri">S1 Sistem Informasi</option>
-                                            <option value="S2 Teknik Industri">S2 Sistem Informasi</option>
-                                            <option value="S2 Teknik Industri">S1 Digital Supply Chain</option>
+                                            <option value="S1 Sistem Informasi">S1 Sistem Informasi</option>
+                                            <option value="S2 Sistem Informasi">S2 Sistem Informasi</option>
+                                            <option value="S1 Digital Supply Chain">S1 Digital Supply Chain</option>
                                         </select>
                                         <div class="invalid-feedback">
                                             Isi Prodi Dosen

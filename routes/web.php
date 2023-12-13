@@ -107,15 +107,22 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     Route::post('sekretariat2-dosen-details/{NIP}', [DataDosenController::class, 'store'])->name('store-more-data');
     Route::delete('sekretariat2-dosen-details/{NIP}', [DataDosenController::class, 'delete'])->name('sekretariat2-dosen-details-delete');
     Route::get('sekretariat2-search', [DataDosenController::class, 'index'])->name('sekretariat2-search'); //kembali ke halaman search
-    Route::get('print/{NIP}', [DataDosenController::class, 'pdf'])->name('print');
     Route::get('sekretariat2-dosen-edit/{NIP}', [DataDosenController::class, 'edit'])->name('sekretariat2-dosen-edit'); 
     Route::post('sekretariat2-dosen-edit/{NIP}', [DataDosenController::class, 'update'])->name('sekretariat2-dosen-update');
-
+    Route::get('print/{NIP}', [DataDosenController::class, 'pdf'])->name('print');
 
 
     Route::get('sekretariat2-charts', [ChartController::class, 'index']);
     Route::get('/chart/data-sk', [ChartController::class, 'getDataSK']);
     Route::get('/chart/data-sks', [ChartController::class, 'getDataSKS']);
+    Route::get('/chart/data-sk-semester', [ChartController::class, 'getDataSKSemester']);
+
+    // Route::get('print-report', [ChartController::class, 'report'])->name('report');
+
+    Route::get('print-report', [ChartController::class, 'index'])->name('report.index');
+    Route::get('print-report/{year}', [ChartController::class, 'report'])->name('report.generate');
+    
+
 
     // Route::get('/chart/bar-data', [ChartController::class, 'getData']);
     // Route::get('/chart/line-data', [ChartController::class, 'getData']);
@@ -126,12 +133,6 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     // Route::post('/user', [RegisterController::class, 'store'])->name('user.store');
     Route::get('sekretariat2-register', [RegisterController::class, 'create']); // Display the registration form
     Route::post('sekretariat2-search', [RegisterController::class, 'store'])->name('sekretariat2-search'); // Handle the form submission and create the user
-    
-
-
-
-
-
 
     Route::get('card', [CardController::class, 'index']);
     // Route::get('sekretariat2/{NIP}', [CardController::class, 'show'])->name('sekretariat2.show');

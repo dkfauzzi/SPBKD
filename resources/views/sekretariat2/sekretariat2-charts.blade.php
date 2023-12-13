@@ -10,6 +10,28 @@
         @include('sidebar.sidebar')
 
         <!-- Main Content -->
+        <div class="main-content" style="padding-top:80px">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-12">
+                        <div class="card border border-2">
+                            <div class="card-header">
+                                <h4>Download Report</h4>
+                            </div>
+                            <div class="card-body table-responsive">
+                                <div class="col">
+                                    @foreach($distinctYears as $year)
+                                        <a href="{{ url('print-report/' . $year) }}" class="btn btn-success mb-3" target="_blank">Tahun '{{ $year }}'</a>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
         <div class="main-content">
             <div class="col-12">
                 <div class="row">
@@ -23,9 +45,9 @@
                                     <div class="row d-flex justify-content-center">   
                                         <!-- CANVAS AND ID HERE -->
                                         {{-- <canvas id="lineChart" width="400" height="300"></canvas> --}}
-                                        <canvas id="prodi_SK" width="400" height="300"></canvas>
-                                        <canvas id="kk_SK" width="400" height="300"></canvas>
-                                        <canvas id="dosen_SK" width="400" height="300"></canvas>
+                                        <canvas id="prodi_SK" width="300" height="300"></canvas>
+                                        <canvas id="kk_SK" width="300" height="300"></canvas>
+                                        <canvas id="dosen_SK" width="300" height="300"></canvas>
 
 
                                         <script>
@@ -116,6 +138,87 @@
                                                     });
                                             });
                                         </script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-12">
+                        <div class="card border border-2">
+                            <div class="card-header">
+                                <h4>Grafik DATA SK Per Semester</h4>
+                            </div>
+                            <div class="card-body table-responsive">
+                                <div class="col">
+                                    <div class="row d-flex justify-content-center">   
+                                        <!-- CANVAS AND ID HERE -->
+                                        {{-- <canvas id="lineChart" width="400" height="300"></canvas> --}}
+                                        <canvas id="prodi_SK_semester1" width="300" height="300"></canvas>
+                                        <canvas id="prodi_SK_semester2" width="300" height="300"></canvas>
+                                        <canvas id="kk_SK_semester1" width="300" height="300"></canvas>
+
+
+                                        <script>
+                                            document.addEventListener("DOMContentLoaded", function() {
+    // Fetch data for all charts from the server using AJAX
+    fetch('/chart/data-sk-semester')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Check if semester1Data is defined and is an array
+            if (Array.isArray(data.semester1Data)) {
+                // Use the data to create the 'semester1' chart
+                var semester1Labels = data.semester1Data.map(item => item.start_date);
+                var semester1DataValues = data.semester1Data.map(item => item.sks);
+
+                var ctxSemester1 = document.getElementById('prodi_SK_semester1').getContext('2d');
+                var semester1Chart = new Chart(ctxSemester1, {
+                    type: 'bar',
+                    data: {
+                        labels: semester1Labels,
+                        datasets: [{
+                            label: 'SK for Semester 1',
+                            data: semester1DataValues,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: false,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {},
+                            y: {}
+                        }
+                    }
+                });
+
+                // Additional charts can be added here if needed...
+            } else {
+                console.error('Semester 1 data is not an array or is undefined.');
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+});
+
+
+                                            </script>
+                                            
                                     </div>
                                 </div>
                             </div>

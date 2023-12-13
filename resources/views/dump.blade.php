@@ -1,46 +1,128 @@
+<?
 
-
-public function getDataSKS()
+public function report($year = null)
 {
-    $data = QuarterDate::all();
+    // Use the provided year to filter the data
+    $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+        ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk', 'test_sk_dosen.start_date');
 
-    // Hitung SKS Tiap Prodi
-    $sksProdi = DB::table('test_sk_dosen')
-    ->join('users', 'test_sk_dosen.NIP', '=', 'users.NIP')
-    ->select('users.Prodi', DB::raw('COUNT(*) as count, SUM(test_sk_dosen.sks) as total_sks'))
-    ->groupBy('users.Prodi')
-    ->get();
-    $chartSKSProdi = $sksProdi->pluck('count', 'Prodi');
-    $chartTotalSKSProdi = $sksProdi->pluck('total_sks', 'Prodi');
-
-    // Hitung SKS Tiap Kelompok Keahlian
-    $sksKK = DB::table('test_sk_dosen')
-    ->join('users', 'test_sk_dosen.NIP', '=', 'users.NIP')
-    ->select('users.KK', DB::raw('SUM(test_sk_dosen.sks) as total_sks'))
-    ->groupBy('users.KK')
-    ->get();
-    $chartSKSKK = $sksKK->pluck('total_sks','KK');
-
-    // Hitung SKS Tiap Dosen
-    $semuaDosen = User::pluck('nama')->toArray();
-    $sksDosen = DB::table('users')
-        ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP') // LEFT JOIN agar dosen yang SKS nya 0 ikut terhitung
-        ->select('users.nama', DB::raw('SUM(test_sk_dosen.sks) as total_sks'))
-        ->groupBy('users.nama')
-        ->get();
-    $chartSKSDosen = $sksDosen->pluck('total_sks', 'nama')->toArray();
-
-    // LOOP agar dosen yang SKS nya 0 ikut terhitung
-    foreach ($semuaDosen as $nama) {
-        if (!array_key_exists($nama, $chartSKSDosen)) {
-            $chartSKSDosen[$nama] = 0;
-        }
+    if ($year) {
+        $data = $data->whereYear('test_sk_dosen.start_date', $year);
     }
 
-    return response()->json([
-        'prodi_sks' => $chartTotalSKSProdi,
-        'kk_sks' => $chartSKSKK,
-        'dosen_sks' => $chartSKSDosen,
+    $data = $data->get();
+
+    // The rest of your existing code for grouping and calculations...
+
+    $pdf = PDF::loadView('sekretariat2.print-report', compact('dosenData', 'prodiData', 'kkData', 'year'));
+
+    return $pdf->stream();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=========================
+public function report() {
+
+$data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk', 'test_sk_dosen.start_date')
+->get();
+
+// ========PRODI========
+$groupedDataProdi = $data->groupBy('Prodi')->map(function ($group) {
+    return $group->groupBy(function ($item) {
+        $startDate = Carbon::parse($item->start_date);
+        return ($startDate->month >= 1 && $startDate->month <= 6) ? 'semester1' : 'semester2';
+    });
+});
+
+    
+$prodiData = collect();
+
+$groupedDataProdi->each(function ($groups, $Prodi) use ($prodiData) {
+    $semester1Data = $groups->get('semester1', collect());
+    $semester2Data = $groups->get('semester2', collect());
+
+    $prodiData->push([
+        'Prodi' => $Prodi,
+        'semester1_sks' => $semester1Data->sum('sks'), // Total SKS for semester 1
+        'semester2_sks' => $semester2Data->sum('sks'), // Total SKS for semester 2
+        'total_sks' => $semester1Data->sum('sks') + $semester2Data->sum('sks'), // Total SKS for both semesters
+        'semester1_sk' => $semester1Data->count(), // Count of SK for semester 1
+        'semester2_sk' => $semester2Data->count(), // Count of SK for semester 2
+        'total_sk' => $semester1Data->count() + $semester2Data->count(), // Total SK for both semesters
     ]);
+});
+
+// ========KELOMPOK KEAHLIAH========
+$groupedDataKK = $data->groupBy('KK')->map(function ($group) {
+    return $group->groupBy(function ($item) {
+        $startDate = Carbon::parse($item->start_date);
+        return ($startDate->month >= 1 && $startDate->month <= 6) ? 'semester1' : 'semester2';
+    });
+});
+
+$kkData = collect();
+
+$groupedDataKK->each(function ($groups, $KK) use ($kkData) {
+    $semester1Data = $groups->get('semester1', collect());
+    $semester2Data = $groups->get('semester2', collect());
+
+    $kkData->push([
+        'KK' => $KK,
+        'semester1_sks' => $semester1Data->sum('sks'), // Total SKS for semester 1
+        'semester2_sks' => $semester2Data->sum('sks'), // Total SKS for semester 2
+        'total_sks' => $semester1Data->sum('sks') + $semester2Data->sum('sks'), // Total SKS for both semesters
+        'semester1_sk' => $semester1Data->count(), // Count of SK for semester 1
+        'semester2_sk' => $semester2Data->count(), // Count of SK for semester 2
+        'total_sk' => $semester1Data->count() + $semester2Data->count(), // Total SK for both semesters
+    ]);
+});
+
+// ========DOSEN========
+$groupedDataDosen = $data->groupBy('NIP')->map(function ($group) {
+    return $group->groupBy(function ($item) {
+        $startDate = Carbon::parse($item->start_date);
+        return ($startDate->month >= 1 && $startDate->month <= 6) ? 'semester1' : 'semester2';
+    });
+});
+
+// Prepare data for the table
+$dosenData = collect();
+
+$groupedDataDosen->each(function ($groups, $NIP) use ($dosenData) {
+    $semester1Data = $groups->get('semester1', collect());
+    $semester2Data = $groups->get('semester2', collect());
+
+    $dosenData->push([
+        'NIP' => $NIP,
+        'nama' => $groups->first()->first()->nama ?? '',
+        'semester1_sks' => $semester1Data->sum('sks'), // Total SKS for semester 1
+        'semester2_sks' => $semester2Data->sum('sks'), // Total SKS for semester 2
+        'total_sks' => $semester1Data->sum('sks') + $semester2Data->sum('sks'), // Total SKS for both semesters
+        'semester1_sk' => $semester1Data->count(), // Count of SK for semester 1
+        'semester2_sk' => $semester2Data->count(), // Count of SK for semester 2
+        'total_sk' => $semester1Data->count() + $semester2Data->count(), // Total SK for both semesters
+    ]);
+});
+
+
+$pdf = PDF::loadView('sekretariat2.print-report', compact('dosenData','prodiData','kkData'));
+
+return $pdf->stream();
 
 }
