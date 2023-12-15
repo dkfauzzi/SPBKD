@@ -42,7 +42,7 @@
                     {{-- <li class="nav-item"><a class="nav-link" href="/Draft_Proposal_TA/sample.pdf"
                             target="_blank">Download</a></li> --}}
                     @auth
-                    <li class="nav-item"><a class="nav-link" href="{{ URL::to('sekretariat2-search') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ URL::to('sekretariat2-search') }}">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ URL::to('/logout') }}">Logout</a></li>
                     @else
                     <li class="nav-item dropdown">
@@ -53,12 +53,10 @@
     
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="dekan-login">Dekan</a></li>
-                            <li><a class="dropdown-item" href="sekretariat-login">Sekretariat</a></li>
-                            <li><a class="dropdown-item" href="sekretariat2-login">Sekretariat 2</a></li>
+                            <li><a class="dropdown-item" href="sekretariat-login">Ketua Program Studi</a></li>
+                            <li><a class="dropdown-item" href="sekretariat2-login">Ketua Kelompok Keahlian</a></li>
+                            <li><a class="dropdown-item" href="sekretariat2-login">Sekretariat</a></li>
                             <li><a class="dropdown-item" href="dosen-login">Dosen</a></li>
-                            <li><a class="dropdown-item" href="dekan-admin">Admin</a></li>
-                            {{-- <li><a class="dropdown-item" href="login-koordinator-kp">Koordinator KP</a></li>
-                            <li><a class="dropdown-item" href="login-koordinator-yudisium">Koordinator Yudisium</a></li> --}}
                         </ul>
                     </li>
                     @endauth

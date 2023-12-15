@@ -454,7 +454,7 @@ class ChartController extends Controller
     public function SKS_Prodi_Semester()
     {
         $data = QuarterDate::all();
-    
+     
         // Define date ranges for Semester 1 and Semester 2
         $semester1StartDate = '2023-01-01';
         $semester1EndDate = '2023-06-30';

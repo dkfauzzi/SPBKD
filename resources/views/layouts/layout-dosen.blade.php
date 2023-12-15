@@ -27,6 +27,12 @@
 
     <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.ui.timepicker.addon/1.4.5/jquery-ui-timepicker-addon.min.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .tab-I {
+            display: inline-block;
+            margin-left: 20px;
+        }
+    </style>
 </head>
     
 <body>

@@ -145,7 +145,7 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
 
 Route::group(['middleware' => ['auth', 'rolecek:dosen']], function () {
     
-    Route::get('dosen-dashboard', [QuarterDateController::class, 'index']);
+    Route::get('dosen-dashboard', [DosenController::class, 'index']);
     // Route::resource('dosen-dashboard', 'QuarterDateController');
     // Route::resource('dosen-dashboard', [QuarterDateController::class]);
     Route::get('dosen-tambah-sk', [QuarterDateController::class, 'create']); // tambah data sk dosen
