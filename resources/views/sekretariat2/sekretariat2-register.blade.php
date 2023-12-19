@@ -34,30 +34,40 @@
             <div class="container mt-5"  >
                 <div class="row">
                     <div class="col-12 col-sm-8 offset-sm-2 col-md-6  col-lg-6 col-xl-4 offset-xl-3">
-                        {{-- <div class="login-brand">
-                            <a href="/"><img src="assets_index/assets/img/logo-fri-putih.png" alt="logo" width="300"></a>
-                        </div> --}}
                         <div class="card mt-5" style="width: 600px">
                             <img class="card-img-top bg-transparent" src="assets_index/assets/img/logo-fri-hijau.png" alt="Card image cap" width="150px">
                             <div class="card-header ">
                                 <h4>Register Akun </h4>
                             </div>
                             <div class="card-body">
-                                <form action="{{ route('sekretariat2-search') }}" method="POST">
-                                {{-- <form action="post-login-dekan" method="POST"> --}}
+
+                                @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @endif
+
+                                <form action="{{ route('register.store') }}" method="POST">
                                     {{ csrf_field() }}
 
+                                    <!-- Your form fields go here -->
                                     <div class="form-group">
                                         <label for="username">NIP</label>
-                                        <input  type="text" class="form-control" name="NIP" tabindex="1" required autofocus>
-                                        <div class="invalid-feedback">
-                                            Isi NIP Dosen
-                                        </div>
+                                        <input type="text" class="form-control" name="NIP" value="{{ old('NIP') }}" tabindex="1" required autofocus>
+                                        @error('NIP')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group">
                                         <label for="username">Nama</label>
-                                        <input type="text" class="form-control" name="nama" tabindex="1" required autofocus>
+                                        <input type="text" class="form-control" name="nama" value="{{ old('nama') }}"  tabindex="1" required autofocus>
                                         <div class="invalid-feedback">
                                             Isi Nama Dosen
                                         </div>
@@ -118,13 +128,15 @@
                                             Isi Role Dosen
                                         </div>
                                     </div>
-                                    
+
                                     <div class="form-group">
-                                        <label for="username">Email</label>
-                                        <input type="text" class="form-control" name="email" tabindex="1" required autofocus>
-                                        <div class="invalid-feedback">
-                                            Isi Email Dosen
-                                        </div>
+                                        <label for="">Email</label>
+                                        <input type="text" class="form-control" name="email" value="{{ old('email') }}" tabindex="1" required autofocus>
+                                        @error('email')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group">
@@ -141,6 +153,7 @@
                                         <div class="col-xs-8"></div>
                                         <div class="col-xs-4">
                                             <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+                                            
                                         </div>
                                     </div>
                                 </form>
@@ -154,6 +167,7 @@
             </div>
         </section>
     </div>
+    
 
     <!-- General JS Scripts -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -172,6 +186,12 @@
     <script src="assets/js/custom.js"></script>
 
     <!-- Page Specific JS File -->
+
+</div>
+
+
+
+  
 </body>
 
 </html>

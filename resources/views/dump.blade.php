@@ -1,64 +1,52 @@
 <?
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Fetch data for all charts from the server using AJAX
-    fetch('/chart/data-sk-semester')
-        .then(response => response.json())
-        .then(data => {
-            // Use the data to create the 'prodi' chart
-            var ctxProdi = document.getElementById('prodi_SK').getContext('2d');
-            var prodiChart = new Chart(ctxProdi, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(data.prodi_SK['Semester 1']), // Use 'Semester 1' or 'Semester 2' as needed
-                    datasets: [{
-                        label: 'SK Tiap Prodi Semester 1', // Change label accordingly
-                        data: Object.values(data.prodi_SK['Semester 1']),
-                        backgroundColor: 'rgba(0, 0, 255, 0.2)', // Blue background color
-                        borderColor: 'rgba(0, 0, 255, 1)', // Blue border color
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'SK Tiap Prodi Semester 2', // Change label accordingly
-                        data: Object.values(data.prodi_SK['Semester 2']),
-                        backgroundColor: 'rgba(255, 0, 0, 0.2)', // Red background color
-                        borderColor: 'rgba(255, 0, 0, 1)', // Red border color
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: false,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {},
-                        y: {}
-                    },
-                    plugins: {
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'top',
-                            display: 'auto', // Display the label
-                            color: 'black', // Label color
-                            font: {
-                                weight: 'bold'
-                            },
-                            formatter: function(value, context) {
-                                return value; // Display the value of the bar as the label
-                            }
-                        }
-                    }
-                }
-            });
+<form class="needs-validation" action="{{ route('tambah') }}" method="POST" enctype="multipart/form-data" novalidate>
+    {{ csrf_field() }}
+    <div class="card-header row">
+        <h3 class="section-title col-8">Tambah SK Dosen</h2>
+    </div>
+    @if(count($errors) > 0)
+        <div class="alert alert-danger">
+            @foreach ($errors->all() as $error)
+                {{ $error }} <br />
+            @endforeach
+        </div>
+    @endif
+    <div class="card-body">
+        <div class="form-group">
+            <div class="form-col">
+                <h3 class="section-title"></h3>
+                <div class="form-row">
+                    @for($i = 1; $i <= 3; $i++)
+                        <div class="form-group col-md-6">
+                            <label for="inputJudul">NIP</label><br>
+                            <select class="form-select nip-dropdown" name="sets[{{ $i }}][NIP]" id="nip_dropdown{{ $i }}" data-index="{{ $i }}" required>
+                                <option value="" selected disabled>Select NIP</option>
+                                @foreach($nipOptions as $nip)
+                                    <option>{{ $nip }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-            // Add other charts as needed
+                        <div class="form-group col-md-6">
+                            <label for="nama">Nama Dosen</label>
+                            <input class="form-control" type="text" name="sets[{{ $i }}][nama]" id="nama_field{{ $i }}" readonly>
+                            <div class="invalid-feedback">Isi Nama Dosen</div>
+                        </div>
+                    @endfor
+                </div>
 
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
-});
+                <!-- Other form fields go here -->
 
-
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        {!! Form::submit('Simpan',['class'=>'btn btn-primary mb-5 mt-3'])!!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 
 

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+
 
 
 class RegisterController extends Controller
@@ -18,22 +20,26 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
         // Validate the form data
-        $data = $request->validate([
+        $request->validate([
             'nama' => 'required',
             'JAD' => 'required',
-            'NIP' => 'required',
+            'NIP' => 'required|unique:users,NIP', // harus unique
             'Prodi' => 'required',
             'KK' => 'required',
-            'email' => 'required',
+            'email' => 'required|unique:users,email', // harus unique
             'password' => 'required',
             'level' => 'required',
             // Add any other fields you need
+        ], [
+            'NIP.unique' => 'NIP sudah digunakan. Silakan pilih yang lain.',
+            'email.unique' => 'Email sudah digunakan. Silakan pilih yang lain.',
         ]);
-
-        // Create a new user
-        $user = User::create($data);
-
-        // Redirect or perform any other action as needed
+    
+        $user = User::create($request->all());
+    
         return redirect()->route('sekretariat2-search')->with('success', 'User registered successfully');
     }
+    
+    
+    
 }

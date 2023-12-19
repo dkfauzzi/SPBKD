@@ -54,7 +54,6 @@ class ChartController extends Controller
             });
         });
         
-            
         $prodiData = collect();
         
         $groupedDataProdi->each(function ($groups, $Prodi) use ($prodiData) {
@@ -63,16 +62,23 @@ class ChartController extends Controller
         
             $prodiData->push([
                 'Prodi' => $Prodi,
-                'semester1_sks' => intval($semester1Data->sum('sks')), // Cast to integer
-                'semester2_sks' => intval($semester2Data->sum('sks')), // Cast to integer
-                'total_sks' => intval($semester1Data->sum('sks')) + intval($semester2Data->sum('sks')), // Cast to integer
-                'semester1_sk' => $semester1Data->count(),
-                'semester2_sk' => $semester2Data->count(),
-                'total_sk' => $semester1Data->count() + $semester2Data->count(),
+                'semester1_sks' => intval($semester1Data->sum('sks')), 
+                'semester2_sks' => intval($semester2Data->sum('sks')), 
+                'total_sks' => intval($semester1Data->sum('sks')) + intval($semester2Data->sum('sks')), 
+                'semester1_sk' => $semester1Data->pluck('sk')->unique()->count(),
+                'semester2_sk' => $semester2Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count(),
+                'total_sk' => $semester1Data->count() + $semester2Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count(),
             ]);
             
         });
         
+
+
+    
         // ========KELOMPOK KEAHLIAH========
         $groupedDataKK = $data->groupBy('KK')->map(function ($group) {
             return $group->groupBy(function ($item) {
@@ -93,8 +99,12 @@ class ChartController extends Controller
                 'semester2_sks' => $semester2Data->sum('sks'), // Total SKS for semester 2
                 'total_sks' => $semester1Data->sum('sks') + $semester2Data->sum('sks'), // Total SKS for both semesters
                 'semester1_sk' => $semester1Data->count(), // Count of SK for semester 1
-                'semester2_sk' => $semester2Data->count(), // Count of SK for semester 2
-                'total_sk' => $semester1Data->count() + $semester2Data->count(), // Total SK for both semesters
+                'semester2_sk' => $semester2Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count(),
+                'total_sk' => $semester1Data->count() + $semester2Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count()
             ]);
         });
         
@@ -106,7 +116,6 @@ class ChartController extends Controller
             });
         });
         
-        // Prepare data for the table
         $dosenData = collect();
         
         $groupedDataDosen->each(function ($groups, $NIP) use ($dosenData) {
@@ -120,8 +129,12 @@ class ChartController extends Controller
                 'semester2_sks' => $semester2Data->sum('sks'), // Total SKS for semester 2
                 'total_sks' => $semester1Data->sum('sks') + $semester2Data->sum('sks'), // Total SKS for both semesters
                 'semester1_sk' => $semester1Data->count(), // Count of SK for semester 1
-                'semester2_sk' => $semester2Data->count(), // Count of SK for semester 2
-                'total_sk' => $semester1Data->count() + $semester2Data->count(), // Total SK for both semesters
+                'semester2_sk' => $semester2Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count(),
+                'total_sk' => $semester1Data->count() + $semester2Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count()
             ]);
         });
         

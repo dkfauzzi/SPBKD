@@ -95,9 +95,22 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat']], function () {
 
 Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     
-    Route::get('sekretariat2-dashboard', [SekretariatController2::class, 'index']); //tampil dashboard
-    Route::get('sekretariat2-tambah-sk', [SekretariatController2::class, 'create']); // tambah data sk dosen
-    Route::post('sekretariat2-dashboard', [SekretariatController2::class, 'store']); // simpan data sk dosen
+    // Route::get('sekretariat2-dashboard', [SekretariatController2::class, 'index']); //tampil dashboard
+    // Route::get('sekretariat2-tambah-sk', [SekretariatController2::class, 'create'])->name('sekretariat2-search');
+    Route::get('sekretariat2-tambah-sk', [SekretariatController2::class, 'create'])->name('tambah-sk');
+    Route::get('/getNipOptions', [SekretariatController2::class, 'getNIPOptions']);
+    Route::get('/getNama/{NIP}', [SekretariatController2::class, 'getNamaByNIP']);
+    Route::post('sekretariat2-search-2', [SekretariatController2::class, 'store'])->name('tambah');
+
+
+
+
+    
+    // Route::get('/get-nip-options', [SekretariatController2::class, 'getNIPOptions'])->name('get.nip.options');
+    // Route::post('/get-nama-by-nip', [SekretariatController2::class, 'getNamaByNIP'])->name('get.nama.by.nip');
+    // Route::get('/fetch-nama-dosen/{nip}',[DataDosenController::class,'fetchNamaDosen']); 
+    // Route::get('/get-nip-options', 'YourControllerName@getNIPOptions')->name('get.nip.options');
+
     // Route::get('generate-pdf/{NIP}', 'YourController@generatePDF');
 
 
@@ -137,8 +150,9 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     // Route::get('/user/create', [RegisterController::class, 'create'])->name('user.create');
     // Route::post('/user', [RegisterController::class, 'store'])->name('user.store');
     Route::get('sekretariat2-register', [RegisterController::class, 'create']); // Display the registration form
-    Route::post('sekretariat2-search', [RegisterController::class, 'store'])->name('sekretariat2-search'); // Handle the form submission and create the user
-
+    Route::post('sekretariat2-search', [RegisterController::class, 'store'])->name('register.store');
+    // Route::post('sekretariat2-search', [RegisterController::class, 'store'])->name('sekretariat2-search'); 
+    
     Route::get('card', [CardController::class, 'index']);
     // Route::get('sekretariat2/{NIP}', [CardController::class, 'show'])->name('sekretariat2.show');
 });

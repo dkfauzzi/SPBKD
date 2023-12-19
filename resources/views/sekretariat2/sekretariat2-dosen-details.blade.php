@@ -47,11 +47,9 @@
                                 <h4>Data SK {{ $data->nama }}</h4>
                             </div>
                             <div class="card-body table-responsive">
-                                {{-- <a href=<?php echo url('sekretariat2-tambah-sk') ?> class="btn btn-primary mb-3"> <i class="fas fa-plus"></i> Tambah Data</a> --}}
-
-                                {{-- <a href="{{ route('sekretariat2-tambah-sk', ['NIP' => $data->NIP]) }}" class="btn btn-success mb-3"> <i class="fas fa-plus"></i> Tambah Data SK</a> --}}
+                                
                                 <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addSKModal">
-                                    <i class="fas fa-plus"></i>   Tambah Data SK
+                                    <i class="fas fa-plus"></i>   Tambah Data SK {{ $data->nama }}
                                 </button>
                                 
                                 <a href="{{ url('print/' . $data->NIP) }}" class="btn btn-success mb-3" target="_blank" >Generate PDF</a>
