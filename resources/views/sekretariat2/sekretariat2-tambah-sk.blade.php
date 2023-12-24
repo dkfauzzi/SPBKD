@@ -85,6 +85,7 @@
                                                         <div class="invalid-feedback">Isi Nama Dosen</div>
                                                     </div>
                                                     
+                                                    @endfor
                 
                                                     <div class="form-group col-md-6">
                                                         <label for="inputJudul">Kegiatan SK Dosen</label><br>
@@ -204,7 +205,7 @@
 
             // Make an AJAX request to fetch the corresponding nama based on NIP
             $.ajax({
-                url: "{{ route('get.nama.by.nip') }}",
+                url: "{{ route('get.nama.by.nip', ['NIP' => '']) }}/" + selectedNIP,
                 method: 'POST',
                 dataType: 'json',
                 headers: {

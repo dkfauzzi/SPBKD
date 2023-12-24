@@ -98,8 +98,8 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     // Route::get('sekretariat2-dashboard', [SekretariatController2::class, 'index']); //tampil dashboard
     // Route::get('sekretariat2-tambah-sk', [SekretariatController2::class, 'create'])->name('sekretariat2-search');
     Route::get('sekretariat2-tambah-sk', [SekretariatController2::class, 'create'])->name('tambah-sk');
-    Route::get('/getNipOptions', [SekretariatController2::class, 'getNIPOptions']);
-    Route::get('/getNama/{NIP}', [SekretariatController2::class, 'getNamaByNIP']);
+    Route::get('/getNipOptions', [SekretariatController2::class, 'getNIPOptions'])->name('get.nip.options');
+    Route::get('/getNama/{NIP}', [SekretariatController2::class, 'getNamaByNIP'])->name('get.nama.by.nip');
     Route::post('sekretariat2-search-2', [SekretariatController2::class, 'store'])->name('tambah');
 
 
@@ -107,7 +107,7 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
 
     
     // Route::get('/get-nip-options', [SekretariatController2::class, 'getNIPOptions'])->name('get.nip.options');
-    // Route::post('/get-nama-by-nip', [SekretariatController2::class, 'getNamaByNIP'])->name('get.nama.by.nip');
+    // Route::post('/get-nama-by-nip/{NIP}', [SekretariatController2::class, 'getNamaByNIP'])->name('get.nama.by.nip');
     // Route::get('/fetch-nama-dosen/{nip}',[DataDosenController::class,'fetchNamaDosen']); 
     // Route::get('/get-nip-options', 'YourControllerName@getNIPOptions')->name('get.nip.options');
 

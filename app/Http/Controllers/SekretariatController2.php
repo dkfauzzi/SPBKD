@@ -32,8 +32,9 @@ class SekretariatController2 extends Controller
     public function create()
     {
         $nipOptions = User::pluck('NIP')->toArray();
+        $numberOfSets = 4;
     
-        return view('sekretariat2.sekretariat2-tambah-sk', compact('nipOptions'));
+        return view('sekretariat2.sekretariat2-tambah-sk', compact('nipOptions','numberOfSets'));
     }
     
     public function getNamaByNIP($NIP)
