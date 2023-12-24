@@ -74,5 +74,27 @@ class UsersSeeder extends Seeder
             'password' => bcrypt('123'),
         ]);
 
+        User::create([
+            'nama' => 'Mozart',
+            'JAD' => 'Guru Besar',
+            'Prodi' => 'S1 Digital Supply Chain',
+            'KK' => 'PROMASYS',
+            'NIP' => '12030006', //NIP as Username
+            'email' => 'mozart@gmail.com',
+            'level' => 'kaprodi',
+            'password' => bcrypt('123'),
+        ]);
+
+        User::create([
+            'nama' => 'Bethooven',
+            'JAD' => 'Kepala Lektor',
+            'Prodi' => 'S2 Sistem Informasi',
+            'KK' => 'EINS',
+            'NIP' => '12030007', //NIP as Username
+            'email' => 'bethooven@gmail.com',
+            'level' => 'ketuaKK',
+            'password' => bcrypt('123'),
+        ]);
+
     }
 }

@@ -42,9 +42,21 @@
                     {{-- <li class="nav-item"><a class="nav-link" href="/Draft_Proposal_TA/sample.pdf"
                             target="_blank">Download</a></li> --}}
                     @auth
-                    <li class="nav-item"><a class="nav-link" href="{{ URL::to('sekretariat2-search') }}">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ URL::to('/logout') }}">Logout</a></li>
+                        @if(Session::get('userLevel') == 'dekan')
+                        <li class="nav-item"><a class="nav-link" href="{{ URL::to('dekan-dashboard') }}">Dashboard</a></li>
+                        @elseif(Session::get('userLevel') == 'kaprodi')
+                            <li class="nav-item"><a class="nav-link" href="{{ URL::to('prodi-dashboard') }}">Dashboard</a></li>
+                        @elseif(Session::get('userLevel') == 'ketuaKK')
+                            <li class="nav-item"><a class="nav-link" href="{{ URL::to('kk-dashboard') }}">Dashboard</a></li>
+                        @elseif(Session::get('userLevel') == 'dosen')
+                            <li class="nav-item"><a class="nav-link" href="{{ URL::to('dosen-dashboard') }}">Dashboard</a></li>
+                        @elseif(Session::get('userLevel') == 'sekretariat2')
+                            <li class="nav-item"><a class="nav-link" href="{{ URL::to('sekretariat2-search') }}">Dashboard</a></li>
+                        @endif
+                    
+                        <li class="nav-item"><a class="nav-link" href="{{ URL::to('/logout') }}">Logout</a></li>
                     @else
+                    <!-- Handle other cases if needed -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -53,8 +65,8 @@
     
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="dekan-login">Dekan</a></li>
-                            <li><a class="dropdown-item" href="sekretariat-login">Ketua Program Studi</a></li>
-                            <li><a class="dropdown-item" href="sekretariat2-login">Ketua Kelompok Keahlian</a></li>
+                            <li><a class="dropdown-item" href="prodi-login">Ketua Program Studi</a></li>
+                            <li><a class="dropdown-item" href="kk-login">Ketua Kelompok Keahlian</a></li>
                             <li><a class="dropdown-item" href="sekretariat2-login">Sekretariat</a></li>
                             <li><a class="dropdown-item" href="dosen-login">Dosen</a></li>
                         </ul>

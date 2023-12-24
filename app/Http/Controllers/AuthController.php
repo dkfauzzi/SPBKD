@@ -15,10 +15,16 @@ class AuthController extends Controller
         return view('dekan.dekan-login');
     }
 
-    //Sekretariat
-    public function loginSekretariat()
+    //Prodi
+    public function loginProdi()
     {
-        return view('sekretariat.sekretariat-login');
+        return view('prodi.prodi-login');
+    }
+
+    //Prodi
+    public function loginKK()
+    {
+        return view('kk.kk-login');
     }
 
     //Sekretariat 2
@@ -34,15 +40,9 @@ class AuthController extends Controller
     }
 
     //POST LOGIN
-
     public function postLoginDekan(Request $request)
     {
 
-        // if (Auth::attempt($request->only('username', 'password'))) {
-        //     return redirect('dashboard-mahasiswa');
-        // }
-        // return view('login-mahasiswa');
-
         $credentials = $request->validate([
             'NIP' => ['required'],
             'password' => ['required'],
@@ -51,7 +51,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session('')->regenerate();
 
-            return redirect()->intended('dekan-search');
+            return redirect()->intended('dekan-dashboard');
         }
 
         return back()->withErrors([
@@ -59,8 +59,8 @@ class AuthController extends Controller
         ])->onlyInput('NIP');
     }
 
-    //SEKRETARIAT
-    public function PostLoginSekretariat(Request $request)
+    //Prodi
+    public function PostLoginProdi(Request $request)
     {
 
         $credentials = $request->validate([
@@ -71,13 +71,41 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session('')->regenerate();
 
-            return redirect()->intended('sekretariat-search');
+            $user = Auth::user();
+
+            $request->session()->put('userLevel', $user->level);
+
+            return redirect()->intended('prodi-dashboard');
         }
 
         return back()->withErrors([
             'NIP' => 'The provided credentials do not match our records.',
         ])->onlyInput('NIP');
     }
+
+     //KK
+     public function PostLoginKK(Request $request)
+     {
+ 
+        $credentials = $request->validate([
+            'NIP' => ['required'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session('')->regenerate();
+
+            $user = Auth::user();
+
+            $request->session()->put('userLevel', $user->level);
+
+            return redirect()->intended('kk-dashboard');
+        }
+
+        return back()->withErrors([
+            'NIP' => 'The provided credentials do not match our records.',
+        ])->onlyInput('NIP');
+     }
 
     //SEKRETARIAT 2
     public function PostLoginSekretariat2(Request $request)
@@ -90,6 +118,10 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session('')->regenerate();
+
+            $user = Auth::user();
+
+            $request->session()->put('userLevel', $user->level);
 
             return redirect()->intended('sekretariat2-search');
         }
@@ -110,7 +142,11 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session('')->regenerate();
 
-            return redirect()->intended('dosen-search');
+            $user = Auth::user();
+
+            $request->session()->put('userLevel', $user->level);
+
+            return redirect()->intended('dosen-dashboard');
         }
 
         return back()->withErrors([

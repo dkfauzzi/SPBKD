@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DekanController;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\ProdiController;
+use App\Http\Controllers\KKController;
 use App\Http\Controllers\SekretariatController;
 use App\Http\Controllers\SekretariatController2;
 use App\Http\Controllers\QuarterDateController;
@@ -71,6 +73,13 @@ Route::post('/post-login-sekretariat', [AuthController::class, 'PostLoginSekreta
 Route::get('/sekretariat2-login', [AuthController::class, 'LoginSekretariat2'])->middleware('guest');
 Route::post('/post-login-sekretariat2', [AuthController::class, 'PostLoginSekretariat2']);
 
+//Login Prodi
+Route::get('/prodi-login', [AuthController::class, 'LoginProdi'])->middleware('guest');
+Route::post('/post-login-prodi', [AuthController::class, 'PostLoginProdi']);
+
+//Login Prodi
+Route::get('/kk-login', [AuthController::class, 'LoginKK'])->middleware('guest');
+Route::post('/post-login-kk', [AuthController::class, 'PostLoginKK']);
 
 //Login Dosen
 Route::get('/dosen-login', [AuthController::class, 'LoginDosen'])->middleware('guest');
@@ -83,6 +92,23 @@ Route::group(['middleware' => ['auth', 'rolecek:dekan']], function () {
     Route::get('dekan-dashboard', [DekanController::class, 'index']);
 
 
+});
+
+Route::group(['middleware' => ['auth', 'rolecek:dosen']], function () {
+    
+    Route::get('dosen-dashboard', [DosenController::class, 'index']);
+    Route::get('dosen-tambah-sk', [QuarterDateController::class, 'create']); 
+    Route::post('dosen-dashboard', [QuarterDateController::class, 'store']); 
+});
+
+Route::group(['middleware' => ['auth', 'rolecek:kaprodi']], function () {
+    
+    Route::get('prodi-dashboard', [ProdiController::class, 'index']);
+});
+
+Route::group(['middleware' => ['auth', 'rolecek:ketuaKK']], function () {
+    
+    Route::get('kk-dashboard', [KKController::class, 'index']);
 });
 
 Route::group(['middleware' => ['auth', 'rolecek:sekretariat']], function () {
@@ -157,15 +183,8 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     // Route::get('sekretariat2/{NIP}', [CardController::class, 'show'])->name('sekretariat2.show');
 });
 
-Route::group(['middleware' => ['auth', 'rolecek:dosen']], function () {
-    
-    Route::get('dosen-dashboard', [DosenController::class, 'index']);
-    // Route::resource('dosen-dashboard', 'QuarterDateController');
-    // Route::resource('dosen-dashboard', [QuarterDateController::class]);
-    Route::get('dosen-tambah-sk', [QuarterDateController::class, 'create']); // tambah data sk dosen
-    Route::post('dosen-dashboard', [QuarterDateController::class, 'store']); // simpan data sk dosen
 
-});
+
 
 
 

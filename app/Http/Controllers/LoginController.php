@@ -15,10 +15,6 @@ use App\Models\User;
 
 class LoginController extends Controller
 {
-    // public function index()
-    // {
-    //     return view('login.login');
-    // }
 
     public function auth(Request $request)
     {
@@ -32,11 +28,17 @@ class LoginController extends Controller
             Dekan::firstOrCreate(['NIP' => $loggedNIP]);
             return redirect()->intended('dekan.dekan-dashboard');
 
-        } elseif (Auth::attempt(['NIP' => $NIP, 'password' => $password, 'level' => 'sekretariat'])) {
+        } elseif (Auth::attempt(['NIP' => $NIP, 'password' => $password, 'level' => 'kaprodi'])) {
             Session::regenerate();
             Session::put('loggedNIP', $NIP);
             $loggedNIP = Session::get('loggedNIP');
-            return redirect()->intended('sekretariat.sekretariat-dashboard');
+            return redirect()->intended('prodi.prodi-dashboard');
+
+        } elseif (Auth::attempt(['NIP' => $NIP, 'password' => $password, 'level' => 'ketuaKK'])) {
+            Session::regenerate();
+            Session::put('loggedNIP', $NIP);
+            $loggedNIP = Session::get('loggedNIP');
+            return redirect()->intended('kk.kk-dashboard');
 
         } elseif (Auth::attempt(['NIP' => $NIP, 'password' => $password, 'level' => 'dosen'])) {
             Session::regenerate();

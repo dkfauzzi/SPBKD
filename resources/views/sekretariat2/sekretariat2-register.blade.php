@@ -122,7 +122,7 @@
                                             <option value="kaprodi">Ketua Program Studi</option>
                                             <option value="ketuaKK">Ketua Kelompok Keahlian</option>
                                             <option value="dosen">Dosen</option>
-                                            <option value="sekretariat">Sekretariat</option>
+                                            <option value="sekretariat2">Sekretariat</option>
                                         </select>
                                         <div class="invalid-feedback">
                                             Isi Role Dosen
