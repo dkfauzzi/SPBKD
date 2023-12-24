@@ -34,6 +34,10 @@
                                                 <td>{{$userDosen->NIP}}</td>
                                             </tr>
                                             <tr>
+                                                <td><h6>Email<span style="display: inline-block; margin-left: 23px;"></span>:</h6> </td>
+                                                <td>{{$userDosen->email}}</td>
+                                            </tr>
+                                            <tr>
                                                 <td><h6>Prodi<span style="display: inline-block; margin-left: 12px;"></span>:</h6> </td>
                                                 <td>{{$userDosen->Prodi}}</td>
                                             </tr>
@@ -49,6 +53,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addSKModal">
+                                    <i class="fa fa-pencil"></i>  Edit
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -61,6 +70,12 @@
                                 <h4>Data SK {{$userDosen->nama}}</h4>
                             </div>
                             <div class="card-body table-responsive">
+                                {{-- <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addSKModal">
+                                    <i class="fas fa-plus"></i>   Tambah Data SK
+                                </button> --}}
+                                
+                                {{-- <a href="{{ url('print/' . $dosen->NIP) }}" class="btn btn-success mb-3" target="_blank" >Generate PDF</a> --}}
+
                                 <table class="table table-bordered" id="table1">
                                     <thead style="border-color:black">
                                         <tr >
@@ -104,4 +119,85 @@
 </div>
 
 
+<div class="modal fade" id="addSKModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="needs-validation" action="{{ route('prodi-update') }}" method="POST" enctype="multipart/form-data" novalidate>
+                    {{ csrf_field() }}
+                    <div class="card-header row"><h3 class="section-title col-8">Edit Data Diri</h2></div>
+                    @if(count($errors) > 0)
+                    <div class="alert alert-danger">
+                        @foreach ($errors->all() as $error)
+                            {{ $error }} <br />
+                        @endforeach
+                    </div>
+                    @endif
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <h3 class="section-title"></h3>
+                                    <div class="form-row">
+
+                                        <div class="form-group col-md-6">
+                                            <label for="username">NIP</label>
+                                            <input type="text" class="form-control" name="NIP" value="{{ $userDosen->NIP}}" tabindex="1" required autofocus readonly>
+                                            @error('NIP')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+    
+                                        <div class="form-group col-md-6">
+                                            <label for="username">Nama</label>
+                                            <input type="text" class="form-control" name="nama" value="{{ $userDosen->nama}}"  tabindex="1" required autofocus>
+                                            <div class="invalid-feedback">
+                                                Isi Nama Dosen
+                                            </div>
+                                        </div>
+    
+    
+                                        <div class="form-group col-md-6">
+                                            <label for="">Email</label>
+                                            <input type="text" class="form-control" name="email" value="{{ $userDosen->email}}" tabindex="1" required autofocus>
+                                            @error('email')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            {{-- {!! Form::submit('Save',['class'=>'btn btn-primary mb-5 mt-3'])!!} --}}
+                                            <button class=" btn btn-primary mb-5 mt-3" type="submit">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @endsection
+
+@push('scripts')
+    <script>
+        $('#addSKModal').on('show.bs.modal', function (event) {
+            var modal = $(this);
+            modal.find('form').attr('action', "{{ route('prodi-update') }}");
+        });
+    </script>
+@endpush

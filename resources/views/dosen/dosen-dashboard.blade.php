@@ -39,6 +39,10 @@
                                                 <td>{{$userDosen->NIP}}</td>
                                             </tr>
                                             <tr>
+                                                <td><h6>Email<span style="display: inline-block; margin-left: 23px;"></span>:</h6> </td>
+                                                <td>{{$userDosen->email}}</td>
+                                            </tr>
+                                            <tr>
                                                 <td><h6>Prodi<span style="display: inline-block; margin-left: 12px;"></span>:</h6> </td>
                                                 <td>{{$userDosen->Prodi}}</td>
                                             </tr>
@@ -55,7 +59,9 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <a href="{{ route('sekretariat2-search') }}" class="btn btn-success"><i class="fas fa-arrow-left"></i> Edit</a>
+                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addSKModal">
+                                    <i class="fa fa-pencil"></i>  Edit
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -117,7 +123,7 @@
 
 </div>
 
-<div class="modal fade" id="addSKModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addSKModal" tabindex="-1" role="dialog"  aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -126,9 +132,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="needs-validation" action="{{ route('sekretariat2-dosen-details', ['NIP' => $data ->NIP]) }}" method="POST" enctype="multipart/form-data" novalidate>
+                <form class="needs-validation" action="{{ route('dosen-update') }}" method="POST" enctype="multipart/form-data" novalidate>
                     {{ csrf_field() }}
-                    <div class="card-header row"><h3 class="section-title col-8">Tambah SK Dosen</h2></div>
+                    <div class="card-header row"><h3 class="section-title col-8">Edit Data Diri</h2></div>
                     @if(count($errors) > 0)
                     <div class="alert alert-danger">
                         @foreach ($errors->all() as $error)
@@ -144,77 +150,38 @@
                                     <div class="form-row">
 
                                         <div class="form-group col-md-6">
-                                            <label for="inputJudul">NIP</label><br>
-                                            <input class="form-control" type="text" value="{{$data->NIP}}" name="NIP" readonly>
+                                            <label for="username">NIP</label>
+                                            <input type="text" class="form-control" name="NIP" value="{{ $userDosen->NIP}}" tabindex="1" required autofocus readonly>
+                                            @error('NIP')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+    
+                                        <div class="form-group col-md-6">
+                                            <label for="username">Nama</label>
+                                            <input type="text" class="form-control" name="nama" value="{{ $userDosen->nama}}"  tabindex="1" required autofocus>
                                             <div class="invalid-feedback">
-                                                Isi NIP
+                                                Isi Nama Dosen
                                             </div>
                                         </div>
-
+    
+    
                                         <div class="form-group col-md-6">
-                                            <label for="inputJudul">Nama Dosen</label><br>
-                                            <input class="form-control" type="text" value="{{$data->nama}}" readonly>
-                                            <div class="invalid-feedback">
-                                                Isi NIP
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-md-6">
-                                            <label for="inputJudul">Kegiatan SK Dosen</label><br>
-                                            <textarea class="form-control" type="text" name="sk" id="sk" placeholder="Jenis SK" required></textarea>
-                                            <div class="invalid-feedback">
-                                                Isi Kegiatan SK.
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-md-6">
-                                            <label for="inputJudul">Jumlah SKS</label><br>
-                                            <textarea class="form-control" type="text" name="sks" id="sks" placeholder="Jumlah SKS" required></textarea>
-                                            <div class="invalid-feedback">
-                                                Isi Jumlah SKS.
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-md-6">
-                                            <label for="inputJudul">Jenis SK </label><br>
-                                            <select class="form-select" aria-label="Default select example" name="jenis_sk">
-                                            <option value="Internal">Internal</option>
-                                            <option value="External">External</option>
-                                            </select>
-                                            <div class="invalid-feedback">
-                                                Isi Jumlah SKS.
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-md-6">
-                                            <label for="inputJudul">Keterangan SK</label><br>
-                                            <textarea class="form-control" type="text" name="keterangan_sk" id="keterangan_sk" placeholder="Keterangan" required></textarea>
-                                            <div class="invalid-feedback">
-                                                Keterangan SK
-                                            </div>
+                                            <label for="">Email</label>
+                                            <input type="text" class="form-control" name="email" value="{{ $userDosen->email}}" tabindex="1" required autofocus>
+                                            @error('email')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
                                         </div>
                                     </div>
-
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label for="start_date">Tanggal Mulai SK</label><br>
-                                            <input class="form-control" type="date" name="start_date" id="start_date" placeholder="Tanggal Mulai" required>
-                                            <div class="invalid-feedback">
-                                                Isi Tanggal Mulai SK.
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-md-6">
-                                            <label for="inputJudul">Tanggal Berakhir SK</label><br>
-                                            <input class="form-control" type="date" name="end_date" id="end_date" placeholder="Tanggal Berakhir" required>
-                                            <div class="invalid-feedback">
-                                                Isi Tanggal Berakhir SK.
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                {!! Form::submit('Save',['class'=>'btn btn-primary mb-5 mt-3'])!!}
-                                            </div>
+                                            {{-- {!! Form::submit('Save',['class'=>'btn btn-primary mb-5 mt-3'])!!} --}}
+                                            <button class=" btn btn-primary mb-5 mt-3" type="submit">Update</button>
                                         </div>
                                     </div>
                                 </div>
@@ -232,16 +199,9 @@
 
 @push('scripts')
     <script>
-        $('#confirmDeleteModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var action = button.data('action');
-            var modal = $(this);
-
-            modal.find('#deleteForm').attr('action', action);
-        });
         $('#addSKModal').on('show.bs.modal', function (event) {
             var modal = $(this);
-            modal.find('form').attr('action', "{{ route('sekretariat2-dosen-details', ['NIP' => $data->NIP]) }}");
+            modal.find('form').attr('action', "{{ route('dosen-update') }}");
         });
     </script>
 @endpush

@@ -19,14 +19,25 @@ class KKController extends Controller
     {
         $user = Auth::user()->NIP;
 
-        // Get data from the 'User' table for the current user
         $userDosen = User::where('NIP', '=', $user)->first();
 
-        // Get data from the 'QuarterDate' table for the current user
         $dataDosen = QuarterDate::where('NIP', '=', $user)->get();
 
-        // Pass the data to the view
         return view('kk.kk-dashboard', compact('user', 'userDosen', 'dataDosen'));
+    }
+
+    public function update(Request $request)
+    {
+        $data = $request->validate([
+            'NIP'=> 'required',
+            'nama'=> 'required',
+            'email'=> 'required',
+        ]);
+    
+        $user = Auth::user();
+        $user->update($data);
+    
+        return redirect()->route('kk-dashboard')->with('success', 'User updated successfully');
     }
 
 }

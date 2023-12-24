@@ -95,20 +95,20 @@ Route::group(['middleware' => ['auth', 'rolecek:dekan']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'rolecek:dosen']], function () {
-    
-    Route::get('dosen-dashboard', [DosenController::class, 'index']);
-    Route::get('dosen-tambah-sk', [QuarterDateController::class, 'create']); 
-    Route::post('dosen-dashboard', [QuarterDateController::class, 'store']); 
+    Route::get('dosen-dashboard', [DosenController::class, 'index'])->name('dosen-dashboard');
+    Route::post('dosen-update', [DosenController::class, 'update'])->name('dosen-update');
 });
 
+
+
 Route::group(['middleware' => ['auth', 'rolecek:kaprodi']], function () {
-    
-    Route::get('prodi-dashboard', [ProdiController::class, 'index']);
+    Route::get('prodi-dashboard', [ProdiController::class, 'index'])->name('prodi-dashboard');
+    Route::post('prodi-update', [ProdiController::class, 'update'])->name('prodi-update');
 });
 
 Route::group(['middleware' => ['auth', 'rolecek:ketuaKK']], function () {
-    
-    Route::get('kk-dashboard', [KKController::class, 'index']);
+    Route::get('kk-dashboard', [KKController::class, 'index'])->name('kk-dashboard');
+    Route::post('kk-update', [KKController::class, 'update'])->name('kk-update');
 });
 
 Route::group(['middleware' => ['auth', 'rolecek:sekretariat']], function () {

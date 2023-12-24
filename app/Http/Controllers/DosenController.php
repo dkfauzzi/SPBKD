@@ -15,31 +15,30 @@ use Illuminate\Support\Facades\Hash;
 
 class DosenController extends Controller
 {
-    // public function index()
-    // {
-    //     $dosen = Auth::user()->NIP;
-
-    //     // $test = QuarterDate::where('NIP', $NIP)->get(); 
-    //     $data = QuarterDate::all()->where('NIP', '=', $dosen)->first();
-
-
-    //     // return view('dosen.dosen-dashboard', ['dosen' => $dosen, 'data' => $data]);
-    //     return view('dosen.dosen-dashboard', compact('dosen','data'));
-
-    // }
 
     public function index()
     {
         $user = Auth::user()->NIP;
 
-        // Get data from the 'User' table for the current user
         $userDosen = User::where('NIP', '=', $user)->first();
 
-        // Get data from the 'QuarterDate' table for the current user
         $dataDosen = QuarterDate::where('NIP', '=', $user)->get();
 
-        // Pass the data to the view
         return view('dosen.dosen-dashboard', compact('user', 'userDosen', 'dataDosen'));
     }
 
+
+    public function update(Request $request)
+    {
+        $data = $request->validate([
+            'NIP'=> 'required',
+            'nama'=> 'required',
+            'email'=> 'required',
+        ]);
+    
+        $user = Auth::user();
+        $user->update($data);
+    
+        return redirect()->route('dosen-dashboard')->with('success', 'User updated successfully');
+    }
 }
