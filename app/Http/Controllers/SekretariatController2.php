@@ -31,116 +31,110 @@ class SekretariatController2 extends Controller
 
     public function create()
     {
-        $nipOptions = User::pluck('NIP')->toArray();
-        $numberOfSets = 4;
+        $nipOptions = User::select('NIP')->distinct()->get(); 
     
-        return view('sekretariat2.sekretariat2-tambah-sk', compact('nipOptions','numberOfSets'));
+        return view('sekretariat2.sekretariat2-tambah-sk', ['nipOptions' => $nipOptions]);
     }
     
-    public function getNamaByNIP($NIP)
-    {
-        try {
-            $nama = User::where('NIP', $NIP)->value('nama');
-    
-            if ($nama !== null) {
-                return response()->json(['nama' => $nama]);
-            } else {
-                return response()->json(['error' => 'Nama not found for the given NIP.'], 404);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }
-    
-    public function getNIPOptions()
-    {
-        $nipOptions = User::pluck('NIP')->unique(); 
-    
-        return response()->json(['nipOptions' => $nipOptions]);
-    }
-        
     
 
+    public function getNama($nip)
+    {
+        $nama = User::where('NIP', $nip)->pluck('nama')->first();
+    
+        return response()->json(['nama' => $nama]);
+    }
+    
     public function store(Request $request)
     {
-        // set data yang di store
+        // Set data to store
         $data = $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
-            'sk'  => 'required',
-            'sks'  => 'required',
-            'jenis_sk'  => 'required',
-            'keterangan_sk' => 'required',
-            'NIP' => 'required',
+            'start_date' => 'required|array',
+            'start_date.*' => 'required|date',
+            'end_date' => 'required|array',
+            'end_date.*' => 'required|date',
+            'sk' => 'required|array',
+            'sk.*' => 'required',
+            'sks' => 'required|array',
+            'sks.*' => 'required',
+            'jenis_sk' => 'required|array',
+            'jenis_sk.*' => 'required',
+            'keterangan_sk' => 'required|array',
+            'keterangan_sk.*' => 'required',
+            'NIP' => 'required|array',
+            'NIP.*' => 'required',
+            'nama' => 'required|array',
+            'nama.*' => 'required',
         ]);
     
-        $nip = $data['NIP'];
-        $sets = $request->input('sets');
-        dd($sets);
-
+        // Initialize $quartersData outside the loop
+        $quartersData = [];
     
-        foreach ($sets as $setData) {
-            // Process each set of data similarly to what you did in your original store method
-    
-            $start_date = \Carbon\Carbon::parse($setData['start_date']);
-            $end_date = \Carbon\Carbon::parse($setData['end_date']);
-    
-             // Set mulainya bulan dan tanggal TW. Contoh 1(1,1) = TW1 (bulan januari, tanngal 1)
+        // Loop through the array of NIPs
+        foreach ($data['NIP'] as $key => $nip) {
+            // Set mulainya bulan dan tanggal TW. Contoh 1(1,1) = TW1 (bulan januari, tanngal 1)
             $quarterStarts = [
-                1 => \Carbon\Carbon::createFromDate($start_date->year, 1, 1),
-                2 => \Carbon\Carbon::createFromDate($start_date->year, 4, 1),
-                3 => \Carbon\Carbon::createFromDate($start_date->year, 7, 1),
-                4 => \Carbon\Carbon::createFromDate($start_date->year, 10, 1),
+                1 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 1, 1),
+                2 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 4, 1),
+                3 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 7, 1),
+                4 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 10, 1),
             ];
-
+    
             // Set berakhirnya bulan dan tanggal TW. Contoh 1(3,31) = TW1(bulan maret, tanngal 31)
             $quarterEnds = [
-                1 => \Carbon\Carbon::createFromDate($start_date->year, 3, 31),
-                2 => \Carbon\Carbon::createFromDate($start_date->year, 6, 30),
-                3 => \Carbon\Carbon::createFromDate($start_date->year, 9, 30),
-                4 => \Carbon\Carbon::createFromDate($start_date->year, 12, 31),
+                1 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 3, 31),
+                2 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 6, 30),
+                3 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 9, 30),
+                4 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 12, 31),
             ];
-
-            //Untuk tanggal
-            $quartersData['NIP'] = $nip;
-
-            //Untuk SK dan SKS dll.
-            $quartersData['start_date'] = $data['start_date'];
-            $quartersData['end_date'] = $data['end_date'];
-            $quartersData['sks'] = $data['sks'];
-            $quartersData['sk'] = $data['sk'];
-            $quartersData['jenis_sk'] = $data['jenis_sk'];
-            $quartersData['keterangan_sk'] = $data['keterangan_sk'];
-            // $quartersData['NIP'] = $data['NIP'];
-
-            //Loop untuk penentuan restriction tiap kolom Triwulan (tw1,tw2,tw3,tw4)
+    
+            $entry = [
+                'NIP' => $nip,
+                'nama' => $data['nama'][$key],
+                'sk' => $data['sk'][0], // Assuming the same 'sk' for all NIPs
+                'sks' => $data['sks'][0], // Assuming the same 'sks' for all NIPs
+                'jenis_sk' => $data['jenis_sk'][0], // Assuming the same 'jenis_sk' for all NIPs
+                'keterangan_sk' => $data['keterangan_sk'][0], // Assuming the same 'keterangan_sk' for all NIPs
+                'start_date' => \Carbon\Carbon::parse($data['start_date'][0]),
+                'end_date' => \Carbon\Carbon::parse($data['end_date'][0]),
+            ];
+        
+            // Loop through quarters
             for ($quarter = 1; $quarter <= 4; $quarter++) {
                 $qStart = $quarterStarts[$quarter];
                 $qEnd = $quarterEnds[$quarter];
-
-                if ($end_date < $qStart || $start_date > $qEnd) {
-                    // Jika tanggal berada diluar TW, leave the columns empty
-                    $quartersData["q{$quarter}_start"] = null;
-                    $quartersData["q{$quarter}_end"] = null;
+        
+                if ($entry['end_date'] < $qStart || $entry['start_date'] > $qEnd) {
+                    // If outside the quarter, leave the columns empty
+                    $entry["q{$quarter}_start"] = null;
+                    $entry["q{$quarter}_end"] = null;
                 } else {
-                    //Jika tanggal berada di dalam TW, insert into column
-                    $quartersData["q{$quarter}_start"] = max($start_date, $qStart);
-                    $quartersData["q{$quarter}_end"] = min($end_date, $qEnd);
+                    // If inside the quarter, insert into columns
+                    $entry["q{$quarter}_start"] = max($entry['start_date'], $qStart);
+                    $entry["q{$quarter}_end"] = min($entry['end_date'], $qEnd);
                 }
             }
-
-            // $quartersData['start_sk'] = $start_date->format('Y-Q');
-            $quartersData['start_sk'] = $start_date->year . '-Q' . ceil($start_date->month / 3);
-            $quartersData['end_sk'] = $end_date->year . '-Q' . ceil($end_date->month / 3);
-            
-            QuarterDate::create($quartersData);
+        
+            // Set start and end SK dates
+            $entry['start_sk'] = $entry['start_date']->year . '-Q' . ceil($entry['start_date']->month / 3);
+            $entry['end_sk'] = $entry['end_date']->year . '-Q' . ceil($entry['end_date']->month / 3);
+    
+            // Add the entry to $quartersData array
+            $quartersData[] = $entry;
         }
     
-        return redirect()->route('tambah');
+        // Loop through the prepared $quartersData array and create entries in the database
+        foreach ($quartersData as $dataEntry) {
+            // Create entry in the database
+            QuarterDate::create($dataEntry);
+        }
+    
+        return redirect()->route('sekretariat2-search');
     }
-
-
-
+    
+    
+    
+    
     public function pdf($NIP){
 
         $data = QuarterDate::where('NIP', $NIP)->first()->toArray();
