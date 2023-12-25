@@ -26,11 +26,9 @@
                             </div>
                             <div class="card-body table-responsive">
                                 <a href=<?php echo url('sekretariat2-tambah-sk') ?>
-                                    class="btn btn-primary mb-3">
-                                    <i class="fas fa-plus"></i> Tambah Data</a>
-                                <button type="button" class="btn btn-success mb-3" data-action="{{ route('tambah-sk') }}">
-                                    <i class="fas fa-plus"></i>   Tambah Data SK
-                                </button>
+                                    class="btn btn-success">
+                                    <i class="fas fa-plus"></i> Tambah Data SK
+                                </a>
                                 <table class="table table-bordered" id="table1">
                                     <thead style="border-color:black">
                                         <tr >

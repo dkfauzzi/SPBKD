@@ -150,9 +150,11 @@ class ChartController extends Controller
         $data = QuarterDate::all();
 
         // Hitung SK Tiap Prodi
+        $semuaProdi = User::pluck('Prodi')->toArray();
         $skProdi = DB::table('users')
         ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-        ->select('users.Prodi', DB::raw('COUNT(*) as count, SUM(test_sk_dosen.sks) as total_sks'))
+        // ->select('users.Prodi', DB::raw('COUNT(*) as count, SUM(test_sk_dosen.sks) as total_sks'))
+        ->select('users.Prodi', DB::raw('COALESCE(COUNT(test_sk_dosen.sk), 0) as count, COALESCE(SUM(test_sk_dosen.sks), 0) as total_sks'))
         ->groupBy('users.Prodi')
         ->get();
         $chartSKProdi = $skProdi->pluck('count', 'Prodi');
@@ -163,7 +165,7 @@ class ChartController extends Controller
         $semuaKK = User::pluck('KK')->toArray();
         $skKK = DB::table('users')
         ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP') // LEFT JOIN agar dosen yang SKS nya 0 ikut terhitung
-        ->select('users.KK', DB::raw('COUNT(*) as count'))
+        ->select('users.KK', DB::raw('COUNT(test_sk_dosen.sk) as count'))
         ->groupBy('users.KK')
         ->get();
         $chartSKSKK = $skKK->pluck('count', 'KK');
