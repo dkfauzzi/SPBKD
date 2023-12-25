@@ -16,20 +16,34 @@ class ChartController extends Controller
     public function index($year = null)
     {
         $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-        ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk', 'test_sk_dosen.start_date')
-        ->get();
-
-        // Filter data based on the selected year if a year is provided
+            ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk', 'test_sk_dosen.start_date', 'test_sk_dosen.end_date')
+            ->get();
+    
+        // Filter data based on the selected year or the last two years if no year is provided
         if ($year) {
             $data = $data->filter(function ($item) use ($year) {
-                return Carbon::parse($item->start_date)->year == $year;
+                $startDateYear = Carbon::parse($item->start_date)->year;
+                $endDateYear = Carbon::parse($item->end_date)->year;
+    
+                return $startDateYear == $year || $endDateYear == $year || ($startDateYear < $year && $endDateYear > $year);
+            });
+        } else {
+            $currentYear = Carbon::now()->year;
+            $data = $data->filter(function ($item) use ($currentYear) {
+                $startDateYear = Carbon::parse($item->start_date)->year;
+                $endDateYear = Carbon::parse($item->end_date)->year;
+    
+                return $startDateYear == $currentYear || $endDateYear == $currentYear || ($startDateYear < $currentYear && $endDateYear > $currentYear);
             });
         }
+    
         // Retrieve distinct years from your data
-        $distinctYears = $data->map(function ($item) {
-            return Carbon::parse($item->start_date)->year;
+        $distinctYears = $data->flatMap(function ($item) {
+            return [$item->start_date, $item->end_date];
+        })->map(function ($date) {
+            return Carbon::parse($date)->year;
         })->unique()->sort()->values()->toArray();
-
+    
         return view('sekretariat2.sekretariat2-charts', compact('distinctYears'));
     }
 
@@ -37,14 +51,26 @@ class ChartController extends Controller
     public function report($year = null) {
 
         $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-        ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk', 'test_sk_dosen.start_date')
+        ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk', 'test_sk_dosen.start_date', 'test_sk_dosen.end_date')
         ->get();
 
-        if ($year) {
-            $data = $data->filter(function ($item) use ($year) {
-                return Carbon::parse($item->start_date)->year == $year;
-            });
-        }
+    // Filter data based on the selected year or the last two years if no year is provided
+    if ($year) {
+        $data = $data->filter(function ($item) use ($year) {
+            $startDateYear = Carbon::parse($item->start_date)->year;
+            $endDateYear = Carbon::parse($item->end_date)->year;
+
+            return $startDateYear == $year || $endDateYear == $year || ($startDateYear < $year && $endDateYear > $year);
+        });
+    } else {
+        $currentYear = Carbon::now()->year;
+        $data = $data->filter(function ($item) use ($currentYear) {
+            $startDateYear = Carbon::parse($item->start_date)->year;
+            $endDateYear = Carbon::parse($item->end_date)->year;
+
+            return $startDateYear == $currentYear || $endDateYear == $currentYear || ($startDateYear < $currentYear && $endDateYear > $currentYear);
+        });
+    }
 
         // ========PRODI========
         $groupedDataProdi = $data->groupBy('Prodi')->map(function ($group) {
