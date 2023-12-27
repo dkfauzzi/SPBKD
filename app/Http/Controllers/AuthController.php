@@ -40,6 +40,8 @@ class AuthController extends Controller
     }
 
     //POST LOGIN
+
+    //Dekan
     public function postLoginDekan(Request $request)
     {
 
@@ -51,7 +53,35 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session('')->regenerate();
 
-            return redirect()->intended('dekan-dashboard');
+            $user = Auth::user();
+
+            $request->session()->put('userLevel', $user->level);
+
+            return redirect()->intended('dekan-search');
+        }
+
+        return back()->withErrors([
+            'NIP' => 'The provided credentials do not match our records.',
+        ])->onlyInput('NIP');
+    }
+
+    //SEKRETARIAT 2
+    public function PostLoginSekretariat2(Request $request)
+    {
+
+        $credentials = $request->validate([
+            'NIP' => ['required'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session('')->regenerate();
+
+            $user = Auth::user();
+
+            $request->session()->put('userLevel', $user->level);
+
+            return redirect()->intended('sekretariat2-search');
         }
 
         return back()->withErrors([
@@ -107,29 +137,7 @@ class AuthController extends Controller
         ])->onlyInput('NIP');
      }
 
-    //SEKRETARIAT 2
-    public function PostLoginSekretariat2(Request $request)
-    {
-
-        $credentials = $request->validate([
-            'NIP' => ['required'],
-            'password' => ['required'],
-        ]);
-
-        if (Auth::attempt($credentials)) {
-            $request->session('')->regenerate();
-
-            $user = Auth::user();
-
-            $request->session()->put('userLevel', $user->level);
-
-            return redirect()->intended('sekretariat2-search');
-        }
-
-        return back()->withErrors([
-            'NIP' => 'The provided credentials do not match our records.',
-        ])->onlyInput('NIP');
-    }
+   
 
     //DOSEN
     public function PostLoginDosen(Request $request)

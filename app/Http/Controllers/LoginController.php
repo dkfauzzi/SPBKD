@@ -26,7 +26,7 @@ class LoginController extends Controller
             Session::put('loggedNIP', $NIP);
             $loggedNIP = Session::get('loggedNIP');
             Dekan::firstOrCreate(['NIP' => $loggedNIP]);
-            return redirect()->intended('dekan.dekan-dashboard');
+            return redirect()->intended('dekan.dekan-search');
 
         } elseif (Auth::attempt(['NIP' => $NIP, 'password' => $password, 'level' => 'kaprodi'])) {
             Session::regenerate();

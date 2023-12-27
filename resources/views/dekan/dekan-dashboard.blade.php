@@ -7,7 +7,7 @@
 
         @include('navbar')
 
-        @include('sidebar.sidebar')
+        @include('sidebar.sidebar-dekan')
 
         <!-- Main Content -->
         <div class="main-content">
@@ -25,7 +25,6 @@
                                         <img class="rounded-circle img-fluid" src="assets_index/assets/img/about/1.jpg" alt="..."  style="width: 80%"/>
                                     </div>
                                     <div class="col">
-                                        
                                         <h6>Nama: M Yasser Yusuf</h6>
                                         <h6>NIP : 123456789</h6>
                                         <h6>JAD : Assisten Ahli </h6>

@@ -1,4 +1,4 @@
-@extends('layouts.layout-sekretariat2')
+@extends('layouts.layout-dekan')
 
 @section('content')
 
@@ -7,7 +7,7 @@
 
         @include('navbar')
 
-        @include('sidebar.sidebar')
+        @include('sidebar.sidebar-dekan')
 
         <!-- Main Content -->
         <div class="main-content" style="padding-top:80px">
@@ -33,7 +33,7 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <a href="{{ route('sekretariat2-search') }}" class="btn btn-success"><i class="fas fa-arrow-left"></i> Kembali</a>
+                                <a href="{{ route('dekan-search') }}" class="btn btn-success"><i class="fas fa-arrow-left"></i> Kembali</a>
                             </div>
                         </div>
                     </div>
@@ -83,12 +83,7 @@
                                             <td class="text-center">{{ $record->start_sk }}</td>
                                             <td class="text-center">{{ $record->end_sk}}</td>
                                             <td>
-                                                {{-- <form action="{{ route('sekretariat2-dosen-details-delete', ['NIP' => $record->NIP]) }}" method="post">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit" class="btn btn-danger">Hapus SK</button>
-                                                </form> --}}
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal" data-action="{{ route('sekretariat2-dosen-details-delete', ['NIP' => $record->NIP]) }}">
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal" data-action="{{ route('dekan-dosen-details-delete', ['NIP' => $record->NIP]) }}">
                                                     Hapus SK
                                                 </button>
                                             </td>
@@ -137,15 +132,12 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                {{-- <h5 class="modal-title" id="exampleModalLabel">Add SK</h5> --}}
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Your form content here -->
-                {{-- @foreach($test as $item) --}}
-            <form class="needs-validation" action="{{ route('sekretariat2-dosen-details', ['NIP' => $data ->NIP]) }}" method="POST" enctype="multipart/form-data" novalidate>
+            <form class="needs-validation" action="{{ route('dekan-dosen-details', ['NIP' => $data ->NIP]) }}" method="POST" enctype="multipart/form-data" novalidate>
                 {{ csrf_field() }}
                 <div class="card-header row">
                     <h3 class="section-title col-8">Tambah SK Dosen</h2>
@@ -206,8 +198,6 @@
                                                     <div class="form-group col-md-6">
                                                         <label for="inputJudul">Jenis SK </label><br>
                                                         <select class="form-select" aria-label="Default select example" name="jenis_sk">
-                                                        {{-- <option value="Internal">Internal</option> --}}
-                                                        {{-- <option class="invalid-feedback" value="">Keterangan</option> --}}
                                                         <option value="Internal">Internal</option>
                                                         <option value="External">External</option>
                                                         </select>
@@ -244,31 +234,6 @@
                                                         </div>
                                                     </div>
 
-                                                    {{-- ======================
-                                                    <label for="inputType">Choose Input Type:</label>
-                                                    <select id="inputType" name="inputType"  class="form-select" aria-label="Default select example">
-                                                        <option value="select">Select</option>
-                                                        <option value="input">Input</option>
-                                                    </select>
-                                                
-                                                    <div id="selectInput" style="display: none;">
-                                                        <label for="selectField">Select Field:</label>
-                                                        <select id="selectField" class="form-select" aria-label="Default select example" name="selectField">
-                                                            <option value="option1">Option 1</option>
-                                                            <option value="option2">Option 2</option>
-                                                            <option value="option3">Option 3</option>
-                                                        </select>
-                                                    </div>
-                                                
-                                                    <div id="inputField" style="display: none;">
-                                                        <label for="textInput">Text Input:</label>
-                                                        <input type="text" id="textInput" name="textInput">
-                                                    </div>                                                   
-                                                </div> --}}
-
-
-                                               
-
                                                 <div class="form-row">
                                                     <div class="form-group col-md-6">
                                                         {!! Form::submit('Save',['class'=>'btn btn-primary mb-5 mt-3'])!!}
@@ -283,43 +248,10 @@
                     </div>
                 </div>
             </form>
-            {{-- @endforeach --}}
-                <!-- Ensure that the form action is the correct route -->
-                {{-- <form class="needs-validation" action="{{ route('your.store.route') }}" method="POST" enctype="multipart/form-data" novalidate>
-                    <!-- Form fields go here -->
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </form> --}}
             </div>
         </div>
     </div>
 </div>
-
-
-{{-- <!-- Konfiirmasi penghapusan dengan modal -->
-<div class="modal" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Apakah Anda yakin ingin menghapus Data SK ini?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <form id="deleteForm" method="post" action="">
-                    @csrf
-                    @method('delete')
-                    <button type="submit" class="btn btn-danger">Hapus</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div> --}}
-
 
 @endsection
 
@@ -335,7 +267,7 @@
         });
         $('#addSKModal').on('show.bs.modal', function (event) {
             var modal = $(this);
-            modal.find('form').attr('action', "{{ route('sekretariat2-dosen-details', ['NIP' => $data->NIP]) }}");
+            modal.find('form').attr('action', "{{ route('dekan-dosen-details', ['NIP' => $data->NIP]) }}");
         });
     </script>
 @endpush

@@ -54,23 +54,23 @@ class ChartController extends Controller
         ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk', 'test_sk_dosen.start_date', 'test_sk_dosen.end_date')
         ->get();
 
-    // Filter data based on the selected year or the last two years if no year is provided
-    if ($year) {
-        $data = $data->filter(function ($item) use ($year) {
-            $startDateYear = Carbon::parse($item->start_date)->year;
-            $endDateYear = Carbon::parse($item->end_date)->year;
+        // Filter data based on the selected year or the last two years if no year is provided
+        if ($year) {
+            $data = $data->filter(function ($item) use ($year) {
+                $startDateYear = Carbon::parse($item->start_date)->year;
+                $endDateYear = Carbon::parse($item->end_date)->year;
 
-            return $startDateYear == $year || $endDateYear == $year || ($startDateYear < $year && $endDateYear > $year);
-        });
-    } else {
-        $currentYear = Carbon::now()->year;
-        $data = $data->filter(function ($item) use ($currentYear) {
-            $startDateYear = Carbon::parse($item->start_date)->year;
-            $endDateYear = Carbon::parse($item->end_date)->year;
+                return $startDateYear == $year || $endDateYear == $year || ($startDateYear < $year && $endDateYear > $year);
+            });
+        } else {
+            $currentYear = Carbon::now()->year;
+            $data = $data->filter(function ($item) use ($currentYear) {
+                $startDateYear = Carbon::parse($item->start_date)->year;
+                $endDateYear = Carbon::parse($item->end_date)->year;
 
-            return $startDateYear == $currentYear || $endDateYear == $currentYear || ($startDateYear < $currentYear && $endDateYear > $currentYear);
-        });
-    }
+                return $startDateYear == $currentYear || $endDateYear == $currentYear || ($startDateYear < $currentYear && $endDateYear > $currentYear);
+            });
+        }
 
         // ========PRODI========
         $groupedDataProdi = $data->groupBy('Prodi')->map(function ($group) {

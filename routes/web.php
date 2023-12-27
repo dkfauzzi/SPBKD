@@ -88,53 +88,42 @@ Route::post('/post-login-dosen', [AuthController::class, 'PostLoginDosen']);
 //LOGOUT
 Route::get('/logout', [AuthController::class, 'logout']);
 
+
+//DEKAN
 Route::group(['middleware' => ['auth', 'rolecek:dekan']], function () {
-    Route::get('dekan-dashboard', [DekanController::class, 'index']);
 
+    // Search Dashboard (after login)
+    Route::get('dekan-search', [DekanController::class, 'index']);
 
-});
+    // Detail Dosen
+    Route::get('dekan-dosen-details/{NIP}', [DekanController::class, 'detailDosen'])->name('dekan-dosen-details');
+    Route::get('dekan-tambah-sk/{NIP}', [DekanController::class, 'create'])->name('dekan-tambah-sk');
+    Route::post('dekan-dosen-details/{NIP}', [DekanController::class, 'store'])->name('dekan-store-more-data');
+    Route::delete('dekan-dosen-details/{NIP}', [DekanController::class, 'delete'])->name('dekan-dosen-details-delete');
+    Route::get('dekan-search', [DekanController::class, 'index'])->name('dekan-search'); //kembali ke halaman search
 
-Route::group(['middleware' => ['auth', 'rolecek:dosen']], function () {
-    Route::get('dosen-dashboard', [DosenController::class, 'index'])->name('dosen-dashboard');
-    Route::post('dosen-update', [DosenController::class, 'update'])->name('dosen-update');
-});
+    // Charts and Prints
+    Route::get('dekan-charts', [DekanController::class, 'indexChart']);
+    Route::get('/d-chart/data-sk', [DekanController::class, 'data_SK']);
+    Route::get('/d-chart/data-sks', [DekanController::class, 'data_SKS']);
 
-
-
-Route::group(['middleware' => ['auth', 'rolecek:kaprodi']], function () {
-    Route::get('prodi-dashboard', [ProdiController::class, 'index'])->name('prodi-dashboard');
-    Route::post('prodi-update', [ProdiController::class, 'update'])->name('prodi-update');
-});
-
-Route::group(['middleware' => ['auth', 'rolecek:ketuaKK']], function () {
-    Route::get('kk-dashboard', [KKController::class, 'index'])->name('kk-dashboard');
-    Route::post('kk-update', [KKController::class, 'update'])->name('kk-update');
-});
-
-Route::group(['middleware' => ['auth', 'rolecek:sekretariat']], function () {
-    
-    Route::get('sekretariat-dashboard', [SekretariatController::class, 'index']); //tampil dashboard
-    Route::get('sekretariat-tambah-sk', [SekretariatController::class, 'create']); // tambah data sk dosen
-    Route::post('sekretariat-dashboard', [SekretariatController::class, 'store']); // simpan data sk dosen
+        // Prints routes
+    Route::get('print-report', [ChartController::class, 'index'])->name('report.index');
+    Route::get('print-report/{year}', [ChartController::class, 'report'])->name('report.generate');
 
 });
 
+// Sekretariat (Main Admin)
 Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     
-    // Route::get('sekretariat2-dashboard', [SekretariatController2::class, 'index']); //tampil dashboard
-    // Route::get('sekretariat2-tambah-sk', [SekretariatController2::class, 'create'])->name('sekretariat2-search');
+
+    // Search Dashboard (after login)
+    Route::get('sekretariat2-search', [DataDosenController::class, 'index']); //tampil search
     Route::get('sekretariat2-tambah-sk', [SekretariatController2::class, 'create'])->name('tambah-sk');
     Route::get('/getNama/{nip}', [SekretariatController2::class, 'getNama'])->name('getNama');
-    // Route::post('sekretariat2-search', [SekretariatController2::class, 'store'])->name('tambah');
     Route::post('sekretariat2-store', [SekretariatController2::class, 'store'])->name('sekretariat2-store');
-    
 
-
-
-    // Route::get('generate-pdf/{NIP}', 'YourController@generatePDF');
-
-
-    Route::get('sekretariat2-search', [DataDosenController::class, 'index']); //tampil search
+    // Detail Dosen 
     Route::get('sekretariat2-dosen-details/{NIP}', [DataDosenController::class, 'detailDosen'])->name('sekretariat2-dosen-details');
     Route::get('sekretariat2-tambah-sk/{NIP}', [DataDosenController::class, 'create'])->name('sekretariat2-tambah-sk');
     Route::post('sekretariat2-dosen-details/{NIP}', [DataDosenController::class, 'store'])->name('store-more-data');
@@ -144,7 +133,7 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     Route::post('sekretariat2-dosen-edit/{NIP}', [DataDosenController::class, 'update'])->name('sekretariat2-dosen-update');
     Route::get('print/{NIP}', [DataDosenController::class, 'pdf'])->name('print');
 
-
+    // Charts and Prints
     Route::get('sekretariat2-charts', [ChartController::class, 'index']);
     Route::get('/chart/data-sk', [ChartController::class, 'data_SK']);
     Route::get('/chart/data-sks', [ChartController::class, 'data_SKS']);
@@ -152,30 +141,46 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     Route::get('/chart/data-sk-kk-semester', [ChartController::class, 'SK_KK_Semester']);
     Route::get('/chart/data-sks-Prodi-semester', [ChartController::class, 'SKS_Prodi_Semester']); 
     Route::get('/chart/data-sks-kk-semester', [ChartController::class, 'SKS_KK_Semester']); 
-
-
-
-    // Route::get('print-report', [ChartController::class, 'report'])->name('report');
-
+    
+    // Prints routes
     Route::get('print-report', [ChartController::class, 'index'])->name('report.index');
     Route::get('print-report/{year}', [ChartController::class, 'report'])->name('report.generate');
     
-
-
-    // Route::get('/chart/bar-data', [ChartController::class, 'getData']);
-    // Route::get('/chart/line-data', [ChartController::class, 'getData']);
-    // Route::get('/chart/prodi-data', [ChartController::class, 'getData']);
-
-
-    // Route::get('/user/create', [RegisterController::class, 'create'])->name('user.create');
-    // Route::post('/user', [RegisterController::class, 'store'])->name('user.store');
+    // Register
     Route::get('sekretariat2-register', [RegisterController::class, 'create']); // Display the registration form
     Route::post('sekretariat2-search', [RegisterController::class, 'store'])->name('register.store');
-    // Route::post('sekretariat2-search', [RegisterController::class, 'store'])->name('sekretariat2-search'); 
     
     Route::get('card', [CardController::class, 'index']);
-    // Route::get('sekretariat2/{NIP}', [CardController::class, 'show'])->name('sekretariat2.show');
 });
+
+
+//DOSEN
+Route::group(['middleware' => ['auth', 'rolecek:dosen']], function () {
+    Route::get('dosen-dashboard', [DosenController::class, 'index'])->name('dosen-dashboard');
+    Route::post('dosen-update', [DosenController::class, 'update'])->name('dosen-update');
+});
+
+//PRODI
+Route::group(['middleware' => ['auth', 'rolecek:kaprodi']], function () {
+    Route::get('prodi-dashboard', [ProdiController::class, 'index'])->name('prodi-dashboard');
+    Route::post('prodi-update', [ProdiController::class, 'update'])->name('prodi-update');
+});
+
+//KK
+Route::group(['middleware' => ['auth', 'rolecek:ketuaKK']], function () {
+    Route::get('kk-dashboard', [KKController::class, 'index'])->name('kk-dashboard');
+    Route::post('kk-update', [KKController::class, 'update'])->name('kk-update');
+});
+
+//OLD SEKRETARIAT
+Route::group(['middleware' => ['auth', 'rolecek:sekretariat']], function () {
+    
+    Route::get('sekretariat-dashboard', [SekretariatController::class, 'index']); //tampil dashboard
+    Route::get('sekretariat-tambah-sk', [SekretariatController::class, 'create']); // tambah data sk dosen
+    Route::post('sekretariat-dashboard', [SekretariatController::class, 'store']); // simpan data sk dosen
+
+});
+
 
 
 
