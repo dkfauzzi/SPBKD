@@ -16,7 +16,7 @@
                     <div class="col-12 col-md-6 col-lg-12">
                         <div class="card border border-2">
                             <div class="card-header">
-                                <h4>Profile Dosen</h4>
+                                <h4>Profile {{$userDosen->nama}}</h4>
                             </div>
                             <div class="card-body table-responsive" style="padding-bottom:0px ">
                                 <div class="row">
