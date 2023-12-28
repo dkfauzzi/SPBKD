@@ -32,13 +32,13 @@ class LoginController extends Controller
             Session::regenerate();
             Session::put('loggedNIP', $NIP);
             $loggedNIP = Session::get('loggedNIP');
-            return redirect()->intended('prodi.prodi-dashboard');
+            return redirect()->intended('dekan.dekan-search');
 
         } elseif (Auth::attempt(['NIP' => $NIP, 'password' => $password, 'level' => 'ketuaKK'])) {
             Session::regenerate();
             Session::put('loggedNIP', $NIP);
             $loggedNIP = Session::get('loggedNIP');
-            return redirect()->intended('kk.kk-dashboard');
+            return redirect()->intended('dekan.dekan-search');
 
         } elseif (Auth::attempt(['NIP' => $NIP, 'password' => $password, 'level' => 'dosen'])) {
             Session::regenerate();
@@ -51,8 +51,9 @@ class LoginController extends Controller
             Session::put('loggedNIP', $NIP);
             $loggedNIP = Session::get('loggedNIP');
             return redirect()->intended('sekretariat2.sekretariat2-dashboard');
-
         }
+
+        return back()->with('warning', 'Invalid credentials.')->withInput();
         
     }
 

@@ -48,9 +48,9 @@
                             </div>
                             <div class="card-body table-responsive">
                                 
-                                <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addSKModal">
+                                {{-- <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addSKModal">
                                     <i class="fas fa-plus"></i>   Tambah Data SK {{ $data->nama }}
-                                </button>
+                                </button> --}}
                                 
                                 {{-- <a href="{{ url('print/' . $data->NIP) }}" class="btn btn-success mb-3" target="_blank" >Generate PDF</a> --}}
 
@@ -66,7 +66,7 @@
                                             <th class="text-center"style="width:auto">Tanggal Berakhir</th>
                                             <th class="text-center" style="width:auto">Triwulan Dimulai</th>
                                             <th class="text-center"style="width:auto">Triwulan Berakhir</th>
-                                            <th class="text-center"style="width:auto">Hapus</th>
+                                            {{-- <th class="text-center"style="width:auto">Hapus</th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -82,11 +82,11 @@
                                             <td class="text-center">{{ $record->end_date ? Carbon\Carbon::parse($record->end_date)->translatedFormat('d F Y', 'id') : ''}}</td>
                                             <td class="text-center">{{ $record->start_sk }}</td>
                                             <td class="text-center">{{ $record->end_sk}}</td>
-                                            <td>
+                                            {{-- <td>
                                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal" data-action="{{ route('dekan-dosen-details-delete', ['NIP' => $record->NIP]) }}">
                                                     Hapus SK
                                                 </button>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                         @endforeach
                                     </tbody>

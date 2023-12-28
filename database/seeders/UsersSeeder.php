@@ -36,7 +36,7 @@ class UsersSeeder extends Seeder
             'KK' => 'EINS',
             'NIP' => '12030002', //NIP as Username
             'email' => 'rafa1gmail.com',
-            'level' => 'sekretariat',
+            'level' => 'ketuaKK',
             'password' => bcrypt('123'),
         ]);
 
@@ -47,7 +47,7 @@ class UsersSeeder extends Seeder
             'KK' => 'ENGINEERING MANAGEMENT',
             'NIP' => '12030003', //NIP as Username
             'email' => 'raya@gmail.com',
-            'level' => 'sekretariat',
+            'level' => 'dosen',
             'password' => bcrypt('123'),
         ]);
 

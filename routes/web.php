@@ -62,7 +62,7 @@ Route::get('/dekan-register', function () {
 });
 
 //Login Dekan
-Route::get('/dekan-login', [AuthController::class, 'LoginDekan'])->middleware('guest');
+Route::get('/dekan-login', [AuthController::class, 'LoginDekan'])->middleware('guest')->name('dekan-login');
 Route::post('/post-login-dekan', [AuthController::class, 'PostLoginDekan']);
 
 //Login Sekretariat
@@ -70,19 +70,19 @@ Route::get('/sekretariat-login', [AuthController::class, 'LoginSekretariat'])->m
 Route::post('/post-login-sekretariat', [AuthController::class, 'PostLoginSekretariat']);
 
 //Login Sekretariat2
-Route::get('/sekretariat2-login', [AuthController::class, 'LoginSekretariat2'])->middleware('guest');
+Route::get('/sekretariat2-login', [AuthController::class, 'LoginSekretariat2'])->middleware('guest')->name('sekretariat2-login');
 Route::post('/post-login-sekretariat2', [AuthController::class, 'PostLoginSekretariat2']);
 
 //Login Prodi
-Route::get('/prodi-login', [AuthController::class, 'LoginProdi'])->middleware('guest');
+Route::get('/prodi-login', [AuthController::class, 'LoginProdi'])->middleware('guest')->name('prodi-login');
 Route::post('/post-login-prodi', [AuthController::class, 'PostLoginProdi']);
 
 //Login Prodi
-Route::get('/kk-login', [AuthController::class, 'LoginKK'])->middleware('guest');
+Route::get('/kk-login', [AuthController::class, 'LoginKK'])->middleware('guest')->name('kk-login');
 Route::post('/post-login-kk', [AuthController::class, 'PostLoginKK']);
 
 //Login Dosen
-Route::get('/dosen-login', [AuthController::class, 'LoginDosen'])->middleware('guest');
+Route::get('/dosen-login', [AuthController::class, 'LoginDosen'])->middleware('guest')->name('dosen-login');
 Route::post('/post-login-dosen', [AuthController::class, 'PostLoginDosen']);
 
 //LOGOUT
@@ -90,7 +90,7 @@ Route::get('/logout', [AuthController::class, 'logout']);
 
 
 //DEKAN
-Route::group(['middleware' => ['auth', 'rolecek:dekan']], function () {
+Route::group(['middleware' => ['auth', 'rolecek:dekan,kaprodi,ketuaKK']], function () {
 
     // Search Dashboard (after login)
     Route::get('dekan-search', [DekanController::class, 'index']);
@@ -107,9 +107,9 @@ Route::group(['middleware' => ['auth', 'rolecek:dekan']], function () {
     Route::get('/d-chart/data-sk', [DekanController::class, 'data_SK']);
     Route::get('/d-chart/data-sks', [DekanController::class, 'data_SKS']);
 
-        // Prints routes
-    Route::get('print-report', [ChartController::class, 'index'])->name('report.index');
-    Route::get('print-report/{year}', [ChartController::class, 'report'])->name('report.generate');
+    // Prints routes
+    Route::get('dekan-print-report', [DekanController::class, 'index'])->name('report.index');
+    Route::get('dekan-print-report/{year}', [DekanController::class, 'report'])->name('report.generate');
 
 });
 
@@ -160,17 +160,17 @@ Route::group(['middleware' => ['auth', 'rolecek:dosen']], function () {
     Route::post('dosen-update', [DosenController::class, 'update'])->name('dosen-update');
 });
 
-//PRODI
-Route::group(['middleware' => ['auth', 'rolecek:kaprodi']], function () {
-    Route::get('prodi-dashboard', [ProdiController::class, 'index'])->name('prodi-dashboard');
-    Route::post('prodi-update', [ProdiController::class, 'update'])->name('prodi-update');
-});
+// //PRODI
+// Route::group(['middleware' => ['auth', 'rolecek:kaprodi']], function () {
+//     Route::get('prodi-dashboard', [ProdiController::class, 'index'])->name('prodi-dashboard');
+//     Route::post('prodi-update', [ProdiController::class, 'update'])->name('prodi-update');
+// });
 
-//KK
-Route::group(['middleware' => ['auth', 'rolecek:ketuaKK']], function () {
-    Route::get('kk-dashboard', [KKController::class, 'index'])->name('kk-dashboard');
-    Route::post('kk-update', [KKController::class, 'update'])->name('kk-update');
-});
+// //KK
+// Route::group(['middleware' => ['auth', 'rolecek:ketuaKK']], function () {
+//     Route::get('kk-dashboard', [KKController::class, 'index'])->name('kk-dashboard');
+//     Route::post('kk-update', [KKController::class, 'update'])->name('kk-update');
+// });
 
 //OLD SEKRETARIAT
 Route::group(['middleware' => ['auth', 'rolecek:sekretariat']], function () {

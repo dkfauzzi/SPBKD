@@ -25,10 +25,10 @@
                                 <h3 class="header-nav">Cari Data Dosen</h3>
                             </div>
                             <div class="card-body table-responsive">
-                                <a href=<?php echo url('sekretariat2-tambah-sk') ?>
+                                {{-- <a href=<?php echo url('sekretariat2-tambah-sk') ?>
                                     class="btn btn-success">
                                     <i class="fas fa-plus"></i> Tambah Data SK
-                                </a>
+                                </a> --}}
                                 <table class="table table-bordered" id="table1">
                                     <thead style="border-color:black">
                                         <tr >
@@ -63,7 +63,7 @@
                                                 <!-- Pindah ke halaman detail sesuai'NIP' -->
                                                 {{ link_to(route('dekan-dosen-details', ['NIP' => $total['NIP']]), '', ['class' => ' fa fa-eye btn btn-success', 'style'=>'font-size: 20px;']) }}
 
-                                                {{ link_to(route('sekretariat2-dosen-edit', ['NIP' => $total['NIP']]), '', ['class' => 'fa fa-pencil btn btn-warning', 'style'=>'font-size: 20px;']) }}
+                                                {{-- {{ link_to(route('sekretariat2-dosen-edit', ['NIP' => $total['NIP']]), '', ['class' => 'fa fa-pencil btn btn-warning', 'style'=>'font-size: 20px;']) }} --}}
 
                                             </td>
                                         </tr>

@@ -43,11 +43,11 @@
                             target="_blank">Download</a></li> --}}
                     @auth
                         @if(Session::get('userLevel') == 'dekan')
-                        <li class="nav-item"><a class="nav-link" href="{{ URL::to('dekan-dashboard') }}">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ URL::to('dekan-search') }}">Dashboard</a></li>
                         @elseif(Session::get('userLevel') == 'kaprodi')
-                            <li class="nav-item"><a class="nav-link" href="{{ URL::to('prodi-dashboard') }}">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ URL::to('dekan-search') }}">Dashboard</a></li>
                         @elseif(Session::get('userLevel') == 'ketuaKK')
-                            <li class="nav-item"><a class="nav-link" href="{{ URL::to('kk-dashboard') }}">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ URL::to('dekan-search') }}">Dashboard</a></li>
                         @elseif(Session::get('userLevel') == 'dosen')
                             <li class="nav-item"><a class="nav-link" href="{{ URL::to('dosen-dashboard') }}">Dashboard</a></li>
                         @elseif(Session::get('userLevel') == 'sekretariat2')

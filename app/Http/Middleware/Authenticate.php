@@ -10,10 +10,25 @@ class Authenticate extends Middleware
     /**
      * Get the path the user should be redirected to when they are not authenticated.
      */
-    protected function redirectTo(Request $request)
+    protected function redirectTo($request)
     {
         if (!$request->expectsJson()) {
-            return route('home');
+            $level = auth()->check() ? auth()->user()->level : null;
+
+            switch ($level) {
+                case 'dekan':
+                    return route('dekan-login')->with('warning', 'Please log in to access this page.');
+                case 'sekretariat':
+                    return route('sekretariat-login')->with('warning', 'Please log in to access this page.');
+                case 'sekretariat2':
+                    return route('sekretariat2-login')->with('warning', 'Please log in to access this page.');
+                case 'prodi':
+                    return route('prodi-login')->with('warning', 'Please log in to access this page.');
+                case 'kk':
+                    return route('kk-login')->with('warning', 'Please log in to access this page.');
+                case 'dosen':
+                    return route('dosen-login')->with('warning', 'Please log in to access this page.');
+            }
         }
     }
 }

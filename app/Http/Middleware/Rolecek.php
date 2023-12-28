@@ -19,6 +19,7 @@ class RoleCek
         if (in_array($request->user()->level, $levels)) {
             return $next($request);
         }
-        return redirect('/');
+        // return redirect('/');
+        return back()->with('warning', 'You do not have permission to access this page.');
     }
 }

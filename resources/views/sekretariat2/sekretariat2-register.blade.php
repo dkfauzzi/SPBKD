@@ -25,6 +25,33 @@
 
     <!-- Plugins -->
     @stack('plugins-css')
+
+    <!-- Add this script inside the <head> section of your HTML file -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Select the dropdown elements
+        var roleDropdown = document.querySelector('select[name="level"]');
+        var jadDropdown = document.querySelector('select[name="JAD"]');
+        var prodiDropdown = document.querySelector('select[name="Prodi"]');
+        var kkDropdown = document.querySelector('select[name="KK"]');
+
+        // Add an event listener to the roleDropdown
+        roleDropdown.addEventListener("change", function () {
+            // Get the selected value of the roleDropdown
+            var selectedRole = roleDropdown.value;
+
+            // Check if the selected role is "sekretariat"
+            if (selectedRole === "sekretariat2") {
+                // If yes, set the values of the other three dropdowns to "none"
+                jadDropdown.value = "none";
+                prodiDropdown.value = "none";
+                kkDropdown.value = "none";
+            }
+        });
+    });
+</script>
+
     
 </head>
 
@@ -74,46 +101,6 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="username">JAD</label>
-                                        <select class="form-select" aria-label="Default select example" name="JAD">
-                                            <option value="Guru Besar">Guru Besar</option>
-                                            <option value="Kepala Lektor">Kepala Lektor</option>
-                                            <option value="Lektor">Lektor</option>
-                                            <option value="Asisten Ahli">Asisten Ahli</option>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            Isi JAD Dosen
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="username">Program Studi</label>
-                                        <select class="form-select" aria-label="Default select example" name="Prodi">
-                                            <option value="S1 Teknik Industri">S1 Teknik Industri</option>
-                                            <option value="S2 Teknik Industri">S2 Teknik Industri</option>
-                                            <option value="S1 Sistem Informasi">S1 Sistem Informasi</option>
-                                            <option value="S2 Sistem Informasi">S2 Sistem Informasi</option>
-                                            <option value="S1 Digital Supply Chain">S1 Digital Supply Chain</option>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            Isi Prodi Dosen
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="">Kelompok Keahlian</label>
-                                        <select class="form-select" aria-label="Default select example" name="KK">
-                                            <option value="CYBERNET">CYBERNET</option>
-                                            <option value="EINS">EINS</option>
-                                            <option value="PROMASYS">PROMASYS</option>
-                                            <option value="ENGINEERING MANAGEMENT">ENGINEERING MANAGEMENT</option>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            Isi Kelompok Keahlian Dosen
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
                                         <label for="username">Role Pada Website</label>
                                         <select class="form-select" aria-label="Default select example" name="level">
                                             <option value="dekan">Dekan</option>
@@ -128,6 +115,51 @@
                                             Isi Role Dosen
                                         </div>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="username">JAD</label>
+                                        <select class="form-select" aria-label="Default select example" name="JAD">
+                                            <option value="Guru Besar">Guru Besar</option>
+                                            <option value="Kepala Lektor">Kepala Lektor</option>
+                                            <option value="Lektor">Lektor</option>
+                                            <option value="Asisten Ahli">Asisten Ahli</option>
+                                            <option value="none">None (sekretariat)</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Isi JAD Dosen
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="username">Program Studi</label>
+                                        <select class="form-select" aria-label="Default select example" name="Prodi">
+                                            <option value="S1 Teknik Industri">S1 Teknik Industri</option>
+                                            <option value="S2 Teknik Industri">S2 Teknik Industri</option>
+                                            <option value="S1 Sistem Informasi">S1 Sistem Informasi</option>
+                                            <option value="S2 Sistem Informasi">S2 Sistem Informasi</option>
+                                            <option value="S1 Digital Supply Chain">S1 Digital Supply Chain</option>
+                                            <option value="none">None (sekretariat)</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Isi Prodi Dosen
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="">Kelompok Keahlian</label>
+                                        <select class="form-select" aria-label="Default select example" name="KK">
+                                            <option value="CYBERNET">CYBERNET</option>
+                                            <option value="EINS">EINS</option>
+                                            <option value="PROMASYS">PROMASYS</option>
+                                            <option value="ENGINEERING MANAGEMENT">ENGINEERING MANAGEMENT</option>
+                                            <option value="none">None (sekretariat)</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Isi Kelompok Keahlian Dosen
+                                        </div>
+                                    </div>
+
+                                   
 
                                     <div class="form-group">
                                         <label for="">Email</label>
@@ -158,9 +190,6 @@
                                     </div>
                                 </form>
                             </div>
-                            {{-- <div class="simple-footer">
-                                Copyright &copy; Stisla 2018
-                            </div> --}}
                         </div>
                     </div>
                 </div>

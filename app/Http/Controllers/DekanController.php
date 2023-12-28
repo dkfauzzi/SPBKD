@@ -18,10 +18,15 @@ class DekanController extends Controller
 {
     public function index()
     {
-        // Fetch all users and their related SK information
+        // Fetch user 
         $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
         ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk')
         ->get();
+
+        // Filter sekretariat 
+        $data = $data->reject(function ($user) {
+            return in_array($user->level, ['sekretariat', 'sekretariat2']);
+        });
 
         $countNIPRows = QuarterDate::select('NIP')
         ->selectRaw('COUNT(*) as count_rows')
@@ -38,7 +43,7 @@ class DekanController extends Controller
                 'Prodi' => $group->first()->Prodi,
                 'KK' => $group->first()->KK,
                 'email' => $group->first()->email,
-                'total_sk' => $group->count(), // Count of rows with the same 'NIP'
+                'total_sk' => $group->count(), // Hitung SK row sesuai 'NIP'
                 'total_sks' => $group->sum('sks'),
             ];
         });
@@ -290,6 +295,129 @@ class DekanController extends Controller
             'kk_sks' => $chartSKSKK,
             'dosen_sks' => $chartSKSDosen,
         ]);
+
+    }
+
+    public function report($year = null) {
+
+        $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+        ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk', 'test_sk_dosen.start_date', 'test_sk_dosen.end_date')
+        ->get();
+
+        // Filter data based on the selected year or the last two years if no year is provided
+        if ($year) {
+            $data = $data->filter(function ($item) use ($year) {
+                $startDateYear = Carbon::parse($item->start_date)->year;
+                $endDateYear = Carbon::parse($item->end_date)->year;
+
+                return $startDateYear == $year || $endDateYear == $year || ($startDateYear < $year && $endDateYear > $year);
+            });
+        } else {
+            $currentYear = Carbon::now()->year;
+            $data = $data->filter(function ($item) use ($currentYear) {
+                $startDateYear = Carbon::parse($item->start_date)->year;
+                $endDateYear = Carbon::parse($item->end_date)->year;
+
+                return $startDateYear == $currentYear || $endDateYear == $currentYear || ($startDateYear < $currentYear && $endDateYear > $currentYear);
+            });
+        }
+
+        // ========PRODI========
+        $groupedDataProdi = $data->groupBy('Prodi')->map(function ($group) {
+            return $group->groupBy(function ($item) {
+                $startDate = Carbon::parse($item->start_date);
+                return ($startDate->month >= 1 && $startDate->month <= 6) ? 'semester1' : 'semester2';
+            });
+        });
+        
+        $prodiData = collect();
+        
+        $groupedDataProdi->each(function ($groups, $Prodi) use ($prodiData) {
+            $semester1Data = $groups->get('semester1', collect());
+            $semester2Data = $groups->get('semester2', collect());
+        
+            $prodiData->push([
+                'Prodi' => $Prodi,
+                'semester1_sks' => intval($semester1Data->sum('sks')), 
+                'semester2_sks' => intval($semester2Data->sum('sks')), 
+                'total_sks' => intval($semester1Data->sum('sks')) + intval($semester2Data->sum('sks')), 
+                'semester1_sk' => $semester1Data->pluck('sk')->unique()->count(),
+                'semester2_sk' => $semester2Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count(),
+                'total_sk' => $semester1Data->count() + $semester2Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count(),
+            ]);
+            
+        });
+        
+
+
+    
+        // ========KELOMPOK KEAHLIAH========
+        $groupedDataKK = $data->groupBy('KK')->map(function ($group) {
+            return $group->groupBy(function ($item) {
+                $startDate = Carbon::parse($item->start_date);
+                return ($startDate->month >= 1 && $startDate->month <= 6) ? 'semester1' : 'semester2';
+            });
+        });
+        
+        $kkData = collect();
+        
+        $groupedDataKK->each(function ($groups, $KK) use ($kkData) {
+            $semester1Data = $groups->get('semester1', collect());
+            $semester2Data = $groups->get('semester2', collect());
+        
+            $kkData->push([
+                'KK' => $KK,
+                'semester1_sks' => $semester1Data->sum('sks'), // Total SKS for semester 1
+                'semester2_sks' => $semester2Data->sum('sks'), // Total SKS for semester 2
+                'total_sks' => $semester1Data->sum('sks') + $semester2Data->sum('sks'), // Total SKS for both semesters
+                'semester1_sk' => $semester1Data->count(), // Count of SK for semester 1
+                'semester2_sk' => $semester2Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count(),
+                'total_sk' => $semester1Data->count() + $semester2Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count()
+            ]);
+        });
+        
+        // ========DOSEN========
+        $groupedDataDosen = $data->groupBy('NIP')->map(function ($group) {
+            return $group->groupBy(function ($item) {
+                $startDate = Carbon::parse($item->start_date);
+                return ($startDate->month >= 1 && $startDate->month <= 6) ? 'semester1' : 'semester2';
+            });
+        });
+        
+        $dosenData = collect();
+        
+        $groupedDataDosen->each(function ($groups, $NIP) use ($dosenData) {
+            $semester1Data = $groups->get('semester1', collect());
+            $semester2Data = $groups->get('semester2', collect());
+        
+            $dosenData->push([
+                'NIP' => $NIP,
+                'nama' => $groups->first()->first()->nama ?? '',
+                'semester1_sks' => $semester1Data->sum('sks'), // Total SKS for semester 1
+                'semester2_sks' => $semester2Data->sum('sks'), // Total SKS for semester 2
+                'total_sks' => $semester1Data->sum('sks') + $semester2Data->sum('sks'), // Total SKS for both semesters
+                'semester1_sk' => $semester1Data->count(), // Count of SK for semester 1
+                'semester2_sk' => $semester2Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count(),
+                'total_sk' => $semester1Data->count() + $semester2Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count()
+            ]);
+        });
+        
+        
+        $pdf = PDF::loadView('dekan.dekan-print-report', compact('dosenData', 'prodiData', 'kkData', 'year'));
+
+        return $pdf->stream();
 
     }
 

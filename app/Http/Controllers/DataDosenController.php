@@ -25,6 +25,11 @@ class DataDosenController extends Controller
         ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk')
         ->get();
 
+        // Filter sekretariat 
+        $data = $data->reject(function ($user) {
+            return in_array($user->level, ['sekretariat', 'sekretariat2']);
+        });
+
         $countNIPRows = QuarterDate::select('NIP')
         ->selectRaw('COUNT(*) as count_rows')
         ->groupBy('NIP')

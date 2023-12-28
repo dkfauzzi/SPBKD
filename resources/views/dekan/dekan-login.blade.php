@@ -40,6 +40,22 @@
                                 <h4>Login Dekan</h4>
                             </div>
                             <div class="card-body">
+                                <!-- Display error messages -->
+                                @if($errors->any() || session('warning'))
+                                    <div class="alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                        @if(session('warning'))
+                                            <div class="alert alert-warning">
+                                                {{ session('warning') }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                @endif
+                                <!--FORM-->
                                 <form action="post-login-dekan" method="POST">
                                     {{ csrf_field() }}
                                     <div class="form-group">
@@ -69,7 +85,7 @@
                             </div>
                              <!-- Register -->
                             <div class=" mb-3 text-muted text-center">
-                                Don't have an account? <a href="dekan-register">Register!</a>
+                                <a href="/">Home</a>
                             </div>
                             {{-- <div class="simple-footer">
                                 Copyright &copy; Stisla 2018

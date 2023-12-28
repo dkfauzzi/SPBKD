@@ -21,7 +21,7 @@
                             <div class="card-body table-responsive">
                                 <div class="col">
                                     @foreach($distinctYears as $year)
-                                        <a href="{{ url('print-report/' . $year) }}" class="btn btn-success mb-3" target="_blank">Tahun '{{ $year }}'</a>
+                                        <a href="{{ url('dekan-print-report/' . $year) }}" class="btn btn-success mb-3" target="_blank">Tahun '{{ $year }}'</a>
                                     @endforeach
                                 </div>
                             </div>

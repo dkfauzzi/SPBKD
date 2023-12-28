@@ -29,7 +29,6 @@ class RegisterController extends Controller
             'email' => 'required|unique:users,email', // harus unique
             'password' => 'required',
             'level' => 'required',
-            // Add any other fields you need
         ], [
             'NIP.unique' => 'NIP sudah digunakan. Silakan pilih yang lain.',
             'email.unique' => 'Email sudah digunakan. Silakan pilih yang lain.',

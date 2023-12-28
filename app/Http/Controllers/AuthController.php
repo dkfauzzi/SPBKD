@@ -41,28 +41,30 @@ class AuthController extends Controller
 
     //POST LOGIN
 
-    //Dekan
+    //DEKAN
     public function postLoginDekan(Request $request)
     {
-
         $credentials = $request->validate([
             'NIP' => ['required'],
             'password' => ['required'],
         ]);
 
         if (Auth::attempt($credentials)) {
-            $request->session('')->regenerate();
-
             $user = Auth::user();
 
-            $request->session()->put('userLevel', $user->level);
-
-            return redirect()->intended('dekan-search');
+            if ($user->level === 'dekan') {
+                $request->session()->regenerate();
+                $request->session()->put('userLevel', $user->level);
+                return redirect()->intended('dekan-search');
+            } else {
+                Auth::logout();
+                return redirect()->route('dekan-login')->with('warning', 'Mohon gunakan halaman login yang lain');
+            }
         }
 
         return back()->withErrors([
-            'NIP' => 'The provided credentials do not match our records.',
-        ])->onlyInput('NIP');
+            'NIP' => 'Username atau password salah.',
+        ])->withInput();
     }
 
     //SEKRETARIAT 2
@@ -75,18 +77,21 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            $request->session('')->regenerate();
-
             $user = Auth::user();
 
-            $request->session()->put('userLevel', $user->level);
-
-            return redirect()->intended('sekretariat2-search');
+            if ($user->level === 'sekretariat2') {
+                $request->session()->regenerate();
+                $request->session()->put('userLevel', $user->level);
+                return redirect()->intended('sekretariat2-search');
+            } else {
+                Auth::logout();
+                return redirect()->route('sekretariat2-login')->with('warning', 'Mohon gunakan halaman login yang lain');
+            }
         }
 
         return back()->withErrors([
-            'NIP' => 'The provided credentials do not match our records.',
-        ])->onlyInput('NIP');
+            'NIP' => 'Username atau password salah.',
+        ])->withInput();
     }
 
     //Prodi
@@ -99,18 +104,21 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            $request->session('')->regenerate();
-
             $user = Auth::user();
 
-            $request->session()->put('userLevel', $user->level);
-
-            return redirect()->intended('prodi-dashboard');
+            if ($user->level === 'kaprodi') {
+                $request->session()->regenerate();
+                $request->session()->put('userLevel', $user->level);
+                return redirect()->intended('dekan-search');
+            } else {
+                Auth::logout();
+                return redirect()->route('prodi-login')->with('warning', 'Mohon gunakan halaman login yang lain');
+            }
         }
 
         return back()->withErrors([
-            'NIP' => 'The provided credentials do not match our records.',
-        ])->onlyInput('NIP');
+            'NIP' => 'Username atau password salah.',
+        ])->withInput();;
     }
 
      //KK
@@ -123,18 +131,21 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            $request->session('')->regenerate();
-
             $user = Auth::user();
 
-            $request->session()->put('userLevel', $user->level);
-
-            return redirect()->intended('kk-dashboard');
+            if ($user->level === 'ketuaKK') {
+                $request->session()->regenerate();
+                $request->session()->put('userLevel', $user->level);
+                return redirect()->intended('dekan-search');
+            } else {
+                Auth::logout();
+                return redirect()->route('kk-login')->with('warning', 'Mohon gunakan halaman login yang lain');
+            }
         }
 
         return back()->withErrors([
-            'NIP' => 'The provided credentials do not match our records.',
-        ])->onlyInput('NIP');
+            'NIP' => 'Username atau password salah.',
+        ])->withInput();
      }
 
    
@@ -148,18 +159,21 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            $request->session('')->regenerate();
-
             $user = Auth::user();
 
-            $request->session()->put('userLevel', $user->level);
-
-            return redirect()->intended('dosen-dashboard');
+            if ($user->level === 'dosen') {
+                $request->session()->regenerate();
+                $request->session()->put('userLevel', $user->level);
+                return redirect()->intended('dosen-dashboard');
+            } else {
+                Auth::logout();
+                return redirect()->route('dosen-login')->with('warning', 'Mohon gunakan halaman login yang lain');
+            }
         }
 
         return back()->withErrors([
-            'NIP' => 'The provided credentials do not match our records.',
-        ])->onlyInput('NIP');
+            'NIP' => 'Username atau password salah.',
+        ])->withInput();
     }
 
     public function logout()
