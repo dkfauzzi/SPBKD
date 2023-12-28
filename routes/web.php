@@ -111,6 +111,11 @@ Route::group(['middleware' => ['auth', 'rolecek:dekan,kaprodi,ketuaKK']], functi
     Route::get('dekan-print-report', [DekanController::class, 'index'])->name('report.index');
     Route::get('dekan-print-report/{year}', [DekanController::class, 'report'])->name('report.generate');
 
+    // Profile
+    Route::get('profile', [DekanController::class, 'indexProfile'])->name('profile');
+    Route::post('profile-update', [DekanController::class, 'updateProfile'])->name('profile-update');
+
+
 });
 
 // Sekretariat (Main Admin)

@@ -24,10 +24,10 @@
                     href=<?php echo url('dekan-search'); ?>><i class="	fa fa-search">
                         </i><span>Search Data Dosen</span></a>
             </li>
-            {{-- <li class="{{ Request::is('dekan-register') ? 'active' : '' }}"><a class="nav-link"
-                    href=<?php echo url('dekan-register'); ?>>
-                    <i class="fas fa-plus-circle"></i><span>Register Akun Dosen</span></a>
-            </li> --}}
+            <li class="{{ Request::is('profile') ? 'active' : '' }}"><a class="nav-link"
+                    href=<?php echo url('profile'); ?>>
+                    <i class="fa fa-pencil"></i><span>Profile</span></a>
+            </li>
         </ul>
     </aside>
 </div>

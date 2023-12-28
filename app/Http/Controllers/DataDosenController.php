@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 
 
-
-
 class DataDosenController extends Controller
 {
     public function index()
