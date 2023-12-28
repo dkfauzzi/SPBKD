@@ -1,30 +1,17 @@
 <?
 
 
-class YourController extends Controller
+public function index()
 {
-    // Your existing methods...
+    $user = Auth::user()->NIP;
 
-    public function getDisplayValue($levelValue)
-    {
-        switch ($levelValue) {
-            case 'ketuaKK':
-                return 'Ketua Kelompok Keahlian';
-            // Add more cases as needed
-            default:
-                return $levelValue;
-        }
-    }
-    
-    public function edit($NIP)
-    {
-        // Fetch data from the database, including JAD values
-        $data = User::where('NIP', $NIP)->first();
-        $jadValues = User::pluck('JAD')->unique();
-        $prodiValues = User::pluck('Prodi')->unique();
-        $kkValues = User::pluck('KK')->unique(); 
-        $levelValues = User::pluck('level')->unique(); 
+    $userDosen = User::where('NIP', '=', $user)->first();
 
-        return view('sekretariat2.sekretariat2-dosen-edit', compact('data', 'jadValues','prodiValues','kkValues','levelValues'));
-    }
+    // Include 'image_path' attribute in the retrieved user data
+    $userDosen->load('image_path');
+
+    $dataDosen = QuarterDate::where('NIP', '=', $user)->get();
+
+    return view('dosen.dosen-dashboard', compact('user', 'userDosen', 'dataDosen'));
 }
+

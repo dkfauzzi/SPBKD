@@ -153,14 +153,13 @@ class DekanController extends Controller
         // cari dosen dengan NIP
         $data = User::where('NIP', $NIP)->first();
 
+        $imagePath = $data->image_path;
+
         // ambil data SK dengan NIP yang di pilih
         $test = QuarterDate::where('NIP', $NIP)->get(); 
 
         return view('dekan.dekan-dosen-details', compact('data','test'));
     }
-
-
-
 
 
 

@@ -48,7 +48,7 @@
                                         </ul>
                                         @if(session('warning'))
                                             <div class="alert alert-warning">
-                                                {{ session('warning') }}
+                                                {!! session('warning') !!}
                                             </div>
                                         @endif
                                     </div>

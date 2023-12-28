@@ -58,7 +58,7 @@ class AuthController extends Controller
                 return redirect()->intended('dekan-search');
             } else {
                 Auth::logout();
-                return redirect()->route('dekan-login')->with('warning', 'Mohon gunakan halaman login yang lain');
+                return redirect()->route('dekan-login')->with('warning', 'Login Khusus Dekan.<br>Mohon gunakan halaman login yang lain');
             }
         }
 
@@ -85,7 +85,7 @@ class AuthController extends Controller
                 return redirect()->intended('sekretariat2-search');
             } else {
                 Auth::logout();
-                return redirect()->route('sekretariat2-login')->with('warning', 'Mohon gunakan halaman login yang lain');
+                return redirect()->route('sekretariat2-login')->with('warning', 'Login Khusus Sekretariat.<br>Mohon gunakan halaman login yang lain');
             }
         }
 
@@ -112,7 +112,7 @@ class AuthController extends Controller
                 return redirect()->intended('dekan-search');
             } else {
                 Auth::logout();
-                return redirect()->route('prodi-login')->with('warning', 'Mohon gunakan halaman login yang lain');
+                return redirect()->route('prodi-login')->with('warning', 'Login Khusus Program Studi.<br>Mohon gunakan halaman login yang lain');
             }
         }
 
@@ -139,7 +139,7 @@ class AuthController extends Controller
                 return redirect()->intended('dekan-search');
             } else {
                 Auth::logout();
-                return redirect()->route('kk-login')->with('warning', 'Mohon gunakan halaman login yang lain');
+                return redirect()->route('kk-login')->with('warning', 'Login Khusus Ketua Kelompok.<br>Mohon gunakan halaman login yang lain');
             }
         }
 
@@ -167,7 +167,7 @@ class AuthController extends Controller
                 return redirect()->intended('dosen-dashboard');
             } else {
                 Auth::logout();
-                return redirect()->route('dosen-login')->with('warning', 'Mohon gunakan halaman login yang lain');
+                return redirect()->route('dosen-login')->with('warning', 'Login Khusus Dosen.<br>Mohon gunakan halaman login yang lain');
             }
         }
 

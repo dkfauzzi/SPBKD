@@ -2,7 +2,9 @@
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
             <h4></h4>
-            <a href="/"><img width="180" src="assets_index/assets/img/logo-fri-hijau.png"></a>
+            {{-- <a href="/"><img width="180" src="assets_index/assets/img/logo-fri-hijau.png"></a> --}}
+            <a href="/"><img width="180" src="{{ asset('assets_index/assets/img/logo-fri-hijau.png') }}" width="70">
+
             {{-- <img class="rounded-circle img-fluid" src="assets_index/assets/img/logo-fri-hijau.png" alt="NOPE"  style="width: 80%"/> --}}
 
         </div>

@@ -18,47 +18,46 @@
                             <div class="card-header">
                                 <h4>Profile Dosen</h4>
                             </div>
-                            <div class="card-body table-responsive">
+                            <div class="card-body table-responsive" style="padding-bottom:0px ">
                                 <div class="row">
                                     <div class="col-1 " >
-                                        <img class="rounded-circle img-fluid" src="assets_index/assets/img/about/1.jpg" alt="..."  style="width: 80%"/>
+                                        @if(is_object($userDosen) && $userDosen->image_path)
+                                            <img class="rounded-circle img-fluid" src="{{ asset('storage/' . $userDosen->image_path) }}" alt="User Image">
+                                        @else
+                                            <img class="rounded-circle img-fluid" src="{{ asset('profile_image/avatar-1.png') }}" alt="Default Image">
+                                        @endif
                                     </div>
                                     <div class="col">   
-                                        {{-- <h6>Nama    : {{$userDosen->nama}}</h6>
-                                        <h6>NIP     : {{$userDosen->NIP}}</h6>
-                                        <h6>Prodi   : {{$userDosen->Prodi}}</h6>
-                                        <h6>JAD     : {{$userDosen->JAD}}</h6>
-                                        <h6>Kelompok Keahlian : {{$userDosen->KK}}</h6> --}}
-                                        <table style="width: 20%">
-                                            <tr>
-                                                <td> <h6>Nama<span style="display: inline-block; margin-left: 7px;"></span>:</h6> </td>
+                                        <table>
+                                            <tr style="border-bottom: 10px solid transparent">
+                                                <td style="width: 35%"> <b>Nama<span style="display: inline-block; margin-left: 7px;"></span>:</b> </td>
                                                 <td>{{$userDosen->nama}}</td>
                                             </tr>
-                                            <tr>
-                                                <td><h6>NIP<span style="display: inline-block; margin-left: 23px;"></span>:</h6> </td>
+                                            <tr style="border-bottom: 10px solid transparent">
+                                                <td><b>NIP<span style="display: inline-block; margin-left: 23px;"></span>:</b> </td>
                                                 <td>{{$userDosen->NIP}}</td>
                                             </tr>
-                                            <tr>
-                                                <td><h6>Email<span style="display: inline-block; margin-left: 23px;"></span>:</h6> </td>
+                                            <tr style="border-bottom: 10px solid transparent">
+                                                <td><b>Email<span style="display: inline-block; margin-left: 12px;"></span>:</b> </td>
                                                 <td>{{$userDosen->email}}</td>
                                             </tr>
-                                            <tr>
-                                                <td><h6>Prodi<span style="display: inline-block; margin-left: 12px;"></span>:</h6> </td>
+                                            <tr style="border-bottom: 10px solid transparent">
+                                                <td><b>Prodi<span style="display: inline-block; margin-left: 12px;"></span>:</b> </td>
                                                 <td>{{$userDosen->Prodi}}</td>
                                             </tr>
-                                            <tr>
-                                                <td><h6>JAD<span style="display: inline-block; margin-left: 22px;"></span>: </h6></td>
+                                            <tr style="border-bottom: 10px solid transparent">
+                                                <td><b>JAD<span style="display: inline-block; margin-left: 22px;"></span>: </b></td>
                                                 <td>{{$userDosen->JAD}}</td>
                                             </tr>
-                                            <tr>
-                                                <td><h6>KK<span style="display: inline-block; margin-left: 31px;"></span>:</h6> </td>
+                                            <tr style="border-bottom: 10px solid transparent">
+                                                <td><b>KK<span style="display: inline-block; margin-left: 29px;"></span>:</b> </td>
                                                 <td>{{$userDosen->KK}}</td>
                                             </tr>
                                           </table>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer">
+                            <div class="card-footer" style="padding-top:0px ">
                                 <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addSKModal">
                                     <i class="fa fa-pencil"></i>  Edit
                                 </button>
@@ -75,12 +74,6 @@
                                 <h4>Data SK {{$userDosen->nama}}</h4>
                             </div>
                             <div class="card-body table-responsive">
-                                {{-- <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addSKModal">
-                                    <i class="fas fa-plus"></i>   Tambah Data SK
-                                </button> --}}
-                                
-                                {{-- <a href="{{ url('print/' . $dosen->NIP) }}" class="btn btn-success mb-3" target="_blank" >Generate PDF</a> --}}
-
                                 <table class="table table-bordered" id="table1">
                                     <thead style="border-color:black">
                                         <tr >
@@ -177,6 +170,12 @@
                                                 </div>
                                             @enderror
                                         </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label for="image">Upload New Image</label>
+                                            <input type="file" class="form-control" name="image" accept="image/*">
+                                        </div>
+
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">

@@ -25,6 +25,8 @@ class DataDosenController extends Controller
         ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk')
         ->get();
 
+
+
         // Filter sekretariat 
         $data = $data->reject(function ($user) {
             return in_array($user->level, ['sekretariat', 'sekretariat2']);
@@ -211,6 +213,8 @@ class DataDosenController extends Controller
         
         // cari dosen dengan NIP
         $data = User::where('NIP', $NIP)->first();
+
+        $imagePath = $data->image_path;
 
         // ambil data SK dengan NIP yang di pilih
         $test = QuarterDate::where('NIP', $NIP)->get(); 

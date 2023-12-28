@@ -21,8 +21,11 @@
                             <div class="card-body table-responsive">
                                 <div class="row">
                                     <div class="col-1 " >
-                                        <img  class="rounded-circle img-fluid" src="{{ asset('/assets/img/avatar/avatar-1.png') }}" alt="Logo" style="width: 80%">
-
+                                        @if(is_object($data) && $data->image_path)
+                                            <img class="rounded-circle img-fluid" src="{{ asset('storage/' . $data->image_path) }}" alt="User Image">
+                                        @else
+                                            <img class="rounded-circle img-fluid" src="{{ asset('profile_image/avatar-1.png') }}" alt="Default Image">
+                                        @endif
                                     </div>
                                     <div class="col">   
                                         <h6>Nama: {{ $data->nama }}</h6>
