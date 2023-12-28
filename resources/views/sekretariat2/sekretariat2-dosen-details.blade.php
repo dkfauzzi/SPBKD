@@ -21,7 +21,8 @@
                             <div class="card-body table-responsive">
                                 <div class="row">
                                     <div class="col-1 " >
-                                        <img class="rounded-circle img-fluid" src="assets_index/assets/img/about/1.jpg" alt="..."  style="width: 80%"/>
+                                        <img  class="rounded-circle img-fluid" src="{{ asset('/assets/img/avatar/avatar-1.png') }}" alt="Logo" style="width: 80%">
+
                                     </div>
                                     <div class="col">   
                                         <h6>Nama: {{ $data->nama }}</h6>

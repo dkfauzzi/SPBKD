@@ -127,6 +127,7 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     Route::get('sekretariat2-dosen-details/{NIP}', [DataDosenController::class, 'detailDosen'])->name('sekretariat2-dosen-details');
     Route::get('sekretariat2-tambah-sk/{NIP}', [DataDosenController::class, 'create'])->name('sekretariat2-tambah-sk');
     Route::post('sekretariat2-dosen-details/{NIP}', [DataDosenController::class, 'store'])->name('store-more-data');
+    // Route::post('sekretariat2-dosen-details/{NIP}/store', [DataDosenController::class, 'store'])->name('store-more-data');
     Route::delete('sekretariat2-dosen-details/{NIP}', [DataDosenController::class, 'delete'])->name('sekretariat2-dosen-details-delete');
     Route::get('sekretariat2-search', [DataDosenController::class, 'index'])->name('sekretariat2-search'); //kembali ke halaman search
     Route::get('sekretariat2-dosen-edit/{NIP}', [DataDosenController::class, 'edit'])->name('sekretariat2-dosen-edit'); 

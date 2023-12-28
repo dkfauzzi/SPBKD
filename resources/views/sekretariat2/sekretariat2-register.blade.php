@@ -63,6 +63,9 @@
                     <div class="col-12 col-sm-8 offset-sm-2 col-md-6  col-lg-6 col-xl-4 offset-xl-3">
                         <div class="card mt-5" style="width: 600px">
                             <img class="card-img-top bg-transparent" src="assets_index/assets/img/logo-fri-hijau.png" alt="Card image cap" width="150px">
+                            <div class="card-footer">
+                                <a href="{{ route('sekretariat2-search') }}" class="btn btn-success"><i class="fas fa-arrow-left"></i> Kembali</a>
+                            </div>
                             <div class="card-header ">
                                 <h4>Register Akun </h4>
                             </div>

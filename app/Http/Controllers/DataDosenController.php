@@ -152,19 +152,37 @@ class DataDosenController extends Controller
         return redirect()->back()->with('success', 'Record deleted successfully');
     }
 
-    public function edit($NIP){
 
-        $data = User::where('NIP', $NIP)->first();
-
-        // $test = QuarterDate::where('NIP', $NIP)->get(); 
-
-        // return redirect()->route('sekretariat2-dosen-edit', compact('data'));
-        // return redirect()->route('sekretariat2-dosen-edit', ['NIP' => $data->NIP]);
-        
-        return view('sekretariat2.sekretariat2-dosen-edit', compact('data'));
-
-
+    public function getDisplayValue($levelValue)
+    {
+        switch ($levelValue) {
+            case 'dekan':
+                return 'Dekan';
+            case 'dosen':
+                return 'Dosen';
+            case 'sekretariat2':
+                return 'Sekretariat';
+            case 'kaprodi':
+                return 'Ketua Program Studi';    
+            case 'ketuaKK':
+                return 'Ketua Kelompok Keahlian';
+            default:
+                return $levelValue;
+        }
     }
+
+    public function edit($NIP)
+    {
+        $data = User::where('NIP', $NIP)->first();
+        $jadValues = User::pluck('JAD')->unique();
+        $prodiValues = User::pluck('Prodi')->unique();
+        $kkValues = User::pluck('KK')->unique(); 
+        $levelValues = User::pluck('level')->unique(); 
+
+        return view('sekretariat2.sekretariat2-dosen-edit', compact('data', 'jadValues','prodiValues','kkValues','levelValues'));
+    }
+
+
 
     public function update($NIP, Request $request)
     {
@@ -175,16 +193,15 @@ class DataDosenController extends Controller
             'JAD' => 'required',
             'Prodi' => 'required',
             'KK' => 'required',
-            'email' => 'required',
+            'level' => 'required',
+
+            // 'email' => 'required',
         ]);
 
-        // Find the user by NIP and update the data
         $user = User::where('NIP', $NIP)->first();
         $user->update($data);
 
-        // Redirect or perform any other action as needed
-        return redirect()->route('sekretariat2-search')->with('success', 'User updated successfully');
-
+        return redirect()->route('sekretariat2-search', ['NIP' => $NIP])->with('success', 'User updated successfully');
     }
 
 

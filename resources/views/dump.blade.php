@@ -1,83 +1,30 @@
 <?
 
-use Illuminate\Support\Facades\Auth;
 
-class AuthController extends Controller
+class YourController extends Controller
 {
-    // ... (your existing methods)
+    // Your existing methods...
 
-    //Dekan
-    public function postLoginDekan(Request $request)
+    public function getDisplayValue($levelValue)
     {
-        $credentials = $request->validate([
-            'NIP' => ['required'],
-            'password' => ['required'],
-        ]);
-
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-
-            if ($user->level === 'dekan') {
-                $request->session()->regenerate();
-                $request->session()->put('userLevel', $user->level);
-                return redirect()->intended('dekan-search');
-            } else {
-                Auth::logout();
-                return redirect()->route('home')->with('warning', 'Invalid user level.');
-            }
+        switch ($levelValue) {
+            case 'ketuaKK':
+                return 'Ketua Kelompok Keahlian';
+            // Add more cases as needed
+            default:
+                return $levelValue;
         }
-
-        return back()->withErrors([
-            'NIP' => 'The provided credentials do not match our records.',
-        ])->withInput();
     }
-
-    // Sekretariat 2
-    public function postLoginSekretariat2(Request $request)
+    
+    public function edit($NIP)
     {
-        $credentials = $request->validate([
-            'NIP' => ['required'],
-            'password' => ['required'],
-        ]);
+        // Fetch data from the database, including JAD values
+        $data = User::where('NIP', $NIP)->first();
+        $jadValues = User::pluck('JAD')->unique();
+        $prodiValues = User::pluck('Prodi')->unique();
+        $kkValues = User::pluck('KK')->unique(); 
+        $levelValues = User::pluck('level')->unique(); 
 
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-
-            if ($user->level === 'sekretariat2') {
-                $request->session()->regenerate();
-                $request->session()->put('userLevel', $user->level);
-                return redirect()->intended('sekretariat2-search');
-            } else {
-                Auth::logout();
-                return redirect()->route('home')->with('warning', 'Invalid user level.');
-            }
-        }
-
-        return back()->withErrors([
-            'NIP' => 'The provided credentials do not match our records.',
-        ])->onlyInput('NIP');
+        return view('sekretariat2.sekretariat2-dosen-edit', compact('data', 'jadValues','prodiValues','kkValues','levelValues'));
     }
-
-    // ... (similar adjustments for other login methods)
 }
-
-<a href="/">Home</a>
-
-
-
-                                <!-- Display error messages -->
-                                @if($errors->any() || session('warning'))
-                                    <div class="alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                        @if(session('warning'))
-                                            <div class="alert alert-warning">
-                                                {{ session('warning') }}
-                                            </div>
-                                        @endif
-                                    </div>
-                                @endif
-                                <!--FORM-->                               
