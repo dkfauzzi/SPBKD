@@ -128,7 +128,12 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     Route::get('/getNama/{nip}', [SekretariatController2::class, 'getNama'])->name('getNama');
     Route::post('sekretariat2-store', [SekretariatController2::class, 'store'])->name('sekretariat2-store');
 
-    // Detail Dosen 
+    // Undangan/Rekognisi
+    Route::get('sekretariat2-tambah-undangan', [SekretariatController2::class, 'createUndangan'])->name('tambah-undangan');
+    Route::get('/getNamaUdangan/{nip}', [SekretariatController2::class, 'getNamaUdangan'])->name('getNamaUdanga');
+    Route::post('sekretariat2-store-undangan', [SekretariatController2::class, 'storeUndangan'])->name('sekretariat2-store-undangan');
+
+    // Detail Dosen
     Route::get('sekretariat2-dosen-details/{NIP}', [DataDosenController::class, 'detailDosen'])->name('sekretariat2-dosen-details');
     Route::get('sekretariat2-tambah-sk/{NIP}', [DataDosenController::class, 'create'])->name('sekretariat2-tambah-sk');
     Route::post('sekretariat2-dosen-details/{NIP}', [DataDosenController::class, 'store'])->name('store-more-data');

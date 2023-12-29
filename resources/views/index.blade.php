@@ -64,7 +64,7 @@
                         </a>
     
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="dekan-login">Dekan</a></li>
+                            <li><a class="dropdown-item" href="dekan-login">Dekanat</a></li>
                             <li><a class="dropdown-item" href="prodi-login">Ketua Program Studi</a></li>
                             <li><a class="dropdown-item" href="kk-login">Ketua Kelompok Keahlian</a></li>
                             <li><a class="dropdown-item" href="sekretariat2-login">Sekretariat</a></li>

@@ -37,7 +37,7 @@
 
                         <div class="card card-primary ">
                             <div class="card-header">
-                                <h4>Login Dekan</h4>
+                                <h4>Login Dekanat</h4>
                             </div>
                             <div class="card-body">
                                 <!-- Display error messages -->

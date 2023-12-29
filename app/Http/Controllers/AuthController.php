@@ -58,7 +58,7 @@ class AuthController extends Controller
                 return redirect()->intended('dekan-search');
             } else {
                 Auth::logout();
-                return redirect()->route('dekan-login')->with('warning', 'Login Khusus Dekan.<br>Mohon gunakan halaman login yang lain');
+                return redirect()->route('dekan-login')->with('warning', 'Login Khusus Dekanat.<br>Mohon gunakan halaman login yang lain');
             }
         }
 

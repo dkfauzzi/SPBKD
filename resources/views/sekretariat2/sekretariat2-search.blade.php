@@ -29,6 +29,10 @@
                                     class="btn btn-success">
                                     <i class="fas fa-plus"></i> Tambah Data SK
                                 </a>
+                                <a href=<?php echo url('sekretariat2-tambah-undangan') ?>
+                                    class="btn btn-success">
+                                    <i class="fas fa-plus"></i> Undangan / Rekognisi
+                                </a>
                                 <table class="table table-bordered" id="table1">
                                     <thead style="border-color:black">
                                         <tr >

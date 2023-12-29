@@ -132,9 +132,6 @@ class SekretariatController2 extends Controller
         return redirect()->route('sekretariat2-search');
     }
     
-    
-    
-    
     public function pdf($NIP){
 
         $data = QuarterDate::where('NIP', $NIP)->first()->toArray();
@@ -157,5 +154,23 @@ class SekretariatController2 extends Controller
         // $data['dosen'] = Dosen::all();
         return view('mahasiswa.dashboard-mahasiswa-proposal-ta', $data);
     }
+
+
+
+    public function createUndangan()
+    {
+        $nipOptions = User::select('NIP')->distinct()->get(); 
+    
+        return view('sekretariat2.sekretariat2-tambah-undangan', ['nipOptions' => $nipOptions]);
+    }
+    
+    public function getNamaUndangan($nip)
+    {
+        $nama = User::where('NIP', $nip)->pluck('nama')->first();
+    
+        return response()->json(['nama' => $nama]);
+    }
+
+
 }
 
