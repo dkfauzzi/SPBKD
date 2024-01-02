@@ -150,6 +150,7 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     Route::get('/chart/data-sks', [ChartController::class, 'data_SKS']);
     Route::get('/chart/data-sk-prodi-semester', [ChartController::class, 'SK_Prodi_Semester']); 
     Route::get('/chart/data-sk-kk-semester', [ChartController::class, 'SK_KK_Semester']);
+    Route::get('/chart/data-sk-pie-chart', [ChartController::class, 'PieChart']);
     Route::get('/chart/data-sks-Prodi-semester', [ChartController::class, 'SKS_Prodi_Semester']); 
     Route::get('/chart/data-sks-kk-semester', [ChartController::class, 'SKS_KK_Semester']); 
     

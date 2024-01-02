@@ -356,13 +356,13 @@ class ChartController extends Controller
     
         // Combine SK counts for each Prodi for both semesters
         $chartSKProdi = [
-            'Semester 1' => $skProdiSemester1->pluck('count', 'Prodi')->toArray(),
-            'Semester 2' => $skProdiSemester2->pluck('count', 'Prodi')->toArray(),
+            'Semester 1' => $skProdiSemester1->pluck('count', 'jenis_sk')->toArray(),
+            'Semester 2' => $skProdiSemester2->pluck('count', 'jenis_sk')->toArray(),
             'Combined' => [],
         ];
     
         // Get a list of all 'Prodi'
-        $allProdi = User::pluck('Prodi')->toArray();
+        $allProdi = QuarterDate::pluck('jenis_sk')->toArray();
     
         // Initialize counts for missing 'Prodi' to zero for both semesters
         foreach ($allProdi as $prodi) {
@@ -423,74 +423,78 @@ class ChartController extends Controller
     
     public function SK_KK_Semester()
     {
+        // Fetch data from the database
         $data = QuarterDate::all();
     
-        // Define date ranges for Semester 1 and Semester 2
-        $semester1StartDate = '2023-01-01';
-        $semester1EndDate = '2023-06-30';
-        $semester2StartDate = '2023-07-01';
-        $semester2EndDate = '2023-12-31';
+        // Organize data by jenis_sk and year
+        $chartData = $this->organizeData($data);
     
-        // Hitung SK Tiap KK for Semester 1
-        $skKKSemester1 = $this->get_SK_KK_Semester($semester1StartDate, $semester1EndDate, 'KK');
-    
-        // Hitung SK Tiap KK for Semester 2
-        $skKKSemester2 = $this->get_SK_KK_Semester($semester2StartDate, $semester2EndDate, 'KK');
-    
-        // Combine SK counts for each KK for both semesters
-        $chartSKKK = [
-            'Semester 1' => $skKKSemester1->pluck('count', 'KK')->toArray(),
-            'Semester 2' => $skKKSemester2->pluck('count', 'KK')->toArray(),
-            'Combined' => [],
-        ];
-    
-        // Get a list of all 'KK'
-        $allKK = User::pluck('KK')->toArray();
-    
-        // Initialize counts for missing 'KK' to zero for both semesters
-        foreach ($allKK as $kk) {
-            if (!isset($chartSKKK['Semester 1'][$kk])) {
-                $chartSKKK['Semester 1'][$kk] = 0;
-            }
-    
-            if (!isset($chartSKKK['Semester 2'][$kk])) {
-                $chartSKKK['Semester 2'][$kk] = 0;
-            }
-        }
-    
-        // Populate the 'Combined' array
-        foreach ($skKKSemester1 as $item) {
-            $kkKey = $item->KK;
-            $chartSKKK['Combined'][$kkKey]['Semester 1'] = $item->count;
-            $chartSKKK['Combined'][$kkKey]['Semester 2'] = 0; // Initialize Semester 2 count to 0
-        }
-    
-        foreach ($skKKSemester2 as $item) {
-            $kkKey = $item->KK;
-    
-            if (!isset($chartSKKK['Combined'][$kkKey])) {
-                $chartSKKK['Combined'][$kkKey]['Semester 1'] = 0;
-            }
-    
-            $chartSKKK['Combined'][$kkKey]['Semester 2'] = $item->count;
-        }
-    
-        // Other SK calculations as needed
-    
-        return response()->json([
-            'kk_SK' => $chartSKKK,
-            // Add other SK data as needed
-        ]);
+        // Pass the data to the view or return it as needed
+        return response()->json(['kk_SK' => $chartData]);
     }
     
-    private function get_SK_KK_Semester($startDate, $endDate, $groupField) {
-        return DB::table('users')
-            ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-            ->whereBetween('test_sk_dosen.start_date', [$startDate, $endDate])
-            ->select("users.{$groupField}", DB::raw('COUNT(*) as count, SUM(test_sk_dosen.sks) as total_sks'))
-            ->groupBy("users.{$groupField}")
-            ->get();
+    private function organizeData($data)
+    {
+        $organizedData = [];
+    
+        foreach ($data as $item) {
+            $year = Carbon::parse($item->start_date)->format('Y');
+            $jenisSK = $item->jenis_sk;
+    
+            // If the jenis_SK is not set in the organized data, initialize it
+            if (!isset($organizedData[$jenisSK])) {
+                $organizedData[$jenisSK] = [];
+            }
+    
+            // If the year is not set for the jenis_SK, initialize it
+            if (!isset($organizedData[$jenisSK][$year])) {
+                $organizedData[$jenisSK][$year] = 0;
+            }
+    
+            // Increment the count for the jenis_SK for the year
+            $organizedData[$jenisSK][$year]++;
+        }
+    
+        return $organizedData;
     }
+
+
+    public function PieChart()
+    {
+        // Fetch data from the database
+        $data = QuarterDate::all();
+
+        // Organize data by 'sk'
+        $chartData = $this->organizePieData($data);
+
+        // Pass the data to the view or return it as needed
+        return response()->json(['sk_data' => $chartData]);
+    }
+
+    private function organizePieData($data)
+    {
+        $organizedData = [];
+
+        foreach ($data as $item) {
+            $skValue = $item->sk;
+
+            // If the 'sk' value is not set in the organized data, initialize it
+            if (!isset($organizedData[$skValue])) {
+                $organizedData[$skValue] = 0;
+            }
+
+            // Increment the count for the 'sk' value
+            $organizedData[$skValue]++;
+        }
+
+        return $organizedData;
+    }
+
+    
+    
+    
+
+    
 
     public function SKS_Prodi_Semester()
     {

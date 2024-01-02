@@ -57,50 +57,12 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="form-row">
+                                                <div class="form-row ">
 
-                                                    {{-- <div class="form-group col-md-6">
-                                                        <label for="inputJudul">Kegiatan SK Dosen</label><br>
-                                                        <textarea class="form-control" type="text" name="sk[]" placeholder="Jenis SK" required></textarea>
-                                                        <div class="invalid-feedback">Isi Kegiatan SK.</div>
-                                                    </div> --}}
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="inputJudul">Kegiatan SK</label><br>
-                                                        <select class="form-select" aria-label="Default select example" name="sk[]">
-                                                            <option value="Membimbing Unit Kegiatan Mahasiswa">Membimbing Unit Kegiatan Mahasiswa</option>
-                                                            <option value="Pembimbing Kelompok Kompetisi Mahasiswa">Pembimbing Kelompok Kompetisi Mahasiswa</option>
-                                                            <option value="Pimpinan Organisasi Sosial di lingkungan Telkom University sebagai Ketua/Wakil Ketua">Pimpinan Organisasi Sosial di lingkungan Telkom University sebagai Ketua/Wakil Ketua</option>
-                                                            <option value="Jabatan Non Struktural Internal">Jabatan Non Struktural Internal</option>
-                                                            <option value="Jabatan Non Struktural Ekxternal">Jabatan Non Struktural Ekxternal</option>
-                                                            <option value="Pelaksanaan Tugas Penunjang Almamater">Pelaksanaan Tugas Penunjang Almamater</option>
-                                                            <option value="Kegiatan MBKM">Kegiatan MBKM</option>
-                                                            <option value="Mengikuti Pelatihan yang linear dengan Disiplin Ilmu">Mengikuti Pelatihan yang linear dengan Disiplin Ilmu</option>
-                                                            <option value="Lainya">Lainya</option>
-                                                        </select>
-                                                    </div>
-{{-- 
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputJudul">Jumlah SKS</label><br>
-                                                        <input class="form-control" type="text" name="sks[]" placeholder="Jumlah SKS" required>
-                                                        <div class="invalid-feedback">Isi Jumlah SKS.</div>
-                                                    </div> --}}
-
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputJUdul">Jumlah SKS</label>
-
-                                                        <div class="form-row">
-                                                            <button class="btn btn-primary fas fa-minus " type="button" onclick="decrement()"></button>
-                                                            <input class="form-control" style="width: 10%" type="text" name="sks[]" id="value" value="0" >
-                                                            <button class="btn btn-secondary fas fa-plus" type="button" onclick="increment()"></button>
-                                                        </div>
-                                                        
-
-                                                        {{-- <label for="incrementedValue">Incremented/Decremented Value:</label>
-                                                        <input type="number" name="incrementedValue" id="incrementedValue" value="0" readonly>
-
-                                                        <button type="button" onclick="incrementValue()">Increment</button>
-                                                        <button type="button" onclick="decrementValue()">Decrement</button> --}}
+                                                        <label>Kegiatan SK</label>
+                                                        <input class="form-control nama-field" type="text" name="sk[]"  value="Menerima Undangan / Rekognisi" readonly>
 
                                                     </div>
 
@@ -112,30 +74,134 @@
                                                         </select>
                                                         <div class="invalid-feedback">Isi Jenis SK.</div>
                                                     </div>
+                                                </div>
+
+                                                <div class="form-row justify-content-start col-md-6" >
+                                                    <label for="inputJUdul">Jumlah SKS</label>
+                                                    
+
+                                                    {{-- <div class="col" style="">
+                                                        <div class="col d-flex align-items-center justify-content-center">
+                                                            <button class="btn btn-primary fas fa-plus" type="button" id="integerIncrementBtn"></button>
+                                                        </div>
+                                                        <div class="col d-flex align-items-center justify-content-center">
+                                                            <input class="form-control me-2" style="text-align: center;" type="text" name="integerValue" id="integerValue" value="0">
+                                                        </div>
+                                                        <div class="col d-flex align-items-center justify-content-center">
+                                                            <button class="btn btn-primary fas fa-minus me-2 " type="button" id="integerDecrementBtn"></button>
+                                                        </div>
+                                                    </div>--}}
+
+                                                      
+
+                                                    <div class="d-flex flex-column align-items-center">
+
+                                                        <button class=" btn-primary btn-sm mb-2 fas fa-plus" type="button" id="integerIncrementBtn" style="max-width: 50px;"></button>
+                                                    
+                                                        <input class="form-control mb-2 text-center" type="text" name="integerValue" id="integerValue" value="0" style="max-width: 50px;">
+                                                    
+                                                        <button class=" btn-primary btn-sm fas fa-minus" type="button" id="integerDecrementBtn" style="max-width: 50px;"></button>
+                                                    </div>
+
+
+                                                    <div class=" card-footer text-center">
+                                                        <h1>,</h1>
+                                                    </div>
+                                                    
+                                                    
+
+                                                    <div class="d-flex flex-column align-items-center">
+
+                                                        <button class="btn-primary btn-sm fas mb-2 fas fa-plus" type="button" id="integerIncrementBtn" style="max-width: 50px;"></button>
+                                                    
+                                                        <input class="form-control mb-2 text-center" type="text" name="integerValue" id="integerValue" value="0" style="max-width: 50px;">
+                                                    
+                                                        <button class="btn-primary btn-sm fas fa-minus" type="button" id="integerDecrementBtn" style="max-width: 50px;"></button>
+                                                    </div>
+
+                                                    <div class="d-flex flex-column align-items-center">
+                                                        <button class="btn-primary btn-sm mb-2 fas fa-plus" type="button" id="integerIncrementBtn" style="max-width: 50px;"></button>
+                                                    
+                                                        <input class="form-control mb-2 text-center" type="text" name="integerValue" id="integerValue" value="0" style="max-width: 50px;">
+                                                    
+                                                        <button class="btn-primary btn-sm fas fa-minus" type="button" id="integerDecrementBtn" style="max-width: 50px;"></button>
+                                                    </div>
+
+                                                    <div class="d-flex flex-column align-items-center">
+                                                        <button class="btn-primary btn-sm mb-2 fas fa-plus" type="button" id="integerIncrementBtn" style="max-width: 50px;"></button>
+                                                    
+                                                        <input class="form-control mb-2 text-center" type="text" name="integerValue" id="integerValue" value="0" style="max-width: 50px;">
+                                                    
+                                                        <button class="btn-primary btn-sm fas fa-minus" type="button" id="integerDecrementBtn" style="max-width: 50px;"></button>
+                                                    </div>
+                                                      
+
+                                                
+
+
+
+
+                                                    {{-- <div class="col">
+                                                        <button class="btn btn-primary fas fa-minus me-2" type="button" id="integerDecrementBtn"></button>
+                                                        <input class="form-control me-2" style=" text-align: center;" type="text" name="integerValue" id="integerValue" value="0">
+                                                        <button class="btn btn-primary fas fa-plus" type="button" id="integerIncrementBtn"></button>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <button class="btn btn-primary fas fa-minus me-2" type="button" id="integerDecrementBtn"></button>
+                                                        <input class="form-control me-2" style="text-align: center;" type="text" name="integerValue" id="integerValue" value="0">
+                                                        <button class="btn btn-primary fas fa-plus" type="button" id="integerIncrementBtn"></button>
+                                                    </div>
+                                                    <div class="col">
+                                                        <button class="btn btn-primary fas fa-minus me-2" type="button" id="integerDecrementBtn"></button>
+                                                        <input class="form-control me-2" style="; text-align: center;" type="text" name="integerValue" id="integerValue" value="0">
+                                                        <button class="btn btn-primary fas fa-plus" type="button" id="integerIncrementBtn"></button>
+                                                    </div> --}}
+
                                                     {{-- <div class="form-group col-md-6">
-                                                        <label for="inputJudul">Keterangan SK</label><br>
-                                                        <textarea class="form-control" type="text" name="keterangan_sk[]" placeholder="Keterangan" required></textarea>
-                                                        <div class="invalid-feedback">Keterangan SK</div>
+                                                        <label for="inputJUdul">Jumlah SKS</label>
+                                                        <!-- Decimal 1 -->
+                                                        <div class="decimal-field">
+                                                            <button class="btn btn-primary fas fa-minus me-2" type="button" id="decimalDecrementBtn"></button>
+                                                            <input class="form-control me-2" style="width: 10%; text-align: center;" type="text" name="decimalValue" id="decimalValue" value="0.000">
+                                                            <button class="btn btn-primary fas fa-plus" type="button" id="decimalIncrementBtn"></button>
+                                                        </div>
+
+                                                        <!-- Decimal 2 -->
+                                                        <div class="form-row decimal-field">
+                                                            <button class="btn btn-primary fas fa-minus me-2" type="button" id="decimalDecrementBtn"></button>
+                                                            <input class="form-control me-2" style="width: 10%; text-align: center;" type="text" name="decimalValue" id="decimalValue" value="0.000">
+                                                            <button class="btn btn-primary fas fa-plus" type="button" id="decimalIncrementBtn"></button>
+                                                        </div>
+
+                                                        <!-- Decimal 3 -->
+                                                        <div class="form-row decimal-field">
+                                                            <button class="btn btn-primary fas fa-minus me-2" type="button" id="decimalDecrementBtn"></button>
+                                                            <input class="form-control me-2" style="width: 10%; text-align: center;" type="text" name="decimalValue" id="decimalValue" value="0.000">
+                                                            <button class="btn btn-primary fas fa-plus" type="button" id="decimalIncrementBtn"></button>
+                                                        </div>
+                                                        
+                                                        
+                                                        <div class="form-row">
+                                                            <button class="btn btn-primary fas fa-minus me-2" type="button" id="decrementBtn"></button>
+                                                            <input class="form-control me-2" style="width: 40%; text-align: center;" type="text" name="sks[]" id="value" value="0">
+                                                            <button class="btn btn-primary fas fa-plus" type="button" id="incrementBtn"></button>
+                                                        </div>
+
                                                     </div> --}}
                                                 </div>
                                 
                                                 <div class="form-row">
                                                     <div class="form-group col-md-6">
-                                                        <label for="start_date">Tanggal Mulai SK</label><br>
+                                                        <label for="start_date">Tanggal Pelaksanaan</label><br>
                                                         <input class="form-control" type="date" name="start_date[]" placeholder="Tanggal Mulai" required>
                                                         <div class="invalid-feedback">Isi Tanggal Mulai SK.</div>
                                                     </div>
-                                                
-                                                    {{-- <div class="form-group col-md-6">
-                                                        <label for="inputJudul">Tanggal Berakhir SK</label><br>
-                                                        <input class="form-control" type="date" name="end_date[]" placeholder="Tanggal Berakhir" required>
-                                                        <div class="invalid-feedback">Isi Tanggal Berakhir SK.</div>
-                                                    </div> --}}
                                                     
                                                 </div>
                                                 <div class="form-row">
                                                     <div class="form-group col-md-6">
-                                                        {!! Form::submit('Simpan',['class'=>'btn btn-primary mb-5 mt-3'])!!}
+                                                        {!! Form::submit('Simpan',['class'=>'btn btn-success mb-5 mt-3'])!!}
                                                     </div>
                                                 </div>
                                             </div>
@@ -224,36 +290,81 @@
             });
         });
 
-        // Increment button logic
-        $(document).on('click', 'button.increment', function () {
-            let inputField = $(this).siblings('input');
-            inputField.val(parseFloat(inputField.val()) + 1);
-        });
+        // // Custom addition and rounding function
+        // function addAndRound(value, increment) {
+        //     return Math.round((value + increment) * 100) / 100;
+        // }
 
-        // Decrement button logic
-        $(document).on('click', 'button.decrement', function () {
-            let inputField = $(this).siblings('input');
-            if (parseFloat(inputField.val()) > 0) {
-                inputField.val(parseFloat(inputField.val()) - 1);
-            }
-        });
+        // // Increment button logic
+        // window.increment = function () {
+        //     let inputField = $(this).siblings('input');
+        //     let newValue = addAndRound(parseFloat(inputField.val()), 0.01);
+        //     inputField.val(newValue.toFixed(3));
+        // }
 
-        $(document).on('click','button.increment',function(){
-            let inputField = $(this).siblings('input');
+        // // Decrement button logic
+        // window.decrement = function () {
+        //     let inputField = $(this).siblings('input');
+        //     let newValue = addAndRound(parseFloat(inputField.val()), -0.01);
+        //     if (newValue >= 0) {
+        //         inputField.val(newValue.toFixed(3));
+        //     }
+        // }
 
-        });
-        function incrementValue() {
-        let incrementedValueInput = document.getElementById('incrementedValue');
-        incrementedValueInput.value = parseInt(incrementedValueInput.value) + 1;
+        // // Bind the functions to the onclick events using jQuery
+        // $(document).on('click', '#decrementBtn', window.decrement);
+        // $(document).on('click', '#incrementBtn', window.increment);
+
+
+        // Custom addition and rounding function for integers
+        function addAndRoundInteger(value, increment) {
+            return Math.round(value + increment);
         }
 
-        function decrementValue() {
-            let incrementedValueInput = document.getElementById('incrementedValue');
-            if (parseInt(incrementedValueInput.value) > 0) {
-                incrementedValueInput.value = parseInt(incrementedValueInput.value) - 1;
+        // Custom addition and rounding function for decimals
+        function addAndRoundDecimal(value, increment) {
+            return Math.round((value + increment) * 1000) / 1000;
+        }
+
+        // Increment button logic for integers
+        window.incrementInteger = function () {
+            let inputField = $(this).siblings('input');
+            let newValue = addAndRoundInteger(parseFloat(inputField.val()), 1);
+            inputField.val(newValue);
+        }
+
+        // Decrement button logic for integers
+        window.decrementInteger = function () {
+            let inputField = $(this).siblings('input');
+            let newValue = addAndRoundInteger(parseFloat(inputField.val()), -1);
+            if (newValue >= 0) {
+                inputField.val(newValue);
             }
         }
-    // });
+
+        // Increment button logic for decimals
+        window.incrementDecimal = function () {
+            let inputField = $(this).siblings('input');
+            let newValue = addAndRoundDecimal(parseFloat(inputField.val()), 0.025);
+            inputField.val(newValue.toFixed(3)); // Displaying three decimal places
+        }
+
+        // Decrement button logic for decimals
+        window.decrementDecimal = function () {
+            let inputField = $(this).siblings('input');
+            let newValue = addAndRoundDecimal(parseFloat(inputField.val()), -0.025);
+            if (newValue >= 0) {
+                inputField.val(newValue.toFixed(3)); // Displaying three decimal places
+            }
+        }
+
+        // Bind the functions to the onclick events using jQuery
+        $(document).on('click', '#integerIncrementBtn', window.incrementInteger);
+        $(document).on('click', '#integerDecrementBtn', window.decrementInteger);
+        $(document).on('click', '#decimalIncrementBtn', window.incrementDecimal);
+        $(document).on('click', '#decimalDecrementBtn', window.decrementDecimal);
+
+            });
 
 </script>
 @endpush

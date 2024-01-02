@@ -37,6 +37,7 @@
 
     <!-- Include Chart.js datalabels plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         #table1_wrapper .dataTables_filter input {
