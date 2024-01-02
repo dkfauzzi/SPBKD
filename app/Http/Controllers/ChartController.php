@@ -13,6 +13,7 @@ use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class ChartController extends Controller
 {
+
     public function index($year = null)
     {
         $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
@@ -271,73 +272,6 @@ class ChartController extends Controller
     }
 
 
-    // public function getDataSKSemester()
-    // {
-    // $data = QuarterDate::all();
-
-    // // Determine the semester for each record
-    // $data->each(function ($item) {
-    //     $semester = Carbon::parse($item->start_date)->month <= 6 ? 'semester1' : 'semester2';
-    //     $item->semester = $semester;
-    // });
-
-    // $dataSemester1 = $data->where('semester', 'semester1');
-    // $dataSemester2 = $data->where('semester', 'semester2');
-
-    // // Hitung SK Tiap Prodi for Semester 1
-    // $skProdiSemester1 = DB::table('test_sk_dosen')
-    //     ->join('users', 'test_sk_dosen.NIP', '=', 'users.NIP')
-    //     ->where(function ($query) {
-    //         // Adjust the date range for Semester 1 (January to June)
-    //         $query->whereMonth('test_sk_dosen.start_date', '>=', 1)
-    //             ->whereMonth('test_sk_dosen.start_date', '<=', 6);
-    //     })
-    //     ->select('users.Prodi', DB::raw('COUNT(*) as count, SUM(test_sk_dosen.sks) as total_sks'))
-    //     ->groupBy('users.Prodi')
-    //     ->get();
-
-    // $chartSKProdiSemester1 = $skProdiSemester1->pluck('count', 'Prodi');
-    // $chartTotalSKProdiSemester1 = $skProdiSemester1->pluck('total_sks', 'Prodi');
-
-
-    // // Hitung SK Tiap Kelompok Keahlian for Semester 1
-    // $skKKSemester1 = DB::table('test_sk_dosen')
-    //     ->join('users', 'test_sk_dosen.NIP', '=', 'users.NIP')
-    //     ->whereBetween('test_sk_dosen.start_date', ['start_semester1', 'end_semester1'])
-    //     ->select('users.KK', DB::raw('COUNT(*) as count'))
-    //     ->groupBy('users.KK')
-    //     ->get();
-    // $chartSKSKKSemester1 = $skKKSemester1->pluck('count', 'KK');
-
-    // // Hitung SKS Tiap Dosen for Semester 1
-    // $semuaDosen = User::pluck('nama')->toArray();
-    // $skDosenSemester1 = DB::table('users')
-    //     ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-    //     ->whereBetween('test_sk_dosen.start_date', ['start_semester1', 'end_semester1'])
-    //     ->select('users.nama', DB::raw('COUNT(test_sk_dosen.sk) as count'))
-    //     ->groupBy('users.nama')
-    //     ->get();
-    // $chartSKDosenSemester1 = $skDosenSemester1->pluck('count', 'nama')->toArray();
-
-    // // LOOP agar dosen yang SKS nya 0 ikut terhitung
-    // foreach ($semuaDosen as $nama) {
-    //     if (!array_key_exists($nama, $chartSKDosenSemester1)) {
-    //         $chartSKDosenSemester1[$nama] = 0;
-    //     }
-    // }
-
-    // // Repeat the above logic for Semester 2 with appropriate variable names
-
-    // return response()->json([
-    //     'prodi_SK_semester1' => $chartSKProdiSemester1,
-    //     'kk_SK_semester1' => $chartSKSKKSemester1,
-    //     'dosen_SK_semester1' => $chartSKDosenSemester1,
-    //     // 'prodi_SK_semester2' => $chartSKProdiSemester2,
-    //     // 'kk_SK_semester2' => $chartSKSKKSemester2,
-    //     // 'dosen_SK_semester2' => $chartSKDosenSemester2,
-    // ]);
-
-
     public function SK_Prodi_Semester()
     {
         $data = QuarterDate::all();
@@ -459,17 +393,17 @@ class ChartController extends Controller
     }
 
 
-    public function PieChart()
+    public function PieChart($year = null)
     {
         // Fetch data from the database
-        $data = QuarterDate::all();
-
+        $data = $year ? QuarterDate::whereYear('start_date', $year)->get() : QuarterDate::all();
         // Organize data by 'sk'
         $chartData = $this->organizePieData($data);
 
         // Pass the data to the view or return it as needed
         return response()->json(['sk_data' => $chartData]);
     }
+
 
     private function organizePieData($data)
     {
@@ -490,10 +424,70 @@ class ChartController extends Controller
         return $organizedData;
     }
 
-    
-    
-    
+    const QUARTERS = ['q1', 'q2', 'q3', 'q4'];
 
+    public function QuarterlyLineChart($year = null)
+    {
+        // Fetch data from the database
+        // $data = QuarterDate::all();
+        $data = $year ? QuarterDate::whereYear('start_date', $year)->get() : QuarterDate::all();
+
+
+        // Organize data by year and quarter
+        $chartData = $this->organizeQuarterlyData($data);
+
+        // Pass the data to the view or return it as needed
+        return response()->json(['quarterlyChartData' => $chartData]);
+
+
+        
+    }
+
+    private function organizeQuarterlyData($data)
+{
+    $organizedData = [];
+
+    foreach ($data as $item) {
+        $year = Carbon::parse($item->start_date)->format('Y');
+
+        // Initialize all quarters for the year if not already set
+        if (!isset($organizedData[$year])) {
+            $organizedData[$year] = [
+                'q1' => 0,
+                'q2' => 0,
+                'q3' => 0,
+                'q4' => 0,
+            ];
+        }
+
+        foreach (self::QUARTERS as $quarter) {
+            $quarterFieldStart = $quarter . '_start';
+            $quarterFieldEnd = $quarter . '_end';
+
+            // Check if the quarter field is not set, initialize it
+            if (!isset($item->$quarterFieldStart) || !isset($item->$quarterFieldEnd)) {
+                continue; // Skip if quarter fields are not set
+            }
+
+            // Check if the item's start date falls within the quarter
+            if (Carbon::parse($item->$quarterFieldStart)->quarter == intval(substr($quarter, 1))) {
+                $organizedData[$year][$quarter]++;
+            }
+        }
+    }
+
+    // Flatten the data to ensure unique years
+    $flattenedData = [];
+    foreach ($organizedData as $year => $quarterData) {
+        foreach ($quarterData as $quarter => $count) {
+            $flattenedData[$year . '_Q' . substr($quarter, 1)] = $count;
+        }
+    }
+
+    return $flattenedData;
+}
+
+    
     
 
     public function SKS_Prodi_Semester()

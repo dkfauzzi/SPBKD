@@ -1,51 +1,99 @@
-<?
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Initial selected year
+        var selectedYear = 2024; // Replace with your default or selected year
 
-
-public function data_SKS()
-{
-    $data = QuarterDate::all();
-
-    // Hitung SKS Tiap Prodi
-    $semuaProdi = User::pluck('Prodi')->toArray();
-    $sksProdi = DB::table('users')
-        ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-        ->select('users.Prodi', 'users.jenis_sk', DB::raw('COUNT(*) as count, SUM(test_sk_dosen.sks) as total_sks'))
-        ->groupBy('users.Prodi', 'users.jenis_sk')
-        ->get();
-    $chartSKSProdi = $sksProdi->pluck('total_sks', 'Prodi')->toArray();
-
-    // Hitung SKS Tiap Jenis SK
-    $jenisSKS = $sksProdi->pluck('total_sks', 'jenis_sk')->toArray();
-
-    // Hitung SKS Tiap Kelompok Keahlian
-    $semuaKK = User::pluck('KK')->toArray();
-    $sksKK = DB::table('users')
-        ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-        ->select('users.KK', DB::raw('SUM(test_sk_dosen.sks) as total_sks'))
-        ->groupBy('users.KK')
-        ->get();
-    $chartSKSKK = $sksKK->pluck('total_sks', 'KK')->toArray();
-
-    // Hitung SKS Tiap Dosen
-    $semuaDosen = User::pluck('nama')->toArray();
-    $sksDosen = DB::table('users')
-        ->leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-        ->select('users.nama', DB::raw('SUM(test_sk_dosen.sks) as total_sks'))
-        ->groupBy('users.nama')
-        ->get();
-    $chartSKSDosen = $sksDosen->pluck('total_sks', 'nama')->toArray();
-
-    // LOOP agar dosen yang SKS nya 0 ikut terhitung
-    foreach ($semuaDosen as $nama) {
-        if (!array_key_exists($nama, $chartSKSDosen)) {
-            $chartSKSDosen[$nama] = 0;
+        // Function to fetch data based on the selected year
+        function fetchData(year) {
+            fetch('/chart/data-sk-pie-chart/' + year)
+                .then(response => response.json())
+                .then(data => {
+                    // Update the chart with the new data
+                    updateChart(data.sk_data);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
         }
-    }
 
-    return response()->json([
-        'prodi_sks' => $chartSKSProdi,
-        'jenis_sk_sks' => $jenisSKS,
-        'kk_sks' => $chartSKSKK,
-        'dosen_sks' => $chartSKSDosen,
-    ]);
-}
+        // Function to update the chart with new data
+        function updateChart(skData) {
+            var canvasElement = document.getElementById('prodi_SK_semester');
+
+            if (!canvasElement) {
+                console.error('Canvas element not found.');
+                return;
+            }
+
+            var ctxPieChart = canvasElement.getContext('2d');
+
+            // Destroy the existing chart instance to prevent conflicts
+            if (window.pieChartInstance) {
+                window.pieChartInstance.destroy();
+            }
+
+            window.pieChartInstance = new Chart(ctxPieChart, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(skData),
+                    datasets: [{
+                        data: Object.values(skData),
+                        backgroundColor: getRandomColors(Object.keys(skData).length),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            color: 'white',
+                            backgroundColor: function(context) {
+                                return context.dataset.backgroundColor;
+                            },
+                            borderRadius: 5,
+                            padding: {
+                                top: 5,
+                                bottom: 5
+                            },
+                            formatter: (value, context) => {
+                                var dataset = context.chart.data.datasets[context.datasetIndex];
+                                var total = dataset.data.reduce((acc, data) => acc + data, 0);
+                                var percentage = ((value / total) * 100).toFixed(2);
+                                return percentage + '%';
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initial fetch with default or selected year
+        fetchData(selectedYear);
+
+        // Populate the dropdown with available years
+        var yearDropdown = document.getElementById('yearDropdown');
+        var currentYear = new Date().getFullYear();
+        for (var year = currentYear; year >= currentYear - 5; year--) {
+            var option = document.createElement('option');
+            option.value = year;
+            option.text = year;
+            yearDropdown.add(option);
+        }
+
+        // Event listener for dropdown change
+        yearDropdown.addEventListener('change', function() {
+            selectedYear = parseInt(this.value);
+            fetchData(selectedYear);
+        });
+    });
+
+    // Function to generate random colors
+    function getRandomColors(count) {
+        var colors = [];
+        for (var i = 0; i < count; i++) {
+            colors.push('#' + Math.floor(Math.random()*16777215).toString(16));
+        }
+        return colors;
+    }
+</script>
