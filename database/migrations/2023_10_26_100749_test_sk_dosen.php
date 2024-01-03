@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('sks');
             $table->string('sk');
             $table->string('jenis_sk');
-            $table->string('keterangan_sk');
+            $table->string('keterangan_sk')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->date('q1_start')->nullable();

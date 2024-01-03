@@ -246,14 +246,14 @@
         // Increment button logic
         window.increment = function () {
             let inputField = $(this).siblings('input');
-            let newValue = addAndRound(parseFloat(inputField.val()), 0.01);
+            let newValue = addAndRound(parseFloat(inputField.val()), 0.05);
             inputField.val(newValue.toFixed(3));
         }
 
         // Decrement button logic
         window.decrement = function () {
             let inputField = $(this).siblings('input');
-            let newValue = addAndRound(parseFloat(inputField.val()), -0.01);
+            let newValue = addAndRound(parseFloat(inputField.val()), -0.05);
             if (newValue >= 0) {
                 inputField.val(newValue.toFixed(3));
             }

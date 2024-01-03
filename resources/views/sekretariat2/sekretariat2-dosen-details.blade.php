@@ -65,7 +65,7 @@
                                             <th class="text-center" style="width:150px;">SK</th>
                                             <th class="text-center"style="width:90px; ">SKS</th>
                                             <th class="text-center"style="width:auto">Jenis SK</th>
-                                            <th class="text-center"style="width:auto">Keterangan SK</th>
+                                            {{-- <th class="text-center"style="width:auto">Keterangan SK</th> --}}
                                             <th class="text-center"style="width:auto">Tanggal Mulai</th>
                                             <th class="text-center"style="width:auto">Tanggal Berakhir</th>
                                             <th class="text-center" style="width:auto">Triwulan Dimulai</th>
@@ -81,7 +81,7 @@
                                             <td class="text-center">{{ $record->sk }}</td>
                                             <td class="text-center">{{ $record->sks }}</td>
                                             <td class="text-center">{{ $record->jenis_sk }}</td>
-                                            <td class="text-center">{{ $record->keterangan_sk }}</td>
+                                            {{-- <td class="text-center">{{ $record->keterangan_sk }}</td> --}}
                                             <td class="text-center">{{ $record->start_date ? Carbon\Carbon::parse($record->start_date)->translatedFormat('d F Y', 'id') : '' }}</td>
                                             <td class="text-center">{{ $record->end_date ? Carbon\Carbon::parse($record->end_date)->translatedFormat('d F Y', 'id') : ''}}</td>
                                             <td class="text-center">{{ $record->start_sk }}</td>
