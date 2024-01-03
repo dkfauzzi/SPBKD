@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Sekretariat;
 use App\Models\SK_Dosen;
 use App\Models\QuarterDate;
+use App\Models\SK_Undangan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -155,8 +156,6 @@ class SekretariatController2 extends Controller
         return view('mahasiswa.dashboard-mahasiswa-proposal-ta', $data);
     }
 
-
-
     public function createUndangan()
     {
         $nipOptions = User::select('NIP')->distinct()->get(); 
@@ -169,6 +168,70 @@ class SekretariatController2 extends Controller
         $nama = User::where('NIP', $nip)->pluck('nama')->first();
     
         return response()->json(['nama' => $nama]);
+    }
+
+
+    public function storeUndangan(Request $request)
+    {
+        // Set data to store
+        $data = $request->validate([
+            'start_date' => 'required|array',
+            'start_date.*' => 'required|date',
+            'sk' => 'required|array',
+            'sk.*' => 'required',
+            'sks' => 'required|array',
+            'sks.*' => 'required',
+            'jenis_sk' => 'required|array',
+            'jenis_sk.*' => 'required',
+            'NIP' => 'required|array',
+            'NIP.*' => 'required',
+            'nama' => 'required|array',
+            'nama.*' => 'required',
+        ]);
+    
+        // Initialize $quartersData outside the loop
+        $quartersData = [];
+    
+        // Loop through the array of NIPs
+        foreach ($data['NIP'] as $key => $nip) {
+            // Set mulainya bulan dan tanggal TW. Contoh 1(1,1) = TW1 (bulan januari, tanngal 1)
+            $quarterStarts = [
+                1 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 1, 1),
+                2 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 4, 1),
+                3 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 7, 1),
+                4 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 10, 1),
+            ];
+    
+            // Set berakhirnya bulan dan tanggal TW. Contoh 1(3,31) = TW1(bulan maret, tanngal 31)
+            $quarterEnds = [
+                1 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 3, 31),
+                2 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 6, 30),
+                3 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 9, 30),
+                4 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 12, 31),
+            ];
+    
+            $entry = [
+                'NIP' => $nip,
+                'nama' => $data['nama'][$key],
+                'sk' => $data['sk'][0], // Assuming the same 'sk' for all NIPs
+                'sks' => $data['sks'][0], // Assuming the same 'sks' for all NIPs
+                'jenis_sk' => $data['jenis_sk'][0], // Assuming the same 'jenis_sk' for all NIPs
+                'start_date' => \Carbon\Carbon::parse($data['start_date'][0]),
+            ];
+            // Set start and end SK dates
+            $entry['start_sk'] = $entry['start_date']->year . '-Q' . ceil($entry['start_date']->month / 3);
+    
+            // Add the entry to $quartersData array
+            $quartersData[] = $entry;
+        }
+    
+        // Loop through the prepared $quartersData array and create entries in the database
+        foreach ($quartersData as $dataEntry) {
+            // Create entry in the database
+            SK_Undangan::create($dataEntry);
+        }
+    
+        return redirect()->route('sekretariat2-search');
     }
 
 

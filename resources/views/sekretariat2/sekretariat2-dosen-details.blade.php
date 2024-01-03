@@ -62,7 +62,7 @@
                                     <thead style="border-color:black">
                                         <tr >
                                             <th class="text-center" style=" width:10px;">No</th>
-                                            <th class="text-center" style="width:90px;">SK</th>
+                                            <th class="text-center" style="width:150px;">SK</th>
                                             <th class="text-center"style="width:90px; ">SKS</th>
                                             <th class="text-center"style="width:auto">Jenis SK</th>
                                             <th class="text-center"style="width:auto">Keterangan SK</th>
@@ -86,12 +86,58 @@
                                             <td class="text-center">{{ $record->end_date ? Carbon\Carbon::parse($record->end_date)->translatedFormat('d F Y', 'id') : ''}}</td>
                                             <td class="text-center">{{ $record->start_sk }}</td>
                                             <td class="text-center">{{ $record->end_sk}}</td>
-                                            <td>
+                                            <td class="text-center">
                                                 {{-- <form action="{{ route('sekretariat2-dosen-details-delete', ['NIP' => $record->NIP]) }}" method="post">
                                                     @csrf
                                                     @method('delete')
                                                     <button type="submit" class="btn btn-danger">Hapus SK</button>
                                                 </form> --}}
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal" data-action="{{ route('sekretariat2-dosen-details-delete', ['NIP' => $record->NIP]) }}">
+                                                    Hapus SK
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 col-md-6 col-lg-12">
+                        <div class="card border border-2">
+                            <div class="card-header">
+                                <h4>Data Udangan {{ $data->nama }}</h4>
+                            </div>
+                            <div class="card-body table-responsive">
+                                
+                                <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addSKModal">
+                                    <i class="fas fa-plus"></i>   Tambah Data SK {{ $data->nama }}
+                                </button>
+                                <table class="table table-bordered" id="table1">
+                                    <thead style="border-color:black">
+                                        <tr >
+                                            <th class="text-center" style=" width:auto;">No</th>
+                                            <th class="text-center" style="width:auto;">SK</th>
+                                            <th class="text-center"style="width:auto; ">SKS</th>
+                                            <th class="text-center"style="width:auto">Jenis SK</th>
+                                            <th class="text-center"style="width:auto">Tanggal Mulai</th>
+                                            <th class="text-center" style="width:auto">Triwulan</th>
+                                            <th class="text-center"style="width:auto">Hapus</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php $no = 1 @endphp
+                                        @foreach ($undangan as $record)
+                                        <tr>
+                                            <td class="text-center">{{ $no++ }}</td>
+                                            <td class="text-center">{{ $record->sk }}</td>
+                                            <td class="text-center">{{ $record->sks }}</td>
+                                            <td class="text-center">{{ $record->jenis_sk }}</td>
+                                            <td class="text-center">{{ $record->start_date ? Carbon\Carbon::parse($record->start_date)->translatedFormat('d F Y', 'id') : '' }}</td>
+                                            <td class="text-center">{{ $record->start_sk }}</td>
+                                            <td class="text-center">
                                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal" data-action="{{ route('sekretariat2-dosen-details-delete', ['NIP' => $record->NIP]) }}">
                                                     Hapus SK
                                                 </button>

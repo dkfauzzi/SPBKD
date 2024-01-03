@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Sekretariat;
 use App\Models\SK_Dosen;
+use App\Models\SK_Undangan;
 use App\Models\QuarterDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -22,8 +23,6 @@ class DataDosenController extends Controller
         $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
         ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk')
         ->get();
-
-
 
         // Filter sekretariat 
         $data = $data->reject(function ($user) {
@@ -50,7 +49,7 @@ class DataDosenController extends Controller
             ];
         });
 
-        return view('sekretariat2.sekretariat2-search', compact('data','totalSKS','countNIPRows'));
+        return view('sekretariat2.sekretariat2-search', compact('data','totalSKS','countNIPRows','undangan','totalSKS2','countNIPRows2'));
     }
 
     public function create($NIP)
@@ -216,8 +215,10 @@ class DataDosenController extends Controller
 
         // ambil data SK dengan NIP yang di pilih
         $test = QuarterDate::where('NIP', $NIP)->get(); 
+        $undangan = SK_undangan::where('NIP', $NIP)->get(); 
 
-        return view('sekretariat2.sekretariat2-dosen-details', compact('data','test'));
+
+        return view('sekretariat2.sekretariat2-dosen-details', compact('data','test','undangan'));
     }
 
 
@@ -237,97 +238,6 @@ class DataDosenController extends Controller
        
     }
 
-    // public function report() {
-
-    //     $distinctYears = TestSkDosen::selectRaw('YEAR(start_date) as year')->distinct()->pluck('year');
-
-    //     $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-    //     ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk', 'test_sk_dosen.start_date')
-    //     ->get();
-        
-    //     // ========PRODI========
-    //     $groupedDataProdi = $data->groupBy('Prodi')->map(function ($group) {
-    //         return $group->groupBy(function ($item) {
-    //             $startDate = Carbon::parse($item->start_date);
-    //             return ($startDate->month >= 1 && $startDate->month <= 6) ? 'semester1' : 'semester2';
-    //         });
-    //     });
-        
-            
-    //     $prodiData = collect();
-        
-    //     $groupedDataProdi->each(function ($groups, $Prodi) use ($prodiData) {
-    //         $semester1Data = $groups->get('semester1', collect());
-    //         $semester2Data = $groups->get('semester2', collect());
-        
-    //         $prodiData->push([
-    //             'Prodi' => $Prodi,
-    //             'semester1_sks' => $semester1Data->sum('sks'), // Total SKS for semester 1
-    //             'semester2_sks' => $semester2Data->sum('sks'), // Total SKS for semester 2
-    //             'total_sks' => $semester1Data->sum('sks') + $semester2Data->sum('sks'), // Total SKS for both semesters
-    //             'semester1_sk' => $semester1Data->count(), // Count of SK for semester 1
-    //             'semester2_sk' => $semester2Data->count(), // Count of SK for semester 2
-    //             'total_sk' => $semester1Data->count() + $semester2Data->count(), // Total SK for both semesters
-    //         ]);
-    //     });
-        
-    //     // ========KELOMPOK KEAHLIAH========
-    //     $groupedDataKK = $data->groupBy('KK')->map(function ($group) {
-    //         return $group->groupBy(function ($item) {
-    //             $startDate = Carbon::parse($item->start_date);
-    //             return ($startDate->month >= 1 && $startDate->month <= 6) ? 'semester1' : 'semester2';
-    //         });
-    //     });
-        
-    //     $kkData = collect();
-        
-    //     $groupedDataKK->each(function ($groups, $KK) use ($kkData) {
-    //         $semester1Data = $groups->get('semester1', collect());
-    //         $semester2Data = $groups->get('semester2', collect());
-        
-    //         $kkData->push([
-    //             'KK' => $KK,
-    //             'semester1_sks' => $semester1Data->sum('sks'), // Total SKS for semester 1
-    //             'semester2_sks' => $semester2Data->sum('sks'), // Total SKS for semester 2
-    //             'total_sks' => $semester1Data->sum('sks') + $semester2Data->sum('sks'), // Total SKS for both semesters
-    //             'semester1_sk' => $semester1Data->count(), // Count of SK for semester 1
-    //             'semester2_sk' => $semester2Data->count(), // Count of SK for semester 2
-    //             'total_sk' => $semester1Data->count() + $semester2Data->count(), // Total SK for both semesters
-    //         ]);
-    //     });
-        
-    //     // ========DOSEN========
-    //     $groupedDataDosen = $data->groupBy('NIP')->map(function ($group) {
-    //         return $group->groupBy(function ($item) {
-    //             $startDate = Carbon::parse($item->start_date);
-    //             return ($startDate->month >= 1 && $startDate->month <= 6) ? 'semester1' : 'semester2';
-    //         });
-    //     });
-        
-    //     // Prepare data for the table
-    //     $dosenData = collect();
-        
-    //     $groupedDataDosen->each(function ($groups, $NIP) use ($dosenData) {
-    //         $semester1Data = $groups->get('semester1', collect());
-    //         $semester2Data = $groups->get('semester2', collect());
-        
-    //         $dosenData->push([
-    //             'NIP' => $NIP,
-    //             'nama' => $groups->first()->first()->nama ?? '',
-    //             'semester1_sks' => $semester1Data->sum('sks'), // Total SKS for semester 1
-    //             'semester2_sks' => $semester2Data->sum('sks'), // Total SKS for semester 2
-    //             'total_sks' => $semester1Data->sum('sks') + $semester2Data->sum('sks'), // Total SKS for both semesters
-    //             'semester1_sk' => $semester1Data->count(), // Count of SK for semester 1
-    //             'semester2_sk' => $semester2Data->count(), // Count of SK for semester 2
-    //             'total_sk' => $semester1Data->count() + $semester2Data->count(), // Total SK for both semesters
-    //         ]);
-    //     });
-        
-        
-    //     $pdf = PDF::loadView('sekretariat2.print-report', compact('dosenData','prodiData','kkData','distinctYears'));
-        
-    //     return $pdf->stream();
-
-    // }
+   
 }
 
