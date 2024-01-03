@@ -112,9 +112,9 @@
                             </div>
                             <div class="card-body table-responsive">
                                 
-                                <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addSKModal">
+                                {{-- <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#addSKModal">
                                     <i class="fas fa-plus"></i>   Tambah Data SK {{ $data->nama }}
-                                </button>
+                                </button> --}}
                                 <table class="table table-bordered" id="table1">
                                     <thead style="border-color:black">
                                         <tr >
@@ -138,7 +138,7 @@
                                             <td class="text-center">{{ $record->start_date ? Carbon\Carbon::parse($record->start_date)->translatedFormat('d F Y', 'id') : '' }}</td>
                                             <td class="text-center">{{ $record->start_sk }}</td>
                                             <td class="text-center">
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal" data-action="{{ route('sekretariat2-dosen-details-delete', ['NIP' => $record->NIP]) }}">
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal" data-action="{{ route('sekretariat2-undangan-delete', ['NIP' => $record->NIP]) }}">
                                                     Hapus SK
                                                 </button>
                                             </td>
@@ -195,135 +195,91 @@
             <div class="modal-body">
                 <!-- Your form content here -->
                 {{-- @foreach($test as $item) --}}
-            <form class="needs-validation" action="{{ route('sekretariat2-dosen-details', ['NIP' => $data ->NIP]) }}" method="POST" enctype="multipart/form-data" novalidate>
-                {{ csrf_field() }}
-                <div class="card-header row">
-                    <h3 class="section-title col-8">Tambah SK Dosen</h2>
-                </div>
-                @if(count($errors) > 0)
-                <div class="alert alert-danger">
-                    @foreach ($errors->all() as $error)
-                    {{ $error }} <br />
-                    @endforeach
-                </div>
-                @endif
-                <div class="card-body">
-                    <!-- SAVED FOR ACCORDION -->
-                    <div class="accordion-pendaftaran">
-                        <div class="accordion-pendaftaran-item">
-                            <div class="accordion-pendaftaran-item-body">
-                                <div class="accordion-pendaftaran-item-content">
-                                    <div class="data-mahasiswa">
-                                        <div class="form-group">
-                                            <div class="form-row">
+                <form class="needs-validation" action="{{ route('sekretariat2-dosen-details', ['NIP' => $data ->NIP]) }}" method="POST" enctype="multipart/form-data" novalidate>
+                    {{ csrf_field() }}
+                    
+                    <div class="card-header row">
+                        <h3 class="section-title col-8">Tambah SK Dosen</h2>
+                    </div>
+
+                    @if(count($errors) > 0)
+                    <div class="alert alert-danger">
+                        @foreach ($errors->all() as $error)
+                        {{ $error }} <br />
+                        @endforeach
+                    </div>
+                    @endif
+
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="inputJudul">NIP</label><br>
+                                            <input class="form-control" type="text" value="{{$data->NIP}}" name="NIP" readonly>
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label for="inputJudul">Nama Dosen</label><br>
+                                            <input class="form-control" type="text" value="{{$data->nama}}" readonly>
                                             
-                                            <div class="form-col">
-                                                <h3 class="section-title"></h3>
-                                                <div class="form-row">
+                                        </div>
 
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputJudul">NIP</label><br>
-                                                        <input class="form-control" type="text" value="{{$data->NIP}}" name="NIP" readonly>
-                                                        <div class="invalid-feedback">
-                                                            Isi NIP
-                                                        </div>
-                                                    </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="inputJudul">Kegiatan SK Dosen</label><br>
+                                            {{-- <textarea class="form-control" type="text" name="sk" id="sk" placeholder="Jenis SK" required></textarea> --}}
+                                            <select class="form-select" aria-label="Default select example" name="sk">
+                                                <option value="Membimbing Unit Kegiatan Mahasiswa">Membimbing Unit Kegiatan Mahasiswa</option>
+                                                <option value="Pembimbing Kelompok Kompetisi Mahasiswa">Pembimbing Kelompok Kompetisi Mahasiswa</option>
+                                                <option value="Pimpinan Organisasi Sosial di lingkungan Telkom University sebagai Ketua/Wakil Ketua">Pimpinan Organisasi Sosial di lingkungan Telkom University sebagai Ketua/Wakil Ketua</option>
+                                                <option value="Jabatan Non Struktural Internal">Jabatan Non Struktural Internal</option>
+                                                <option value="Jabatan Non Struktural Ekxternal">Jabatan Non Struktural Ekxternal</option>
+                                                <option value="Pelaksanaan Tugas Penunjang Almamater">Pelaksanaan Tugas Penunjang Almamater</option>
+                                                <option value="Kegiatan MBKM">Kegiatan MBKM</option>
+                                                <option value="Mengikuti Pelatihan yang linear dengan Disiplin Ilmu">Mengikuti Pelatihan yang linear dengan Disiplin Ilmu</option>
+                                                <option value="Lainya">Lainya</option>
+                                            </select>
+                                        </div>
 
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputJudul">Nama Dosen</label><br>
-                                                        <input class="form-control" type="text" value="{{$data->nama}}" readonly>
-                                                        <div class="invalid-feedback">
-                                                            Isi NIP
-                                                        </div>
-                                                    </div>
+                                        {{-- <div class="form-group col-md-6">
+                                            <label for="inputJudul">Jumlah SKS</label><br>
+                                            <textarea class="form-control" type="text" name="sks" id="sks" placeholder="Jumlah SKS" required></textarea>
+                                        </div> --}}
 
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputJudul">Kegiatan SK Dosen</label><br>
-                                                        <textarea class="form-control" type="text" name="sk" id="sk" placeholder="Jenis SK" required></textarea>
-                                                        <div class="invalid-feedback">
-                                                            Isi Kegiatan SK.
-                                                        </div>
-                                                    </div>
+                                        <div class="form-row justify-content-start col-md-6" style="margin-left: 5px" >
+                                            <label for="inputJUdul">Jumlah SKS</label>
+                                            <div class="d-flex flex-column align-items-center">
+                                                <button class="btn-primary btn-sm mb-2 fas fa-plus" type="button" onclick="increment()" id="incrementBtn" style="max-width: 50px;"></button>
+                                                <input class="form-control mb-2 text-center"  type="text" name="sks" id="value" value="0" style="max-width: 80px;" >
+                                                <button class="btn-primary mb-2 btn-sm fas fa-minus" type="button" onclick="decrement()" id="decrementBtn" style="max-width: 50px;"></button>
+                                            </div>
+                                        </div>
 
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputJudul">Jumlah SKS</label><br>
-                                                        <textarea class="form-control" type="text" name="sks" id="sks" placeholder="Jumlah SKS" required></textarea>
-                                                        <div class="invalid-feedback">
-                                                            Isi Jumlah SKS.
-                                                        </div>
-                                                    </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="inputJudul">Jenis SK </label><br>
+                                            <select class="form-select" aria-label="Default select example" name="jenis_sk">
+                                            <option value="Internal">Internal</option>
+                                            <option value="External">External</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputJudul">Jenis SK </label><br>
-                                                        <select class="form-select" aria-label="Default select example" name="jenis_sk">
-                                                        {{-- <option value="Internal">Internal</option> --}}
-                                                        {{-- <option class="invalid-feedback" value="">Keterangan</option> --}}
-                                                        <option value="Internal">Internal</option>
-                                                        <option value="External">External</option>
-                                                        </select>
-                                                        <div class="invalid-feedback">
-                                                            Isi Jumlah SKS.
-                                                        </div>
-                                                    </div>
+                                    <div class="form-row">
 
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputJudul">Keterangan SK</label><br>
-                                                        <textarea class="form-control" type="text" name="keterangan_sk" id="keterangan_sk" placeholder="Keterangan" required></textarea>
-                                                        <div class="invalid-feedback">
-                                                            Keterangan SK
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="start_date">Tanggal Mulai SK</label><br>
+                                            <input class="form-control" type="date" name="start_date" id="start_date" placeholder="Tanggal Mulai" required>
+                                        </div>
 
-                                                <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="inputJudul">Tanggal Berakhir SK</label><br>
+                                            <input class="form-control" type="date" name="end_date" id="end_date" placeholder="Tanggal Berakhir" required>
+                                        </div>
 
-                                                    
-                                                    <div class="form-group col-md-6">
-                                                        <label for="start_date">Tanggal Mulai SK</label><br>
-                                                        <input class="form-control" type="date" name="start_date" id="start_date" placeholder="Tanggal Mulai" required>
-                                                        <div class="invalid-feedback">
-                                                            Isi Tanggal Mulai SK.
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputJudul">Tanggal Berakhir SK</label><br>
-                                                        <input class="form-control" type="date" name="end_date" id="end_date" placeholder="Tanggal Berakhir" required>
-                                                        <div class="invalid-feedback">
-                                                            Isi Tanggal Berakhir SK.
-                                                        </div>
-                                                    </div>
-
-                                                    {{-- ======================
-                                                    <label for="inputType">Choose Input Type:</label>
-                                                    <select id="inputType" name="inputType"  class="form-select" aria-label="Default select example">
-                                                        <option value="select">Select</option>
-                                                        <option value="input">Input</option>
-                                                    </select>
-                                                
-                                                    <div id="selectInput" style="display: none;">
-                                                        <label for="selectField">Select Field:</label>
-                                                        <select id="selectField" class="form-select" aria-label="Default select example" name="selectField">
-                                                            <option value="option1">Option 1</option>
-                                                            <option value="option2">Option 2</option>
-                                                            <option value="option3">Option 3</option>
-                                                        </select>
-                                                    </div>
-                                                
-                                                    <div id="inputField" style="display: none;">
-                                                        <label for="textInput">Text Input:</label>
-                                                        <input type="text" id="textInput" name="textInput">
-                                                    </div>                                                   
-                                                </div> --}}
-
-
-                                               
-
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-6">
-                                                        {!! Form::submit('Save',['class'=>'btn btn-primary mb-5 mt-3'])!!}
-                                                    </div>
-                                                </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                {!! Form::submit('Save',['class'=>'btn btn-primary mb-5 mt-3'])!!}
                                             </div>
                                         </div>
                                     </div>
@@ -331,14 +287,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
-            {{-- @endforeach --}}
-                <!-- Ensure that the form action is the correct route -->
-                {{-- <form class="needs-validation" action="{{ route('your.store.route') }}" method="POST" enctype="multipart/form-data" novalidate>
-                    <!-- Form fields go here -->
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </form> --}}
+                </form>
             </div>
         </div>
     </div>
@@ -387,6 +336,32 @@
             var modal = $(this);
             modal.find('form').attr('action', "{{ route('sekretariat2-dosen-details', ['NIP' => $data->NIP]) }}");
         });
+
+        
+        // // Custom addition and rounding function
+        function addAndRound(value, increment) {
+        return Math.round((value + increment) * 100) / 100;
+        }
+
+        // Increment button logic
+        window.increment = function () {
+            let inputField = $(this).siblings('input');
+            let newValue = addAndRound(parseFloat(inputField.val()), 0.05);
+            inputField.val(newValue.toFixed(3));
+        }
+
+        // Decrement button logic
+        window.decrement = function () {
+            let inputField = $(this).siblings('input');
+            let newValue = addAndRound(parseFloat(inputField.val()), -0.05);
+            if (newValue >= 0) {
+                inputField.val(newValue.toFixed(3));
+            }
+        }
+
+        // Bind the functions to the onclick events using jQuery
+        $(document).on('click', '#decrementBtn', window.decrement);
+        $(document).on('click', '#incrementBtn', window.increment);
     </script>
 @endpush
 

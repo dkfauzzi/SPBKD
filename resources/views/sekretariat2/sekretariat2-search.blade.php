@@ -43,7 +43,7 @@
                                             <th class="text-center"style="width:180px">Prodi</th>
                                             <th class="text-center"style="width:auto">JAD</th>
                                             <th class="text-center" style="width:auto;">SKS</th>
-                                            <th class="text-center" style="width:auto;">Total SK</th>
+                                            <th class="text-center" style="width:auto;">SK</th>
                                             <th class="text-center" style="width:auto">Action</th>
                                         </tr>
                                     </thead>

@@ -83,7 +83,7 @@ class DataDosenController extends Controller
             'sk'  => 'required',
             'sks'  => 'required',
             'jenis_sk'  => 'required',
-            'keterangan_sk' => 'required',
+            // 'keterangan_sk' => 'required',
             'NIP' => 'required',
         ]);
 
@@ -117,7 +117,7 @@ class DataDosenController extends Controller
         $quartersData['sks'] = $data['sks'];
         $quartersData['sk'] = $data['sk'];
         $quartersData['jenis_sk'] = $data['jenis_sk'];
-        $quartersData['keterangan_sk'] = $data['keterangan_sk'];
+        // $quartersData['keterangan_sk'] = $data['keterangan_sk'];
         // $quartersData['NIP'] = $data['NIP'];
 
 
@@ -155,6 +155,16 @@ class DataDosenController extends Controller
     public function delete($NIP)
     {
         $data = QuarterDate::where('NIP', $NIP)->firstOrFail();
+
+        // Delete the record
+        $data->delete();
+
+        return redirect()->back()->with('success', 'Record deleted successfully');
+    }
+
+    public function deleteUndangan($NIP)
+    {
+        $data = SK_Undangan::where('NIP', $NIP)->firstOrFail();
 
         // Delete the record
         $data->delete();
