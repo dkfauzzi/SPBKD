@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('sks');
             $table->string('sk');
             $table->string('jenis_sk');
-            $table->string('start_sk')->nullable();
+            $table->string('start_start')->nullable();
             $table->string('start_sk')->nullable();
             $table->string('NIP')->nullable();
             $table->foreign('NIP')->references('NIP')->on('users')->onDelete('cascade');

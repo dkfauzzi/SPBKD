@@ -44,9 +44,76 @@ class ChartController extends Controller
         })->map(function ($date) {
             return Carbon::parse($date)->year;
         })->unique()->sort()->values()->toArray();
+
+
+        // Fetch all users and their related SK information
+        $tableDosen = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+        ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk')
+        ->get();
+
+        // Filter sekretariat 
+        $tableDosen = $tableDosen->reject(function ($user) {
+            return in_array($user->level, ['sekretariat', 'sekretariat2']);
+        });
+
+        $countNIPRows = QuarterDate::select('NIP')
+        ->selectRaw('COUNT(*) as count_rows')
+        ->groupBy('NIP')
+        ->pluck('count_rows', 'NIP')
+        ->toArray();
+
+        // Hitung jumlah SK with specific NIP (per-dosen)
+        $totalSKS = $tableDosen->groupBy('NIP')->map(function ($group) {
+            return [
+                'NIP' => $group->first()->NIP,
+                'nama' => $group->first()->nama,
+                'JAD' => $group->first()->JAD,
+                'Prodi' => $group->first()->Prodi,
+                'KK' => $group->first()->KK,
+                'email' => $group->first()->email,
+                'total_sk' => $group->count(), // Count of rows with the same 'NIP'
+                'total_sks' => $group->sum('sks'),
+            ];
+        });
+ 
     
-        return view('sekretariat2.sekretariat2-charts', compact('distinctYears'));
+        return view('sekretariat2.sekretariat2-charts', compact('distinctYears','tableDosen','totalSKS','countNIPRows'));
     }
+
+    // public function tableDosen()
+    // {
+    //     // Fetch all users and their related SK information
+    //     $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+    //     ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk')
+    //     ->get();
+
+    //     // Filter sekretariat 
+    //     $data = $data->reject(function ($user) {
+    //         return in_array($user->level, ['sekretariat', 'sekretariat2']);
+    //     });
+
+    //     $countNIPRows = QuarterDate::select('NIP')
+    //     ->selectRaw('COUNT(*) as count_rows')
+    //     ->groupBy('NIP')
+    //     ->pluck('count_rows', 'NIP')
+    //     ->toArray();
+
+    //     // Hitung jumlah SK with specific NIP (per-dosen)
+    //     $totalSKS = $data->groupBy('NIP')->map(function ($group) {
+    //         return [
+    //             'NIP' => $group->first()->NIP,
+    //             'nama' => $group->first()->nama,
+    //             'JAD' => $group->first()->JAD,
+    //             'Prodi' => $group->first()->Prodi,
+    //             'KK' => $group->first()->KK,
+    //             'email' => $group->first()->email,
+    //             'total_sk' => $group->count(), // Count of rows with the same 'NIP'
+    //             'total_sks' => $group->sum('sks'),
+    //         ];
+    //     });
+
+    //     return view('sekretariat2.sekretariat2-charts', compact('data','totalSKS','countNIPRows'));
+    // }
 
     
     public function report($year = null) {

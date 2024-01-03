@@ -49,7 +49,7 @@ class DataDosenController extends Controller
             ];
         });
 
-        return view('sekretariat2.sekretariat2-search', compact('data','totalSKS','countNIPRows','undangan','totalSKS2','countNIPRows2'));
+        return view('sekretariat2.sekretariat2-search', compact('data','totalSKS','countNIPRows'));
     }
 
     public function create($NIP)

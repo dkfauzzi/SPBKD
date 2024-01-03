@@ -764,6 +764,43 @@
                             </div>
                         </div>
                     </div>
+
+                    
+                </div>
+                <div class="col">
+                    <div class="card border border-2">
+                        <div class="card-body table-responsive">
+                            <div class="row d-flex justify-content-center">
+                                <h6>Tabel Dosen</h6>
+                                <table class="table table-bordered" id="table1">
+                                    <thead style="border-color:black">
+                                        <tr >
+                                            <th class="text-center" style=" width:10px;">No</th>
+                                            <th class="text-center" style="width:auto;">Nama</th>
+                                            <th class="text-center" style="width:auto;">SK</th>
+                                            <th class="text-center" style="width:auto;">SKS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $no = 0?>
+                                        @foreach ($totalSKS as $total)
+                                        @php
+                                            // Check if the current NIP exists in $countNIPRows
+                                            $countRows = isset($countNIPRows[$total['NIP']]) ? $countNIPRows[$total['NIP']] : 0;
+                                        @endphp
+                                        <tr>   
+                                            <td class="text-center">{{1+$no++}}</td>
+                                            <td class="text-center">{{ $total['nama'] }}</td>
+                                            <td class="text-center">{{ $countRows }}</td>
+                                            <td class="text-center">{{ $total['total_sks'] }}</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                                
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

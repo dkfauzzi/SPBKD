@@ -155,7 +155,9 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     Route::get('/chart/data-sk-quarterly-line-chart', [ChartController::class, 'QuarterlyLineChart']);
     Route::get('/chart/data-sk-quarterly-line-chart/{year?}', [ChartController::class, 'QuarterlyLineChart']);
     Route::get('/chart/data-sks-Prodi-semester', [ChartController::class, 'SKS_Prodi_Semester']); 
-    Route::get('/chart/data-sks-kk-semester', [ChartController::class, 'SKS_KK_Semester']); 
+    Route::get('/chart/data-sks-kk-semester', [ChartController::class, 'SKS_KK_Semester']);
+    // Route::get('sekretariat2-charts2', [ChartController::class, 'tableDosen']); 
+
     
     // Prints routes
     Route::get('print-report', [ChartController::class, 'index'])->name('report.index');
