@@ -127,6 +127,7 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     Route::get('sekretariat2-tambah-sk', [SekretariatController2::class, 'create'])->name('tambah-sk');
     Route::get('/getNama/{nip}', [SekretariatController2::class, 'getNama'])->name('getNama');
     Route::post('sekretariat2-store', [SekretariatController2::class, 'store'])->name('sekretariat2-store');
+    Route::delete('sekretariat2-search/{NIP}', [SekretariatController2::class, 'delete'])->name('sekretariat2-search-delete');
 
     // Undangan/Rekognisi
     Route::get('sekretariat2-tambah-undangan', [SekretariatController2::class, 'createUndangan'])->name('tambah-undangan');

@@ -132,6 +132,16 @@ class SekretariatController2 extends Controller
     
         return redirect()->route('sekretariat2-search');
     }
+
+    public function delete($NIP)
+    {
+        $data = User::where('NIP', $NIP)->firstOrFail();
+
+        // Delete the record
+        $data->delete();
+
+        return redirect()->back()->with('success', 'Record deleted successfully');
+    }
     
     public function pdf($NIP){
 
