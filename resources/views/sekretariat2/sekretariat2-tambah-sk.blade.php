@@ -60,13 +60,31 @@
                                                 <div class="form-row">
                                                     <div class="form-group col-md-6">
                                                         <label for="inputJudul">Kegiatan SK Dosen</label><br>
-                                                        <textarea class="form-control" type="text" name="sk[]" placeholder="Jenis SK" required></textarea>
-                                                        <div class="invalid-feedback">Isi Kegiatan SK.</div>
+                                                        {{-- <textarea class="form-control" type="text" name="sk[]" placeholder="" required></textarea> --}}
+                                                        <select class="form-select" aria-label="Default select example" name="sk[]">
+                                                            <option value="Membimbing Unit Kegiatan Mahasiswa">Membimbing Unit Kegiatan Mahasiswa</option>
+                                                            <option value="Pembimbing Kelompok Kompetisi Mahasiswa">Pembimbing Kelompok Kompetisi Mahasiswa</option>
+                                                            <option value="Pimpinan Organisasi Sosial di lingkungan Telkom University sebagai Ketua/Wakil Ketua">Pimpinan Organisasi Sosial di lingkungan Telkom University sebagai Ketua/Wakil Ketua</option>
+                                                            <option value="Jabatan Non Struktural Internal">Jabatan Non Struktural Internal</option>
+                                                            <option value="Jabatan Non Struktural Ekxternal">Jabatan Non Struktural Ekxternal</option>
+                                                            <option value="Pelaksanaan Tugas Penunjang Almamater">Pelaksanaan Tugas Penunjang Almamater</option>
+                                                            <option value="Kegiatan MBKM">Kegiatan MBKM</option>
+                                                            <option value="Mengikuti Pelatihan yang linear dengan Disiplin Ilmu">Mengikuti Pelatihan yang linear dengan Disiplin Ilmu</option>
+                                                            <option value="Lainya">Lainya</option>
+                                                        </select>
                                                     </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label for="inputJudul">Jumlah SKS</label><br>
-                                                        <textarea class="form-control" type="text" name="sks[]" placeholder="Jumlah SKS" required></textarea>
-                                                        <div class="invalid-feedback">Isi Jumlah SKS.</div>
+                                                            {{-- <div class="form-group col-md-6">
+                                                                <label for="inputJudul">Jumlah SKS</label><br>
+                                                                <textarea class="form-control" type="text" name="sks[]" placeholder="Jumlah SKS" required></textarea>
+                                                                <div class="invalid-feedback">Isi Jumlah SKS.</div>
+                                                            </div> --}}
+                                                    <div class="form-row justify-content-start col-md-6" >
+                                                        <label for="inputJUdul">Jumlah SKS</label>
+                                                        <div class="d-flex flex-column align-items-center">
+                                                            <button class="btn-primary btn-sm mb-2 fas fa-plus" type="button" onclick="increment()" id="incrementBtn" style="max-width: 50px;"></button>
+                                                            <input class="form-control mb-2 text-center"  type="text" name="sks[]" id="value" value="0" style="max-width: 80px;" >
+                                                            <button class="btn-primary mb-2 btn-sm fas fa-minus" type="button" onclick="decrement()" id="decrementBtn" style="max-width: 50px;"></button>
+                                                        </div>
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <label for="inputJudul">Jenis SK</label><br>
@@ -76,11 +94,11 @@
                                                         </select>
                                                         <div class="invalid-feedback">Isi Jenis SK.</div>
                                                     </div>
-                                                    <div class="form-group col-md-6">
+                                                    {{-- <div class="form-group col-md-6">
                                                         <label for="inputJudul">Keterangan SK</label><br>
                                                         <textarea class="form-control" type="text" name="keterangan_sk[]" placeholder="Keterangan" required></textarea>
                                                         <div class="invalid-feedback">Keterangan SK</div>
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                 
                                                 <div class="form-row">
@@ -184,6 +202,32 @@
                 }
             });
         });
+
+
+        // // Custom addition and rounding function
+        function addAndRound(value, increment) {
+        return Math.round((value + increment) * 100) / 100;
+        }
+
+        // Increment button logic
+        window.increment = function () {
+            let inputField = $(this).siblings('input');
+            let newValue = addAndRound(parseFloat(inputField.val()), 0.05);
+            inputField.val(newValue.toFixed(3));
+        }
+
+        // Decrement button logic
+        window.decrement = function () {
+            let inputField = $(this).siblings('input');
+            let newValue = addAndRound(parseFloat(inputField.val()), -0.05);
+            if (newValue >= 0) {
+                inputField.val(newValue.toFixed(3));
+            }
+        }
+
+        // Bind the functions to the onclick events using jQuery
+        $(document).on('click', '#decrementBtn', window.decrement);
+        $(document).on('click', '#incrementBtn', window.increment);
     });
 
 </script>

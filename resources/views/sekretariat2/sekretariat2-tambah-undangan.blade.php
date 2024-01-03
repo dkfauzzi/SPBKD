@@ -79,27 +79,10 @@
                                                 <div class="form-row justify-content-start col-md-6" >
                                                     <label for="inputJUdul">Jumlah SKS</label>
                                                     
-
-                                                    {{-- <div class="col" style="">
-                                                        <div class="col d-flex align-items-center justify-content-center">
-                                                            <button class="btn btn-primary fas fa-plus" type="button" id="integerIncrementBtn"></button>
-                                                        </div>
-                                                        <div class="col d-flex align-items-center justify-content-center">
-                                                            <input class="form-control me-2" style="text-align: center;" type="text" name="integerValue" id="integerValue" value="0">
-                                                        </div>
-                                                        <div class="col d-flex align-items-center justify-content-center">
-                                                            <button class="btn btn-primary fas fa-minus me-2 " type="button" id="integerDecrementBtn"></button>
-                                                        </div>
-                                                    </div>--}}
-
-                                                      
-
-                                                    <div class="d-flex flex-column align-items-center">
+                                                    {{-- <div class="d-flex flex-column align-items-center">
 
                                                         <button class=" btn-primary btn-sm mb-2 fas fa-plus" type="button" id="integerIncrementBtn" style="max-width: 50px;"></button>
-                                                    
                                                         <input class="form-control mb-2 text-center" type="text" name="integerValue" id="integerValue" value="0" style="max-width: 50px;">
-                                                    
                                                         <button class=" btn-primary btn-sm fas fa-minus" type="button" id="integerDecrementBtn" style="max-width: 50px;"></button>
                                                     </div>
 
@@ -108,35 +91,30 @@
                                                         <h1>,</h1>
                                                     </div>
                                                     
-                                                    
-
                                                     <div class="d-flex flex-column align-items-center">
 
                                                         <button class="btn-primary btn-sm fas mb-2 fas fa-plus" type="button" id="integerIncrementBtn" style="max-width: 50px;"></button>
-                                                    
                                                         <input class="form-control mb-2 text-center" type="text" name="integerValue" id="integerValue" value="0" style="max-width: 50px;">
-                                                    
                                                         <button class="btn-primary btn-sm fas fa-minus" type="button" id="integerDecrementBtn" style="max-width: 50px;"></button>
                                                     </div>
 
                                                     <div class="d-flex flex-column align-items-center">
                                                         <button class="btn-primary btn-sm mb-2 fas fa-plus" type="button" id="integerIncrementBtn" style="max-width: 50px;"></button>
-                                                    
                                                         <input class="form-control mb-2 text-center" type="text" name="integerValue" id="integerValue" value="0" style="max-width: 50px;">
-                                                    
                                                         <button class="btn-primary btn-sm fas fa-minus" type="button" id="integerDecrementBtn" style="max-width: 50px;"></button>
                                                     </div>
 
                                                     <div class="d-flex flex-column align-items-center">
                                                         <button class="btn-primary btn-sm mb-2 fas fa-plus" type="button" id="integerIncrementBtn" style="max-width: 50px;"></button>
-                                                    
                                                         <input class="form-control mb-2 text-center" type="text" name="integerValue" id="integerValue" value="0" style="max-width: 50px;">
-                                                    
                                                         <button class="btn-primary btn-sm fas fa-minus" type="button" id="integerDecrementBtn" style="max-width: 50px;"></button>
+                                                    </div> --}}
+                                                  
+                                                    <div class="d-flex flex-column align-items-center">
+                                                        <button class="btn-primary btn-sm mb-2 fas fa-plus" type="button" onclick="increment()" id="incrementBtn" style="max-width: 50px;"></button>
+                                                        <input class="form-control mb-2 text-center"  type="text" name="sks[]" id="value" value="0" style="max-width: 80px;" >
+                                                        <button class="btn-primary mb-2 btn-sm fas fa-minus" type="button" onclick="decrement()" id="decrementBtn" style="max-width: 50px;"></button>
                                                     </div>
-                                                      
-
-                                                
 
 
 
@@ -158,37 +136,7 @@
                                                         <button class="btn btn-primary fas fa-plus" type="button" id="integerIncrementBtn"></button>
                                                     </div> --}}
 
-                                                    {{-- <div class="form-group col-md-6">
-                                                        <label for="inputJUdul">Jumlah SKS</label>
-                                                        <!-- Decimal 1 -->
-                                                        <div class="decimal-field">
-                                                            <button class="btn btn-primary fas fa-minus me-2" type="button" id="decimalDecrementBtn"></button>
-                                                            <input class="form-control me-2" style="width: 10%; text-align: center;" type="text" name="decimalValue" id="decimalValue" value="0.000">
-                                                            <button class="btn btn-primary fas fa-plus" type="button" id="decimalIncrementBtn"></button>
-                                                        </div>
-
-                                                        <!-- Decimal 2 -->
-                                                        <div class="form-row decimal-field">
-                                                            <button class="btn btn-primary fas fa-minus me-2" type="button" id="decimalDecrementBtn"></button>
-                                                            <input class="form-control me-2" style="width: 10%; text-align: center;" type="text" name="decimalValue" id="decimalValue" value="0.000">
-                                                            <button class="btn btn-primary fas fa-plus" type="button" id="decimalIncrementBtn"></button>
-                                                        </div>
-
-                                                        <!-- Decimal 3 -->
-                                                        <div class="form-row decimal-field">
-                                                            <button class="btn btn-primary fas fa-minus me-2" type="button" id="decimalDecrementBtn"></button>
-                                                            <input class="form-control me-2" style="width: 10%; text-align: center;" type="text" name="decimalValue" id="decimalValue" value="0.000">
-                                                            <button class="btn btn-primary fas fa-plus" type="button" id="decimalIncrementBtn"></button>
-                                                        </div>
-                                                        
-                                                        
-                                                        <div class="form-row">
-                                                            <button class="btn btn-primary fas fa-minus me-2" type="button" id="decrementBtn"></button>
-                                                            <input class="form-control me-2" style="width: 40%; text-align: center;" type="text" name="sks[]" id="value" value="0">
-                                                            <button class="btn btn-primary fas fa-plus" type="button" id="incrementBtn"></button>
-                                                        </div>
-
-                                                    </div> --}}
+                                                    
                                                 </div>
                                 
                                                 <div class="form-row">
@@ -291,80 +239,80 @@
         });
 
         // // Custom addition and rounding function
-        // function addAndRound(value, increment) {
-        //     return Math.round((value + increment) * 100) / 100;
-        // }
-
-        // // Increment button logic
-        // window.increment = function () {
-        //     let inputField = $(this).siblings('input');
-        //     let newValue = addAndRound(parseFloat(inputField.val()), 0.01);
-        //     inputField.val(newValue.toFixed(3));
-        // }
-
-        // // Decrement button logic
-        // window.decrement = function () {
-        //     let inputField = $(this).siblings('input');
-        //     let newValue = addAndRound(parseFloat(inputField.val()), -0.01);
-        //     if (newValue >= 0) {
-        //         inputField.val(newValue.toFixed(3));
-        //     }
-        // }
-
-        // // Bind the functions to the onclick events using jQuery
-        // $(document).on('click', '#decrementBtn', window.decrement);
-        // $(document).on('click', '#incrementBtn', window.increment);
-
-
-        // Custom addition and rounding function for integers
-        function addAndRoundInteger(value, increment) {
-            return Math.round(value + increment);
+        function addAndRound(value, increment) {
+            return Math.round((value + increment) * 100) / 100;
         }
 
-        // Custom addition and rounding function for decimals
-        function addAndRoundDecimal(value, increment) {
-            return Math.round((value + increment) * 1000) / 1000;
-        }
-
-        // Increment button logic for integers
-        window.incrementInteger = function () {
+        // Increment button logic
+        window.increment = function () {
             let inputField = $(this).siblings('input');
-            let newValue = addAndRoundInteger(parseFloat(inputField.val()), 1);
-            inputField.val(newValue);
+            let newValue = addAndRound(parseFloat(inputField.val()), 0.01);
+            inputField.val(newValue.toFixed(3));
         }
 
-        // Decrement button logic for integers
-        window.decrementInteger = function () {
+        // Decrement button logic
+        window.decrement = function () {
             let inputField = $(this).siblings('input');
-            let newValue = addAndRoundInteger(parseFloat(inputField.val()), -1);
+            let newValue = addAndRound(parseFloat(inputField.val()), -0.01);
             if (newValue >= 0) {
-                inputField.val(newValue);
-            }
-        }
-
-        // Increment button logic for decimals
-        window.incrementDecimal = function () {
-            let inputField = $(this).siblings('input');
-            let newValue = addAndRoundDecimal(parseFloat(inputField.val()), 0.025);
-            inputField.val(newValue.toFixed(3)); // Displaying three decimal places
-        }
-
-        // Decrement button logic for decimals
-        window.decrementDecimal = function () {
-            let inputField = $(this).siblings('input');
-            let newValue = addAndRoundDecimal(parseFloat(inputField.val()), -0.025);
-            if (newValue >= 0) {
-                inputField.val(newValue.toFixed(3)); // Displaying three decimal places
+                inputField.val(newValue.toFixed(3));
             }
         }
 
         // Bind the functions to the onclick events using jQuery
-        $(document).on('click', '#integerIncrementBtn', window.incrementInteger);
-        $(document).on('click', '#integerDecrementBtn', window.decrementInteger);
-        $(document).on('click', '#decimalIncrementBtn', window.incrementDecimal);
-        $(document).on('click', '#decimalDecrementBtn', window.decrementDecimal);
+        $(document).on('click', '#decrementBtn', window.decrement);
+        $(document).on('click', '#incrementBtn', window.increment);
 
-            });
+
+            // // Custom addition and rounding function for integers
+            // function addAndRoundInteger(value, increment) {
+            //     return Math.round(value + increment);
+            // }
+
+            // // Custom addition and rounding function for decimals
+            // function addAndRoundDecimal(value, increment) {
+            //     return Math.round((value + increment) * 1000) / 1000;
+            // }
+
+            // // Increment button logic for integers
+            // window.incrementInteger = function () {
+            //     let inputField = $(this).siblings('input');
+            //     let newValue = addAndRoundInteger(parseFloat(inputField.val()), 1);
+            //     inputField.val(newValue);
+            // }
+
+            // // Decrement button logic for integers
+            // window.decrementInteger = function () {
+            //     let inputField = $(this).siblings('input');
+            //     let newValue = addAndRoundInteger(parseFloat(inputField.val()), -1);
+            //     if (newValue >= 0) {
+            //         inputField.val(newValue);
+            //     }
+            // }
+
+            // // Increment button logic for decimals
+            // window.incrementDecimal = function () {
+            //     let inputField = $(this).siblings('input');
+            //     let newValue = addAndRoundDecimal(parseFloat(inputField.val()), 0.025);
+            //     inputField.val(newValue.toFixed(3)); // Displaying three decimal places
+            // }
+
+            // // Decrement button logic for decimals
+            // window.decrementDecimal = function () {
+            //     let inputField = $(this).siblings('input');
+            //     let newValue = addAndRoundDecimal(parseFloat(inputField.val()), -0.025);
+            //     if (newValue >= 0) {
+            //         inputField.val(newValue.toFixed(3)); // Displaying three decimal places
+            //     }
+            // }
+
+            // // Bind the functions to the onclick events using jQuery
+            // $(document).on('click', '#integerIncrementBtn', window.incrementInteger);
+            // $(document).on('click', '#integerDecrementBtn', window.decrementInteger);
+            // $(document).on('click', '#decimalIncrementBtn', window.incrementDecimal);
+            // $(document).on('click', '#decimalDecrementBtn', window.decrementDecimal);
+
+        });
 
 </script>
 @endpush

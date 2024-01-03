@@ -59,8 +59,8 @@ class SekretariatController2 extends Controller
             'sks.*' => 'required',
             'jenis_sk' => 'required|array',
             'jenis_sk.*' => 'required',
-            'keterangan_sk' => 'required|array',
-            'keterangan_sk.*' => 'required',
+            'keterangan_sk' => 'null|array',
+            'keterangan_sk.*' => 'null',
             'NIP' => 'required|array',
             'NIP.*' => 'required',
             'nama' => 'required|array',
@@ -94,7 +94,7 @@ class SekretariatController2 extends Controller
                 'sk' => $data['sk'][0], // Assuming the same 'sk' for all NIPs
                 'sks' => $data['sks'][0], // Assuming the same 'sks' for all NIPs
                 'jenis_sk' => $data['jenis_sk'][0], // Assuming the same 'jenis_sk' for all NIPs
-                'keterangan_sk' => $data['keterangan_sk'][0], // Assuming the same 'keterangan_sk' for all NIPs
+                // 'keterangan_sk' => $data['keterangan_sk'][0], // Assuming the same 'keterangan_sk' for all NIPs
                 'start_date' => \Carbon\Carbon::parse($data['start_date'][0]),
                 'end_date' => \Carbon\Carbon::parse($data['end_date'][0]),
             ];
