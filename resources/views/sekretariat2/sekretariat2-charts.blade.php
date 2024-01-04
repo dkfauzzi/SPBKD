@@ -452,7 +452,7 @@
                         <div class="card-body table-responsive">
                             <div class="row d-flex justify-content-center">
                                 <h6>Tabel Dosen</h6>
-                                <table class="table table-bordered" id="table1">
+                                <table class="table table-bordered" id="table2">
                                     <thead style="border-color:black">
                                         <tr >
                                             <th class="text-center" style=" width:10px;">No</th>

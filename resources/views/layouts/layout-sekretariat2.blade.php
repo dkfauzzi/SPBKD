@@ -101,7 +101,21 @@
                 $('.media').collapse('show');
             });
         });
-
+</script>
+<script>
+    $(document).ready(function() {
+        // Initialize DataTable with options
+        $('#table2').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]], // Set the available options
+            "pageLength": 10, // Set the initial value for the page length
+        });
+    });
 </script>
 
     <!-- Additional scripts -->

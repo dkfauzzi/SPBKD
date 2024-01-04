@@ -79,64 +79,12 @@
                                                 <div class="form-row justify-content-start col-md-6" >
                                                     <label for="inputJUdul">Jumlah SKS</label>
                                                     
-                                                    {{-- <div class="d-flex flex-column align-items-center">
-
-                                                        <button class=" btn-primary btn-sm mb-2 fas fa-plus" type="button" id="integerIncrementBtn" style="max-width: 50px;"></button>
-                                                        <input class="form-control mb-2 text-center" type="text" name="integerValue" id="integerValue" value="0" style="max-width: 50px;">
-                                                        <button class=" btn-primary btn-sm fas fa-minus" type="button" id="integerDecrementBtn" style="max-width: 50px;"></button>
-                                                    </div>
-
-
-                                                    <div class=" card-footer text-center">
-                                                        <h1>,</h1>
-                                                    </div>
-                                                    
-                                                    <div class="d-flex flex-column align-items-center">
-
-                                                        <button class="btn-primary btn-sm fas mb-2 fas fa-plus" type="button" id="integerIncrementBtn" style="max-width: 50px;"></button>
-                                                        <input class="form-control mb-2 text-center" type="text" name="integerValue" id="integerValue" value="0" style="max-width: 50px;">
-                                                        <button class="btn-primary btn-sm fas fa-minus" type="button" id="integerDecrementBtn" style="max-width: 50px;"></button>
-                                                    </div>
-
-                                                    <div class="d-flex flex-column align-items-center">
-                                                        <button class="btn-primary btn-sm mb-2 fas fa-plus" type="button" id="integerIncrementBtn" style="max-width: 50px;"></button>
-                                                        <input class="form-control mb-2 text-center" type="text" name="integerValue" id="integerValue" value="0" style="max-width: 50px;">
-                                                        <button class="btn-primary btn-sm fas fa-minus" type="button" id="integerDecrementBtn" style="max-width: 50px;"></button>
-                                                    </div>
-
-                                                    <div class="d-flex flex-column align-items-center">
-                                                        <button class="btn-primary btn-sm mb-2 fas fa-plus" type="button" id="integerIncrementBtn" style="max-width: 50px;"></button>
-                                                        <input class="form-control mb-2 text-center" type="text" name="integerValue" id="integerValue" value="0" style="max-width: 50px;">
-                                                        <button class="btn-primary btn-sm fas fa-minus" type="button" id="integerDecrementBtn" style="max-width: 50px;"></button>
-                                                    </div> --}}
-                                                  
                                                     <div class="d-flex flex-column align-items-center">
                                                         <button class="btn-primary btn-sm mb-2 fas fa-plus" type="button" onclick="increment()" id="incrementBtn" style="max-width: 50px;"></button>
                                                         <input class="form-control mb-2 text-center"  type="text" name="sks[]" id="value" value="0" style="max-width: 80px;" >
                                                         <button class="btn-primary mb-2 btn-sm fas fa-minus" type="button" onclick="decrement()" id="decrementBtn" style="max-width: 50px;"></button>
                                                     </div>
 
-
-
-
-                                                    {{-- <div class="col">
-                                                        <button class="btn btn-primary fas fa-minus me-2" type="button" id="integerDecrementBtn"></button>
-                                                        <input class="form-control me-2" style=" text-align: center;" type="text" name="integerValue" id="integerValue" value="0">
-                                                        <button class="btn btn-primary fas fa-plus" type="button" id="integerIncrementBtn"></button>
-                                                    </div>
-
-                                                    <div class="col">
-                                                        <button class="btn btn-primary fas fa-minus me-2" type="button" id="integerDecrementBtn"></button>
-                                                        <input class="form-control me-2" style="text-align: center;" type="text" name="integerValue" id="integerValue" value="0">
-                                                        <button class="btn btn-primary fas fa-plus" type="button" id="integerIncrementBtn"></button>
-                                                    </div>
-                                                    <div class="col">
-                                                        <button class="btn btn-primary fas fa-minus me-2" type="button" id="integerDecrementBtn"></button>
-                                                        <input class="form-control me-2" style="; text-align: center;" type="text" name="integerValue" id="integerValue" value="0">
-                                                        <button class="btn btn-primary fas fa-plus" type="button" id="integerIncrementBtn"></button>
-                                                    </div> --}}
-
-                                                    
                                                 </div>
                                 
                                                 <div class="form-row">
