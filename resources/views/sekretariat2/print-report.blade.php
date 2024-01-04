@@ -22,7 +22,7 @@
         }
 
         .content {
-            padding: 40px;
+            padding: 45px;
             color: 
         }
 
@@ -155,7 +155,7 @@
             </tbody>
         </table>
 
-        <h3>III. Kelompok Keahlian</h3>
+        <h3 style="margin-top: 55px">III. Kelompok Keahlian</h3>
         <table class="table">
             <thead class="th">
                 <tr>
