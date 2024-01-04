@@ -427,12 +427,34 @@ class ChartController extends Controller
     public function PieChart($year = null)
     {
         // Fetch data from the database
-        $data = $year ? QuarterDate::whereYear('start_date', $year)->get() : QuarterDate::all();
+        $data = $year
+            ? QuarterDate::whereYear('start_date', '<=', $year)
+                ->whereYear('end_date', '>=', $year)
+                ->get()
+            : QuarterDate::all();
+
+        // Filter data for the specific year if a year is selected
+        if ($year) {
+            $data = $data->filter(function ($item) use ($year) {
+                $startDateYear = Carbon::parse($item->start_date)->year;
+                $endDateYear = Carbon::parse($item->end_date)->year;
+
+                return $startDateYear <= $year && $endDateYear >= $year;
+            });
+        }
+
         // Organize data by 'sk'
         $chartData = $this->organizePieData($data);
 
+        // Retrieve distinct years from your data
+        $yearPie = $data->flatMap(function ($item) {
+            return [$item->start_date, $item->end_date];
+        })->map(function ($date) {
+            return Carbon::parse($date)->year;
+        })->unique()->sort()->values()->toArray();
+
         // Pass the data to the view or return it as needed
-        return response()->json(['sk_data' => $chartData]);
+        return response()->json(['sk_data' => $chartData, 'yearPie' => $yearPie]);
     }
 
 
@@ -460,63 +482,81 @@ class ChartController extends Controller
     public function QuarterlyLineChart($year = null)
     {
         // Fetch data from the database
-        // $data = QuarterDate::all();
-        $data = $year ? QuarterDate::whereYear('start_date', $year)->get() : QuarterDate::all();
-
-
+        $data = $year
+            ? QuarterDate::whereYear('start_date', '<=', $year)
+                ->whereYear('end_date', '>=', $year)
+                ->get()
+            : QuarterDate::all();
+    
         // Organize data by year and quarter
-        $chartData = $this->organizeQuarterlyData($data);
-
+        $chartData = $this->organizeQuarterlyData($data, $year);
+    
+        // Retrieve distinct years from your data
+        $distinctYears = $data->flatMap(function ($item) {
+            return [$item->start_date, $item->end_date];
+        })->map(function ($date) {
+            return Carbon::parse($date)->year;
+        })->unique()->sort()->values()->toArray();
+    
         // Pass the data to the view or return it as needed
-        return response()->json(['quarterlyChartData' => $chartData]);
-
-
-        
+        return response()->json(['quarterlyChartData' => $chartData, 'distinct_years' => $distinctYears]);
     }
-
-    private function organizeQuarterlyData($data)
-{
-    $organizedData = [];
-
-    foreach ($data as $item) {
-        $year = Carbon::parse($item->start_date)->format('Y');
-
-        // Initialize all quarters for the year if not already set
-        if (!isset($organizedData[$year])) {
-            $organizedData[$year] = [
-                'q1' => 0,
-                'q2' => 0,
-                'q3' => 0,
-                'q4' => 0,
-            ];
-        }
-
-        foreach (self::QUARTERS as $quarter) {
-            $quarterFieldStart = $quarter . '_start';
-            $quarterFieldEnd = $quarter . '_end';
-
-            // Check if the quarter field is not set, initialize it
-            if (!isset($item->$quarterFieldStart) || !isset($item->$quarterFieldEnd)) {
-                continue; // Skip if quarter fields are not set
+    
+    
+    private function organizeQuarterlyData($data, $selectedYear = null)
+    {
+        $organizedData = [];
+    
+        foreach ($data as $item) {
+            // Extract the year from start and end dates using Carbon
+            $startDateYear = Carbon::parse($item->start_date)->year;
+            $endDateYear = Carbon::parse($item->end_date)->year;
+    
+            // Check if the selected year is within the range
+            if ($selectedYear === null || ($selectedYear >= $startDateYear && $selectedYear <= $endDateYear)) {
+                $year = $selectedYear ?? $startDateYear;
+    
+                // Initialize all quarters for the year if not already set
+                if (!isset($organizedData[$year])) {
+                    $organizedData[$year] = [
+                        'q1' => 0,
+                        'q2' => 0,
+                        'q3' => 0,
+                        'q4' => 0,
+                    ];
+                }
+    
+                foreach (self::QUARTERS as $quarter) {
+                    $quarterFieldStart = $quarter . '_start';
+                    $quarterFieldEnd = $quarter . '_end';
+    
+                    // Check if the quarter field is not set, initialize it
+                    if (!isset($item->$quarterFieldStart) || !isset($item->$quarterFieldEnd)) {
+                        continue; // Skip if quarter fields are not set
+                    }
+    
+                    // Check if the item's start date falls within the quarter
+                    if (Carbon::parse($item->$quarterFieldStart)->quarter == intval(substr($quarter, 1))) {
+                        $organizedData[$year][$quarter]++;
+                    }
+                }
             }
-
-            // Check if the item's start date falls within the quarter
-            if (Carbon::parse($item->$quarterFieldStart)->quarter == intval(substr($quarter, 1))) {
-                $organizedData[$year][$quarter]++;
+        }
+    
+        // Flatten the data to ensure unique years
+        $flattenedData = [];
+        foreach ($organizedData as $year => $quarterData) {
+            foreach ($quarterData as $quarter => $count) {
+                $flattenedData['Q' . substr($quarter, 1) . '-' . $year ] = $count;
             }
         }
+    
+        return $flattenedData;
     }
+    
+    
 
-    // Flatten the data to ensure unique years
-    $flattenedData = [];
-    foreach ($organizedData as $year => $quarterData) {
-        foreach ($quarterData as $quarter => $count) {
-            $flattenedData[$year . '_Q' . substr($quarter, 1)] = $count;
-        }
-    }
-
-    return $flattenedData;
-}
+    
 
     
     

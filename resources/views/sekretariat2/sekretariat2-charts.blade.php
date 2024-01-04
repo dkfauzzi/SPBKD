@@ -151,8 +151,8 @@
 
                         <script>
                             document.addEventListener("DOMContentLoaded", function () {
-                                // Initial selected year
-                                var selectedYear = 2024; // Replace with your default or selected year
+                                // Set the initial selected year to the current year
+                                var selectedYear = new Date().getFullYear();
                         
                                 // Function to fetch data based on the selected year
                                 function fetchData(year) {
@@ -199,7 +199,7 @@
                                             plugins: {
                                                 datalabels: {
                                                     color: 'white',
-                                                    backgroundColor: function(context) {
+                                                    backgroundColor: function (context) {
                                                         return context.dataset.backgroundColor;
                                                     },
                                                     borderRadius: 5,
@@ -219,21 +219,24 @@
                                     });
                                 }
                         
-                                // Initial fetch with default or selected year
-                                fetchData(selectedYear);
-                        
-                                // Populate the dropdown with available years
                                 var yearDropdown = document.getElementById('yearDropdown');
-                                var currentYear = new Date().getFullYear();
-                                for (var year = currentYear; year >= currentYear - 5; year--) {
+                                var distinctYears = {!! json_encode($distinctYears) !!};
+                        
+                                distinctYears.forEach(function (year) {
                                     var option = document.createElement('option');
                                     option.value = year;
                                     option.text = year;
                                     yearDropdown.add(option);
-                                }
+                                });
+                        
+                                // Set the default selected year to the current year
+                                yearDropdown.value = selectedYear;
+                        
+                                // Call fetchData on initial page load with the default selected year
+                                fetchData(selectedYear);
                         
                                 // Event listener for dropdown change
-                                yearDropdown.addEventListener('change', function() {
+                                yearDropdown.addEventListener('change', function () {
                                     selectedYear = parseInt(this.value);
                                     fetchData(selectedYear);
                                 });
@@ -243,12 +246,11 @@
                             function getRandomColors(count) {
                                 var colors = [];
                                 for (var i = 0; i < count; i++) {
-                                    colors.push('#' + Math.floor(Math.random()*16777215).toString(16));
+                                    colors.push('#' + Math.floor(Math.random() * 16777215).toString(16));
                                 }
                                 return colors;
                             }
                         </script>
-                       
                     </div>
                         </div>
                     </div>
@@ -349,79 +351,91 @@
 
                                 <script defer>
                                     document.addEventListener("DOMContentLoaded", function () {
-                                        var selectedYear = 2024; // Replace with your default or selected year
-                                
+                                        // Fetch distinct years from backend (replace with your actual array)
+                                        var distinctYears = {!! json_encode($distinctYears) !!};
+
+                                        // Set the initial selected year to the current year
+                                        var selectedYear = new Date().getFullYear();
+
+                                        // Function to fetch data based on the selected year
                                         function fetchData(year) {
                                             fetch('/chart/data-sk-quarterly-line-chart/' + year)
                                                 .then(response => response.json())
                                                 .then(data => {
+                                                    // Update the chart with the new data
                                                     updateChart(data.quarterlyChartData);
                                                 })
                                                 .catch(error => {
                                                     console.error('Error fetching data:', error);
                                                 });
                                         }
-                                
+
+                                        // Function to update the chart with new data
                                         function updateChart(quarterlyChartData) {
-                                        var years = Object.keys(quarterlyChartData);
-                                        var quarterlyCounts = Object.values(quarterlyChartData);
+                                            var years = Object.keys(quarterlyChartData);
+                                            var quarterlyCounts = Object.values(quarterlyChartData);
 
-                                        // Sort the years in ascending order
-                                        years.sort();
+                                            // Sort the years in ascending order
+                                            years.sort();
 
-                                        var ctxLineChart = document.getElementById('quarterlyLineChart').getContext('2d');
+                                            var ctxLineChart = document.getElementById('quarterlyLineChart').getContext('2d');
 
-                                        // Destroy the existing chart instance to prevent conflicts
-                                        if (window.lineChartInstance) {
-                                            window.lineChartInstance.destroy();
-                                        }
+                                            // Destroy the existing chart instance to prevent conflicts
+                                            if (window.lineChartInstance) {
+                                                window.lineChartInstance.destroy();
+                                            }
 
-                                        window.lineChartInstance = new Chart(ctxLineChart, {
-                                            type: 'line',
-                                            data: {
-                                                labels: years,
-                                                datasets: [{
-                                                    label: 'Jumlah SK Per Kuartal',
-                                                    data: quarterlyCounts,
-                                                    borderColor: 'rgba(0, 123, 255, 1)',
-                                                    borderWidth: 2,
-                                                    fill: false
-                                                }]
-                                            },
-                                            options: {
-                                                responsive: false,
-                                                maintainAspectRatio: false,
-                                                scales: {
-                                                    x: {
-                                                        type: 'category',
-                                                        labels: years,
-                                                        beginAtZero: true,
-                                                    },
-                                                    y: {
-                                                        beginAtZero: true,
-                                                        stepSize: 1,
-                                                        ticks: {
-                                                            precision: 0
+                                            window.lineChartInstance = new Chart(ctxLineChart, {
+                                                type: 'line',
+                                                data: {
+                                                    labels: years,
+                                                    datasets: [{
+                                                        label: 'Jumlah SK Per Kuartal',
+                                                        data: quarterlyCounts,
+                                                        borderColor: 'rgba(0, 123, 255, 1)',
+                                                        borderWidth: 2,
+                                                        fill: false
+                                                    }]
+                                                },
+                                                options: {
+                                                    responsive: false,
+                                                    maintainAspectRatio: false,
+                                                    scales: {
+                                                        x: {
+                                                            type: 'category',
+                                                            labels: years,
+                                                            beginAtZero: true,
+                                                        },
+                                                        y: {
+                                                            beginAtZero: true,
+                                                            stepSize: 3,  // Set the desired step size
+                                                            max: Math.max(...quarterlyCounts) + 3, // Adjust the maximum based on data
+                                                            ticks: {
+                                                                precision: 0
+                                                            }
                                                         }
                                                     }
                                                 }
-                                            }
-                                        });
-                                    }
+                                            });
+                                        }
 
-                                
+                                        // Initial fetch with default or selected year
                                         fetchData(selectedYear);
-                                
+
+                                        // Populate the dropdown with available years
                                         var pilihTahun = document.getElementById('pilihTahun');
-                                        var currentYear = new Date().getFullYear();
-                                        for (var year = currentYear; year >= currentYear - 5; year--) {
+                                        distinctYears.forEach(function (year) {
                                             var option = document.createElement('option');
                                             option.value = year;
                                             option.text = year;
                                             pilihTahun.add(option);
-                                        }
-                                
-                                        pilihTahun.addEventListener('change', function() {
+                                        });
+
+                                        // Set the default selected year to the current year
+                                        pilihTahun.value = selectedYear;
+
+                                        // Event listener for dropdown change
+                                        pilihTahun.addEventListener('change', function () {
                                             selectedYear = parseInt(this.value);
                                             fetchData(selectedYear);
                                         });
