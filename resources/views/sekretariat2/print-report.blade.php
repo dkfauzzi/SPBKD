@@ -89,7 +89,7 @@
     <table>
         <thead>
             <tr>
-                <th colspan="3">Tahun {{$year}}</th>
+                <th colspan="7">Tahun {{$year}}</th>
             </tr>
 
             <tr>
@@ -123,10 +123,10 @@
     <table>
         <thead>
             <tr>
-                <th colspan="3">Tahun {{$year}}</th>
+                <th colspan="7">Tahun {{$year}}</th>
             </tr>
             <tr>
-                <th>Prodi</th>
+                <th>Kelompok Keahlian</th>
                 <th>Jumlah SKS Semester 1</th>
                 <th>Jumlah SKS Semester 2</th>
                 <th style="background-color: khaki">Total SKS</th>
@@ -155,7 +155,7 @@
     <table>
         <thead>
             <tr>
-                <th colspan="4">Tahun {{$year}}</th>
+                <th colspan="8">Tahun {{$year}}</th>
             </tr>
             <tr>
                 <th>NIP</th>

@@ -20,31 +20,19 @@ class ChartController extends Controller
             ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk', 'test_sk_dosen.start_date', 'test_sk_dosen.end_date')
             ->get();
     
-        // Filter data based on the selected year or the last two years if no year is provided
+       // Retrieve distinct years from your data
+        $distinctYears = $data->flatMap(function ($item) {
+            return range(Carbon::parse($item->start_date)->year, Carbon::parse($item->end_date)->year);
+        })->unique()->sort()->values()->toArray();
+
+        // Use the selected year for filtering if provided
         if ($year) {
             $data = $data->filter(function ($item) use ($year) {
                 $startDateYear = Carbon::parse($item->start_date)->year;
                 $endDateYear = Carbon::parse($item->end_date)->year;
-    
-                return $startDateYear == $year || $endDateYear == $year || ($startDateYear < $year && $endDateYear > $year);
-            });
-        } else {
-            $currentYear = Carbon::now()->year;
-            $data = $data->filter(function ($item) use ($currentYear) {
-                $startDateYear = Carbon::parse($item->start_date)->year;
-                $endDateYear = Carbon::parse($item->end_date)->year;
-    
-                return $startDateYear == $currentYear || $endDateYear == $currentYear || ($startDateYear < $currentYear && $endDateYear > $currentYear);
+                return $startDateYear <= $year && $endDateYear >= $year;
             });
         }
-    
-        // Retrieve distinct years from your data
-        $distinctYears = $data->flatMap(function ($item) {
-            return [$item->start_date, $item->end_date];
-        })->map(function ($date) {
-            return Carbon::parse($date)->year;
-        })->unique()->sort()->values()->toArray();
-
 
         // Fetch all users and their related SK information
         $tableDosen = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
@@ -80,40 +68,6 @@ class ChartController extends Controller
         return view('sekretariat2.sekretariat2-charts', compact('distinctYears','tableDosen','totalSKS','countNIPRows'));
     }
 
-    // public function tableDosen()
-    // {
-    //     // Fetch all users and their related SK information
-    //     $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-    //     ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk')
-    //     ->get();
-
-    //     // Filter sekretariat 
-    //     $data = $data->reject(function ($user) {
-    //         return in_array($user->level, ['sekretariat', 'sekretariat2']);
-    //     });
-
-    //     $countNIPRows = QuarterDate::select('NIP')
-    //     ->selectRaw('COUNT(*) as count_rows')
-    //     ->groupBy('NIP')
-    //     ->pluck('count_rows', 'NIP')
-    //     ->toArray();
-
-    //     // Hitung jumlah SK with specific NIP (per-dosen)
-    //     $totalSKS = $data->groupBy('NIP')->map(function ($group) {
-    //         return [
-    //             'NIP' => $group->first()->NIP,
-    //             'nama' => $group->first()->nama,
-    //             'JAD' => $group->first()->JAD,
-    //             'Prodi' => $group->first()->Prodi,
-    //             'KK' => $group->first()->KK,
-    //             'email' => $group->first()->email,
-    //             'total_sk' => $group->count(), // Count of rows with the same 'NIP'
-    //             'total_sks' => $group->sum('sks'),
-    //         ];
-    //     });
-
-    //     return view('sekretariat2.sekretariat2-charts', compact('data','totalSKS','countNIPRows'));
-    // }
 
     
     public function report($year = null) {
@@ -127,8 +81,9 @@ class ChartController extends Controller
             $data = $data->filter(function ($item) use ($year) {
                 $startDateYear = Carbon::parse($item->start_date)->year;
                 $endDateYear = Carbon::parse($item->end_date)->year;
-
-                return $startDateYear == $year || $endDateYear == $year || ($startDateYear < $year && $endDateYear > $year);
+        
+                // Check if the range overlaps with the given year
+                return ($startDateYear <= $year && $endDateYear >= $year);
             });
         } else {
             $currentYear = Carbon::now()->year;
@@ -156,23 +111,24 @@ class ChartController extends Controller
         
             $prodiData->push([
                 'Prodi' => $Prodi,
-                'semester1_sks' => intval($semester1Data->sum('sks')), 
-                'semester2_sks' => intval($semester2Data->sum('sks')), 
-                'total_sks' => intval($semester1Data->sum('sks')) + intval($semester2Data->sum('sks')), 
-                'semester1_sk' => $semester1Data->pluck('sk')->unique()->count(),
+                'semester1_sks' => $semester1Data->sum('sks'), 
+                'semester2_sks' => $semester2Data->sum('sks'), 
+                'total_sks' => $semester1Data->sum('sks') + $semester2Data->sum('sks'), 
+                'semester1_sk' => $semester1Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count(),
                 'semester2_sk' => $semester2Data->pluck('sk')->reject(function ($value) {
                     return empty($value);
                 })->unique()->count(),
-                'total_sk' => $semester1Data->count() + $semester2Data->pluck('sk')->reject(function ($value) {
+                'total_sk' => $semester1Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count(),+ $semester2Data->pluck('sk')->reject(function ($value) {
                     return empty($value);
                 })->unique()->count(),
             ]);
             
         });
         
-
-
-    
         // ========KELOMPOK KEAHLIAH========
         $groupedDataKK = $data->groupBy('KK')->map(function ($group) {
             return $group->groupBy(function ($item) {
@@ -192,11 +148,15 @@ class ChartController extends Controller
                 'semester1_sks' => $semester1Data->sum('sks'), // Total SKS for semester 1
                 'semester2_sks' => $semester2Data->sum('sks'), // Total SKS for semester 2
                 'total_sks' => $semester1Data->sum('sks') + $semester2Data->sum('sks'), // Total SKS for both semesters
-                'semester1_sk' => $semester1Data->count(), // Count of SK for semester 1
+                'semester1_sk' => $semester1Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count(), // Count of SK for semester 1
                 'semester2_sk' => $semester2Data->pluck('sk')->reject(function ($value) {
                     return empty($value);
                 })->unique()->count(),
-                'total_sk' => $semester1Data->count() + $semester2Data->pluck('sk')->reject(function ($value) {
+                'total_sk' => $semester1Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count() + $semester2Data->pluck('sk')->reject(function ($value) {
                     return empty($value);
                 })->unique()->count()
             ]);
@@ -222,11 +182,15 @@ class ChartController extends Controller
                 'semester1_sks' => $semester1Data->sum('sks'), // Total SKS for semester 1
                 'semester2_sks' => $semester2Data->sum('sks'), // Total SKS for semester 2
                 'total_sks' => $semester1Data->sum('sks') + $semester2Data->sum('sks'), // Total SKS for both semesters
-                'semester1_sk' => $semester1Data->count(), // Count of SK for semester 1
+                'semester1_sk' => $semester1Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count(), // Count of SK for semester 1
                 'semester2_sk' => $semester2Data->pluck('sk')->reject(function ($value) {
                     return empty($value);
                 })->unique()->count(),
-                'total_sk' => $semester1Data->count() + $semester2Data->pluck('sk')->reject(function ($value) {
+                'total_sk' => $semester1Data->pluck('sk')->reject(function ($value) {
+                    return empty($value);
+                })->unique()->count(), + $semester2Data->pluck('sk')->reject(function ($value) {
                     return empty($value);
                 })->unique()->count()
             ]);
