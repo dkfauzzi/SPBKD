@@ -23,7 +23,10 @@
 
         .content {
             padding: 45px;
-            color: 
+        }
+
+        .page-break {
+            page-break-before: always;
         }
 
         .table2 {
@@ -155,7 +158,7 @@
             </tbody>
         </table>
 
-        <h3 style="margin-top: 55px">III. Kelompok Keahlian</h3>
+        <h3 style="margin-top: 55px ">III. Kelompok Keahlian</h3>
         <table class="table">
             <thead class="th">
                 <tr>
