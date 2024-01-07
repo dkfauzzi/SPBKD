@@ -66,7 +66,7 @@
                                                             <option value="Pembimbing Kelompok Kompetisi Mahasiswa">Pembimbing Kelompok Kompetisi Mahasiswa</option>
                                                             <option value="Pimpinan Organisasi Sosial di lingkungan Telkom University sebagai Ketua/Wakil Ketua">Pimpinan Organisasi Sosial di lingkungan Telkom University sebagai Ketua/Wakil Ketua</option>
                                                             <option value="Jabatan Non Struktural Internal">Jabatan Non Struktural Internal</option>
-                                                            <option value="Jabatan Non Struktural Ekxternal">Jabatan Non Struktural Ekxternal</option>
+                                                            <option value="Jabatan Non Struktural Eksternal">Jabatan Non Struktural Eksternal</option>
                                                             <option value="Pelaksanaan Tugas Penunjang Almamater">Pelaksanaan Tugas Penunjang Almamater</option>
                                                             <option value="Kegiatan MBKM">Kegiatan MBKM</option>
                                                             <option value="Mengikuti Pelatihan yang linear dengan Disiplin Ilmu">Mengikuti Pelatihan yang linear dengan Disiplin Ilmu</option>

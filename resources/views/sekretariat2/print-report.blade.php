@@ -25,10 +25,6 @@
             padding: 45px;
         }
 
-        .page-break {
-            page-break-before: always;
-        }
-
         .table2 {
             page-break-after: always;
         }
@@ -127,7 +123,7 @@
         </table>
         
         <h3>II. Program Studi</h3>
-        <table class="table table2">
+        <table class="table ">
             <thead class="th">
                 <tr>
                     <th colspan="7">Tahun {{$year}}</th>
