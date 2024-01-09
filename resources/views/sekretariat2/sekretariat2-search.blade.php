@@ -71,11 +71,14 @@
 
                                                 {{ link_to(route('sekretariat2-dosen-edit', ['NIP' => $total['NIP']]), '', ['class' => 'fa fa-pencil btn btn-warning', 'style'=>'font-size: 20px;']) }}
 
-                                                <form action="{{ route('sekretariat2-search-delete', ['NIP' => $total['NIP']]) }}" method="POST" style="display: inline;">
+                                                {{-- <form data-action="{{ route('sekretariat2-search-delete', ['NIP' => $total['NIP']]) }}" method="POST" style="display: inline;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="fa fa-trash btn btn-danger" style="font-size: 20px;"></button>
-                                                </form>
+                                                    <button type="submit" class="fa fa-trash btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal" style="font-size: 20px;"></button>
+                                                </form> --}}
+
+                                                <button type="button" class="fa fa-trash btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal" data-action="{{ route('sekretariat2-search-delete', ['NIP' => $total['NIP']]) }}" style="font-size: 20px;" >
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -204,95 +207,47 @@
         </div>
     </div>
 </div> --}}
-
+<!-- Konfiirmasi penghapusan dengan modal -->
+<div class="modal" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin menghapus Data ini?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post" action="">
+                    @csrf
+                    @method('delete')
+                    <button type="submit" class="btn btn-danger">Hapus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 
-{{-- @push('scripts')
+@push('scripts')
     <script>
-        $('#addSKModal').on('show.bs.modal', function (event) {
+          $('#confirmDeleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var action = button.data('action');
             var modal = $(this);
-            var form = modal.find('form');
-            form.attr('action', "{{ route('sekretariat2-search') }}");
 
-            // Assuming you have a button or some mechanism to dynamically add sets
-            $('#addSetButton').on('click', function () {
-                // Clone the template set and append it to the form
-                var templateSet = $('#templateSet').clone();
-                templateSet.removeAttr('id');
-                form.append(templateSet);
-            });
-
-            // Fetch NIP options on modal show
-            function fetchNIPOptions() {
-    var form = $('#addSKModal form');
-    var nipSelect = form.find('.nipSelect');
-    nipSelect.empty(); // Clear existing options
-
-    // Make an AJAX request to fetch NIP options
-    $.ajax({
-        url: "{{ route('get.nip.options') }}",
-        method: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            // Populate the dropdown with fetched NIP options
-            $.each(response.nipOptions, function(index, value) {
-                nipSelect.append('<option value="' + value + '">' + value + '</option>');
-            });
-        },
-        error: function(error) {
-            console.error('Error fetching NIP options:', error);
-        }
-    });
-}
-
-            // Add change event listener to dynamically update Nama Dosen
-            form.on('change', '.nipSelect', function () {
-                var selectedNIP = $(this).val();
-                var namaDosenInput = $(this).closest('.form-col').find('.form-group input[name="nama_dosen"]');
-
-                // Make an AJAX request to fetch the corresponding nama based on NIP
-                $.ajax({
-                    url: "{{ route('get.nama.by.nip') }}", // Update this route to your actual route
-                    method: 'POST',
-                    data: { nip: selectedNIP },
-                    success: function(response) {
-                        // Update the nama_dosen input
-                        namaDosenInput.val(response.nama);
-                    },
-                    error: function(error) {
-                        console.error('Error fetching Nama Dosen:', error);
-                    }
-                });
-            });
-
-            // Function to fetch NIP options and populate the dropdown
-            function fetchNIPOptions() {
-                var nipSelect = form.find('.nipSelect');
-                nipSelect.empty(); // Clear existing options
-
-                // Make an AJAX request to fetch NIP options
-                $.ajax({
-                    url: "{{ route('get.nip.options') }}",
-                    method: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        // Populate the dropdown with fetched NIP options
-                        $.each(response.nipOptions, function(index, value) {
-                            nipSelect.append('<option value="' + value + '">' + value + '</option>');
-                        });
-                    },
-                    error: function(error) {
-                        console.error('Error fetching NIP options:', error);
-                    }
-                });
-            }
+            modal.find('#deleteForm').attr('action', action);
         });
     </script>
 @endpush
 
 
- --}}
+
 
 
 
