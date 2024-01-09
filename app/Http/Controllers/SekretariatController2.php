@@ -33,6 +33,9 @@ class SekretariatController2 extends Controller
     public function create()
     {
         $nipOptions = User::select('NIP')->distinct()->get(); 
+
+        $nipOptions = User::where('level', '<>', 'sekretariat2')
+            ->select('NIP')->distinct()->get();
     
         return view('sekretariat2.sekretariat2-tambah-sk', ['nipOptions' => $nipOptions]);
     }
@@ -169,6 +172,9 @@ class SekretariatController2 extends Controller
     public function createUndangan()
     {
         $nipOptions = User::select('NIP')->distinct()->get(); 
+
+        $nipOptions = User::where('level', '<>', 'sekretariat2')
+            ->select('NIP')->distinct()->get();
     
         return view('sekretariat2.sekretariat2-tambah-undangan', ['nipOptions' => $nipOptions]);
     }

@@ -36,7 +36,13 @@ class ChartController extends Controller
 
         // Fetch all users and their related SK information
         $tableDosen = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-        ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk')
+        ->leftJoin('sk_undangan', 'users.NIP', '=', 'sk_undangan.NIP')
+        ->select(
+            'users.*',
+            'test_sk_dosen.sk as test_sk_dosen_sk',
+            'test_sk_dosen.sks as test_sk_dosen_sks',
+            'sk_undangan.sks as sk_undangan_sks'
+        )
         ->get();
 
         // Filter sekretariat 
@@ -60,7 +66,8 @@ class ChartController extends Controller
                 'KK' => $group->first()->KK,
                 'email' => $group->first()->email,
                 'total_sk' => $group->count(), // Count of rows with the same 'NIP'
-                'total_sks' => $group->sum('sks'),
+                'total_sks' => $group->pluck('test_sk_dosen_sks')->unique()->sum(),
+                'total_sks_undangan' => $group->pluck('sk_undangan_sks')->unique()->sum(),
             ];
         });
  
@@ -225,7 +232,8 @@ class ChartController extends Controller
 
     // }
 
-    public function report($year = null) {
+    public function report($year = null) 
+    {
         try {
             // Retrieve data from the database
             $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')

@@ -35,13 +35,35 @@
     <!-- CHARTS-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <!-- CHARTS-->
+
     <!-- Include Chart.js datalabels plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         #table1_wrapper .dataTables_filter input {
             border: 1px solid #28a745; /* Change the border color to green */
         }
+
+        /* Add this style to your CSS or in a style tag in your HTML */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            z-index: 100000; /* Set a higher z-index value */
+        }
+
+        .custom-dropdown .dropdown-item:hover {
+        background-color: #28a745; /* Replace with your desired color */
+        }
+
+        .custom-dropdown .dropdown-item:hover {
+        background-color: #39dd5f; /* Replace with your desired hover color */
+        }
+
 
     </style>
 
@@ -53,21 +75,19 @@
         @yield('content')
     </div>
 
-    <!-- General JS Scripts -->
-    {{-- <script src="/assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
-    <script src="/assets/modules/datatables/datatables.min.js"></script>
-    <script src="/assets/modules/popper/popper.min.js"></script>
-    <script src="/assets/modules/bootstrap/js/bootstrap.min.js"></script> --}}
-
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     @stack('scripts')
 
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
     <!-- DataTables scripts -->
     <script src="/assets/modules/datatables/datatables.min.js"></script>
-
+    
     <!-- stisla.js -->
     <script src="/assets/js/stisla.js"></script>
     
@@ -83,7 +103,21 @@
                 $('.media').collapse('show');
             });
         });
-
+</script>
+<script>
+    $(document).ready(function() {
+        // Initialize DataTable with options
+        $('#table2').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]], // Set the available options
+            "pageLength": 10, // Set the initial value for the page length
+        });
+    });
 </script>
 
     <!-- Additional scripts -->

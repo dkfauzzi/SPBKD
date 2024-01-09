@@ -42,8 +42,8 @@
                                             <th class="text-center"style="width:180px">Kelompok Keahlian</th>
                                             <th class="text-center"style="width:180px">Prodi</th>
                                             <th class="text-center"style="width:auto">JAD</th>
-                                            <th class="text-center" style="width:auto;">SKS</th>
                                             <th class="text-center" style="width:auto;">SK</th>
+                                            <th class="text-center" style="width:auto;">SKS</th>
                                             <th class="text-center" style="width:auto">Action</th>
                                         </tr>
                                     </thead>
@@ -61,8 +61,11 @@
                                             <td class="text-center">{{ $total['KK'] }}</td>
                                             <td class="text-center">{{ $total['Prodi'] }}</td>
                                             <td class="text-center">{{ $total['JAD'] }}</td>
-                                            <td class="text-center">{{ $total['total_sks'] }}</td>
                                             <td class="text-center">{{ $countRows }}</td>
+                                            <td class="text-center">{{ $total['total_sks'] + $total['total_sks_undangan'] }}</td>
+
+
+
                                             <td class="text-center">
                                                 {{ link_to(route('sekretariat2-dosen-details', ['NIP' => $total['NIP']]), '', ['class' => ' fa fa-eye btn btn-success', 'style'=>'font-size: 20px;']) }}
 

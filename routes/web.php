@@ -106,6 +106,14 @@ Route::group(['middleware' => ['auth', 'rolecek:dekan,kaprodi,ketuaKK']], functi
     Route::get('dekan-charts', [DekanController::class, 'indexChart']);
     Route::get('/d-chart/data-sk', [DekanController::class, 'data_SK']);
     Route::get('/d-chart/data-sks', [DekanController::class, 'data_SKS']);
+    Route::get('/d-chart/data-sk-prodi-semester', [DekanController::class, 'SK_Prodi_Semester']); 
+    Route::get('/d-chart/data-sk-kk-semester', [DekanController::class, 'SK_KK_Semester']);
+    Route::get('/d-chart/data-sk-pie-chart', [DekanController::class, 'PieChart']);
+    Route::get('/d-chart/data-sk-pie-chart/{year?}', [DekanController::class, 'PieChart']);
+    Route::get('/d-chart/data-sk-quarterly-line-chart', [DekanController::class, 'QuarterlyLineChart']);
+    Route::get('/d-chart/data-sk-quarterly-line-chart/{year?}', [DekanController::class, 'QuarterlyLineChart']);
+    Route::get('/d-chart/data-sks-Prodi-semester', [DekanController::class, 'SKS_Prodi_Semester']); 
+    Route::get('/d-chart/data-sks-kk-semester', [DekanController::class, 'SKS_KK_Semester']);
 
     // Prints routes
     Route::get('dekan-print-report', [DekanController::class, 'index'])->name('report.index');

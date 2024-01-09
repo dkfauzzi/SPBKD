@@ -18,48 +18,50 @@ use Illuminate\Support\Facades\DB;
 class DataDosenController extends Controller
 {
     public function index()
-{
-    // Fetch all users and their related SK information
-    $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-        ->leftJoin('sk_undangan', function ($join) {
-            $join->on('users.NIP', '=', 'sk_undangan.NIP')
-                 ->whereNull('test_sk_dosen.NIP'); // Exclude NIPs with test_sk_dosen entries
-        })
+    {
+        $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+        ->leftJoin('sk_undangan', 'users.NIP', '=', 'sk_undangan.NIP')
         ->select(
             'users.*',
-            'test_sk_dosen.sks as test_sk_dosen_sks',
             'test_sk_dosen.sk as test_sk_dosen_sk',
+            'test_sk_dosen.sks as test_sk_dosen_sks',
             'sk_undangan.sks as sk_undangan_sks'
         )
         ->get();
 
-    // Filter sekretariat 
-    $data = $data->reject(function ($user) {
-        return in_array($user->level, ['sekretariat', 'sekretariat2']);
-    });
 
-    $countNIPRows = QuarterDate::select('NIP')
-        ->selectRaw('COUNT(*) as count_rows')
-        ->groupBy('NIP')
-        ->pluck('count_rows', 'NIP')
-        ->toArray();
+        // dd($data);
+    
+        // Filter sekretariat 
+        $data = $data->reject(function ($user) {
+            return in_array($user->level, ['sekretariat', 'sekretariat2']);
+        });
+    
+        $countNIPRows = QuarterDate::select('NIP')
+            ->selectRaw('COUNT(*) as count_rows')
+            ->groupBy('NIP')
+            ->pluck('count_rows', 'NIP')
+            ->toArray();
+    
+        // Calculate the total SKS from both tables for each user
+        $totalSKS = $data->groupBy('NIP')->map(function ($group) {
+            return [
+                'NIP' => $group->first()->NIP,
+                'nama' => $group->first()->nama,
+                'JAD' => $group->first()->JAD,
+                'Prodi' => $group->first()->Prodi,
+                'KK' => $group->first()->KK,
+                'email' => $group->first()->email,
+                'total_sk' => $group->count(), // Count of rows with the same 'NIP'
+                'total_sks' => $group->pluck('test_sk_dosen_sks')->unique()->sum(),
+                'total_sks_undangan' => $group->pluck('sk_undangan_sks')->unique()->sum(), // Use unique() to get distinct sk_undangan_sks values
+            ];
+        });
+    
+        return view('sekretariat2.sekretariat2-search', compact('data', 'totalSKS', 'countNIPRows'));
+    }
+    
 
-    // Calculate the total SKS from both tables for each user
-    $totalSKS = $data->groupBy('NIP')->map(function ($group) {
-        return [
-            'NIP' => $group->first()->NIP,
-            'nama' => $group->first()->nama,
-            'JAD' => $group->first()->JAD,
-            'Prodi' => $group->first()->Prodi,
-            'KK' => $group->first()->KK,
-            'email' => $group->first()->email,
-            'total_sk' => $group->count(), // Count of rows with the same 'NIP'
-            'total_sks' => $group->sum('test_sk_dosen_sks') + $group->sum('sk_undangan_sks'), // Sum of 'sks' from both tables
-        ];
-    });
-
-    return view('sekretariat2.sekretariat2-search', compact('data', 'totalSKS', 'countNIPRows'));
-}
 
 
   

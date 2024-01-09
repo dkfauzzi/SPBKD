@@ -472,7 +472,8 @@
                                             <td class="text-center">{{1+$no++}}</td>
                                             <td class="text-center">{{ $total['nama'] }}</td>
                                             <td class="text-center">{{ $countRows }}</td>
-                                            <td class="text-center">{{ $total['total_sks'] }}</td>
+                                            {{-- <td class="text-center">{{ $total['total_sks'] }}</td> --}}
+                                            <td class="text-center">{{ $total['total_sks'] + $total['total_sks_undangan'] }}</td>
                                         </tr>
                                     @endforeach
                                     </tbody>
