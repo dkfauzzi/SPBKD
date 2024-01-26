@@ -70,6 +70,7 @@
                                             <th class="text-center"style="width:auto">Tanggal Berakhir</th>
                                             <th class="text-center" style="width:auto">Triwulan Dimulai</th>
                                             <th class="text-center"style="width:auto">Triwulan Berakhir</th>
+                                            <th class="text-center"style="width:auto">Bukti SK</th>
                                             <th class="text-center"style="width:auto">Hapus</th>
                                         </tr>
                                     </thead>
@@ -87,13 +88,16 @@
                                             <td class="text-center">{{ $record->start_sk }}</td>
                                             <td class="text-center">{{ $record->end_sk}}</td>
                                             <td class="text-center">
+                                                {{ link_to('storage/bukti_sk/' . $record->bukti, '', ['class' => 'fa fa-eye btn btn-success', 'style'=>'font-size: 20px;', 'target' => '_blank']) }}
+                                            </td>
+                                            <td class="text-center">
                                                 {{-- <form action="{{ route('sekretariat2-dosen-details-delete', ['NIP' => $record->NIP]) }}" method="post">
                                                     @csrf
                                                     @method('delete')
                                                     <button type="submit" class="btn btn-danger">Hapus SK</button>
                                                 </form> --}}
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal" data-action="{{ route('sekretariat2-dosen-details-delete', ['NIP' => $record->NIP]) }}">
-                                                    Hapus SK
+                                                <button type="button" class="fa fa-trash btn btn-danger" style="font-size: 20px;" data-toggle="modal" 
+                                                    data-target="#confirmDeleteModal" data-action="{{ route('sekretariat2-dosen-details-delete', ['NIP' => $record->NIP]) }}">
                                                 </button>
                                             </td>
                                         </tr>
@@ -262,6 +266,12 @@
                                             <option value="Internal">Internal</option>
                                             <option value="External">External</option>
                                             </select>
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label for="bukti">Bukti SK</label>
+                                            <input type="file" class="form-control" name="bukti" >
+                                                {{-- <span>*File Upload yang diupload berupa pdf maksimal sebesar 25MB</span> --}}
                                         </div>
                                     </div>
 

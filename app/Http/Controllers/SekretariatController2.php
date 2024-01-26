@@ -69,7 +69,19 @@ class SekretariatController2 extends Controller
             'NIP.*' => 'required',
             'nama' => 'required|array',
             'nama.*' => 'required',
+            'bukti' => 'required|mimes:pdf,jpg,png,doc,docx|max:25000',
+            'bukti.*' => 'required|mimes:pdf,jpg,png,doc,docx|max:25000',
+
         ]);
+
+        // upload bukti
+        if ($request->hasFile('bukti')) {
+            $bukti = $request->file('bukti');
+            $namaBukti = time() . '_' . $bukti->getClientOriginalName();
+            $bukti->storeAs('bukti_sk', $namaBukti, 'public');
+
+            $data['bukti'] = $namaBukti;
+        }
     
         // Initialize $quartersData outside the loop
         $quartersData = [];
@@ -91,14 +103,16 @@ class SekretariatController2 extends Controller
                 3 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 9, 30),
                 4 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 12, 31),
             ];
-    
+            
+
             $entry = [
                 'NIP' => $nip,
                 'nama' => $data['nama'][$key],
-                'sk' => $data['sk'][0], // Assuming the same 'sk' for all NIPs
-                'sks' => $data['sks'][0], // Assuming the same 'sks' for all NIPs
-                'jenis_sk' => $data['jenis_sk'][0], // Assuming the same 'jenis_sk' for all NIPs
-                // 'keterangan_sk' => $data['keterangan_sk'][0], // Assuming the same 'keterangan_sk' for all NIPs
+                'sk' => $data['sk'][0], //starts from key 0 
+                'sks' => $data['sks'][0], 
+                'jenis_sk' => $data['jenis_sk'][0], 
+                // 'bukti' => $data['bukti'][0], 
+                // 'keterangan_sk' => $data['keterangan_sk'][0], 
                 'start_date' => \Carbon\Carbon::parse($data['start_date'][0]),
                 'end_date' => \Carbon\Carbon::parse($data['end_date'][0]),
             ];
@@ -122,9 +136,12 @@ class SekretariatController2 extends Controller
             // Set start and end SK dates
             $entry['start_sk'] = $entry['start_date']->year . '-Q' . ceil($entry['start_date']->month / 3);
             $entry['end_sk'] = $entry['end_date']->year . '-Q' . ceil($entry['end_date']->month / 3);
-    
+            
+
             // Add the entry to $quartersData array
             $quartersData[] = $entry;
+            $quartersData[$key]['bukti'] = $data['bukti'];
+
         }
     
         // Loop through the prepared $quartersData array and create entries in the database

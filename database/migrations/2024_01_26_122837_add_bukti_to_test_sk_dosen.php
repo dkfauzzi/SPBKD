@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('sk_undangan', function (Blueprint $table) {
-            $table->date('start_date')->nullable();
+        Schema::table('test_sk_dosen', function (Blueprint $table) {
+            //
+            $table->string('bukti');
         });
     }
 
@@ -21,8 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('sk_undangan', function (Blueprint $table) {
-            $table->dropColumn('start_date');
+        Schema::table('test_sk_dosen', function (Blueprint $table) {
+            //
+            $table->dropColumn('bukti');
         });
     }
 };

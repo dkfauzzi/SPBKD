@@ -36,6 +36,9 @@ class DataDosenController extends Controller
         $data = $data->reject(function ($user) {
             return in_array($user->level, ['sekretariat', 'sekretariat2']);
         });
+
+        
+        
     
         $countNIPRows = QuarterDate::select('NIP')
             ->selectRaw('COUNT(*) as count_rows')
@@ -57,8 +60,22 @@ class DataDosenController extends Controller
                 'total_sks_undangan' => $group->pluck('sk_undangan_sks')->unique()->sum(), // Use unique() to get distinct sk_undangan_sks values
             ];
         });
+
+        $dataSekretariat = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+        ->leftJoin('sk_undangan', 'users.NIP', '=', 'sk_undangan.NIP')
+        ->select(
+            'users.*',
+            'test_sk_dosen.sk as test_sk_dosen_sk',
+            'test_sk_dosen.sks as test_sk_dosen_sks',
+            'sk_undangan.sks as sk_undangan_sks'
+        )
+        ->get();
+
+        $sekretariat = $dataSekretariat->filter(function ($user) {
+            return in_array($user->level, ['sekretariat', 'sekretariat2']);
+        });
     
-        return view('sekretariat2.sekretariat2-search', compact('data', 'totalSKS', 'countNIPRows'));
+        return view('sekretariat2.sekretariat2-search', compact('data', 'totalSKS', 'countNIPRows','sekretariat'));
     }
     
 
@@ -87,7 +104,18 @@ class DataDosenController extends Controller
             'jenis_sk'  => 'required',
             // 'keterangan_sk' => 'required',
             'NIP' => 'required',
+            'bukti' => 'required|mimes:pdf,jpg,png,doc,docx|max:25000',
+
         ]);
+
+        // upload bukti
+        if ($request->hasFile('bukti')) {
+            $bukti = $request->file('bukti');
+            $namaBukti = time() . '_' . $bukti->getClientOriginalName();
+            $bukti->storeAs('bukti_sk', $namaBukti, 'public');
+
+            $data['bukti'] = $namaBukti;
+        }
 
         $nip = $data['NIP'];
 
@@ -119,10 +147,9 @@ class DataDosenController extends Controller
         $quartersData['sks'] = $data['sks'];
         $quartersData['sk'] = $data['sk'];
         $quartersData['jenis_sk'] = $data['jenis_sk'];
+        $quartersData['bukti'] = $data['bukti'];
         // $quartersData['keterangan_sk'] = $data['keterangan_sk'];
         // $quartersData['NIP'] = $data['NIP'];
-
-
 
         //Loop untuk penentuan restriction tiap kolom Triwulan (tw1,tw2,tw3,tw4)
         for ($quarter = 1; $quarter <= 4; $quarter++) {

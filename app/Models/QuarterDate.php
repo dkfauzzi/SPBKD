@@ -16,7 +16,8 @@ class QuarterDate extends Model
     'q2_start','q2_end',
     'q3_start', 'q3_end',
     'q4_start', 'q4_end', 
-    'start_sk','end_sk'];
+    'start_sk','end_sk',
+    'bukti',];
 
 
 }
