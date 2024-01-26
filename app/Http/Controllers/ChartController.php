@@ -9,6 +9,8 @@ use App\Models\QuarterDate;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use App\Exports\exportReport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class ChartController extends Controller
@@ -264,7 +266,6 @@ class ChartController extends Controller
                 });
             }
 
-            
 
             // ========Kegiatan SK========
             $groupedDataSK = $data->groupBy('sk')->map(function ($group) {
@@ -411,6 +412,43 @@ class ChartController extends Controller
 
             // Stream the PDF for download or display
             return $pdf->stream();
+        } catch (\Exception $e) {
+            // Handle exceptions, log errors, or return an appropriate response
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function exportToExcel($year = null)
+    {
+        try {
+            // Retrieve data from the database
+            $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+                ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk', 'test_sk_dosen.start_date', 'test_sk_dosen.end_date')
+                ->get();
+    
+            // Exclude users with specific levels
+            $data = $data->reject(function ($user) {
+                return in_array($user->level, ['sekretariat', 'sekretariat2']);
+            });
+    
+            // Filter data based on the selected year or the last two years if no year is provided
+            if ($year) {
+                $data = $data->filter(function ($item) use ($year) {
+                    $startDateYear = Carbon::parse($item->start_date)->year;
+                    $endDateYear = Carbon::parse($item->end_date)->year;
+                    return ($startDateYear <= $year && $endDateYear >= $year);
+                });
+            } else {
+                $currentYear = Carbon::now()->year;
+                $data = $data->filter(function ($item) use ($currentYear) {
+                    $startDateYear = Carbon::parse($item->start_date)->year;
+                    $endDateYear = Carbon::parse($item->end_date)->year;
+                    return $startDateYear == $currentYear || $endDateYear == $currentYear || ($startDateYear < $currentYear && $endDateYear > $currentYear);
+                });
+            }
+    
+            // Use the export class to create an Excel file
+            return Excel::download(new exportReport($data), 'excel_report_tahun_' . $year . '.xlsx');
         } catch (\Exception $e) {
             // Handle exceptions, log errors, or return an appropriate response
             return response()->json(['error' => $e->getMessage()], 500);

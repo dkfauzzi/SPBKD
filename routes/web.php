@@ -172,6 +172,8 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     // Prints routes
     Route::get('print-report', [ChartController::class, 'index'])->name('report.index');
     Route::get('print-report/{year}', [ChartController::class, 'report'])->name('report.generate');
+    Route::get('export-excel/{year}', [ChartController::class, 'exportToExcel']);
+
     
     // Register
     Route::get('sekretariat2-register', [RegisterController::class, 'create']); // Display the registration form
