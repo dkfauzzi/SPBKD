@@ -25,7 +25,6 @@
                                         <div class="dropdown-menu custom-dropdown" aria-labelledby="yearReport">
                                             @foreach($distinctYears as $year)
                                                 <a class="dropdown-item" href="{{ url('print-report/' . $year) }}" target="_blank">Tahun {{ $year }}</a>
-                                                <a class="dropdown-item" href="{{ url('export-to-excel/' . $year) }}">Tahun {{ $year }} (Excel)</a>
                                             @endforeach
                                         </div>
                                     </div>

@@ -128,6 +128,7 @@
                                             <th class="text-center"style="width:auto">Jenis SK</th>
                                             <th class="text-center"style="width:auto">Tanggal Mulai</th>
                                             <th class="text-center" style="width:auto">Triwulan</th>
+                                            <th class="text-center"style="width:auto">Bukti</th>
                                             <th class="text-center"style="width:auto">Hapus</th>
                                         </tr>
                                     </thead>
@@ -141,6 +142,9 @@
                                             <td class="text-center">{{ $record->jenis_sk }}</td>
                                             <td class="text-center">{{ $record->start_date ? Carbon\Carbon::parse($record->start_date)->translatedFormat('d F Y', 'id') : '' }}</td>
                                             <td class="text-center">{{ $record->start_sk }}</td>
+                                            <td class="text-center">
+                                                {{ link_to('storage/bukti_sk/' . $record->bukti, '', ['class' => 'fa fa-eye btn btn-success', 'style'=>'font-size: 20px;', 'target' => '_blank']) }}
+                                            </td>
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal" data-action="{{ route('sekretariat2-undangan-delete', ['NIP' => $record->NIP]) }}">
                                                     Hapus SK

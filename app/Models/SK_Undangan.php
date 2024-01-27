@@ -11,8 +11,7 @@ class SK_Undangan extends Model
     protected $table = "sk_undangan";
     public $timestamps = false;
     protected $fillable = ['sks','sk','jenis_sk','NIP',
-    'start_date',
-    'start_sk'];
+    'start_date','start_sk','bukti'];
 
 
 }

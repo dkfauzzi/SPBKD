@@ -74,6 +74,12 @@
                                                         </select>
                                                         <div class="invalid-feedback">Isi Jenis SK.</div>
                                                     </div>
+
+                                                    <div class="form-group col-md-6">
+                                                        <label for="bukti">Bukti SK</label>
+                                                        <input type="file" class="form-control" name="bukti" >
+                                                            {{-- <span>*File Upload yang diupload berupa pdf maksimal sebesar 25MB</span> --}}
+                                                    </div>
                                                 </div>
 
                                                 <div class="form-row justify-content-start col-md-6" >

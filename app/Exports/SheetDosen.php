@@ -2,30 +2,20 @@
 
 namespace App\Exports;
 
-use Illuminate\Support\Collection;
-use App\Exports\exportReport;
-use App\Models\User;
-use Illuminate\Http\Request;
-use App\Models\QuarterDate;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class exportReport implements FromCollection, WithHeadings
+class SheetDosen implements FromCollection
 {
-    
-    
-    // public function sheets(): array
-    // {
-    //     $sheets = [];
+    /**
+    * @return \Illuminate\Support\Collection
+    */
 
-    //     $sheets[] = new SheetDosen($this->dosenData);
+    protected $data;
 
-    //     // $sheets[] = new AnotherTableSheet($this->anotherTableData);
-
-    //     return $sheets;
-    // }
+    public function __construct($data)
+    {
+        $this->data = $data;
+    }
 
     public function headings(): array
     {
@@ -87,7 +77,4 @@ class exportReport implements FromCollection, WithHeadings
 
         return $dosenData;
     }
-
 }
-
-

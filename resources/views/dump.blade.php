@@ -1,125 +1,105 @@
 <?
 
-
-public function update($id, Request $request)
+public function store(Request $request)
     {
-       
-        $this->validate($request, [
-            'surat' => "mimes:pdf|max:5000",
+        // Set data to store
+        $data = $request->validate([
+            'start_date' => 'required|array',
+            'start_date.*' => 'required|date',
+            'end_date' => 'required|array',
+            'end_date.*' => 'required|date',
+            'sk' => 'required|array',
+            'sk.*' => 'required',
+            'sks' => 'required|array',
+            'sks.*' => 'required',
+            'jenis_sk' => 'required|array',
+            'jenis_sk.*' => 'required',
+            'keterangan_sk' => 'null|array',
+            'keterangan_sk.*' => 'null',
+            'NIP' => 'required|array',
+            'NIP.*' => 'required',
+            'nama' => 'required|array',
+            'nama.*' => 'required',
+            'bukti' => 'required|mimes:pdf,jpg,png,doc,docx|max:25000',
+            'bukti.*' => 'required|mimes:pdf,jpg,png,doc,docx|max:25000',
+
         ]);
 
-        $input = $request->all();
-        // $input['status'] = "Diproses";
+        // upload bukti
+        if ($request->hasFile('bukti')) {
+            $bukti = $request->file('bukti');
+            $namaBukti = time() . '_' . $bukti->getClientOriginalName();
+            $bukti->storeAs('bukti_sk', $namaBukti, 'public');
 
-        if ($suratPengantar = $request->file('surat')) {
-            $destinationPath = 'Surat_Pengantar/';
-            $suratWaktu = time() . "_" . $suratPengantar->getClientOriginalName();
-            $suratPengantar->move($destinationPath, $suratWaktu);
-            $input['surat'] = "$suratWaktu";
-        } else {
-            unset($input['surat']);
+            $data['bukti'] = $namaBukti;
         }
+    
+        // Initialize $quartersData outside the loop
+        $quartersData = [];
+    
+        // Loop through the array of NIPs
+        foreach ($data['NIP'] as $key => $nip) {
+            // Set mulainya bulan dan tanggal TW. Contoh 1(1,1) = TW1 (bulan januari, tanngal 1)
+            $quarterStarts = [
+                1 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 1, 1),
+                2 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 4, 1),
+                3 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 7, 1),
+                4 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 10, 1),
+            ];
+    
+            // Set berakhirnya bulan dan tanggal TW. Contoh 1(3,31) = TW1(bulan maret, tanngal 31)
+            $quarterEnds = [
+                1 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 3, 31),
+                2 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 6, 30),
+                3 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 9, 30),
+                4 => \Carbon\Carbon::createFromDate(\Carbon\Carbon::parse($data['start_date'][0])->year, 12, 31),
+            ];
+            
 
-        Form001::find($id)->update($input);
-        return redirect('dashboard-tata-usaha-form-001')->with('success', 'Daftar KP created successfully.');
-    }
-
-
-    public function store(Request $request)
-    {
-        try {
-            $this->validate($request, [
-
-                'laporan' => "mimes:pdf|max:25000",
-                'id_kp' => 'required',
-                'id_sidang_kp' => 'required',
-            ]);
-
-            $input = $request->all();
-            $input['status'] = "Diproses";
-
-            if ($draft = $request->file('laporan')) {
-                $destinationPath = 'Laporan_KP/';
-                $draftTA = time() . "_" . $draft->getClientOriginalName();
-                $draft->move($destinationPath, $draftTA);
-                $input['laporan'] = "$draftTA";
+            $entry = [
+                'NIP' => $nip,
+                'nama' => $data['nama'][$key],
+                'sk' => $data['sk'][0], //starts from key 0 
+                'sks' => $data['sks'][0], 
+                'jenis_sk' => $data['jenis_sk'][0], 
+                // 'bukti' => $data['bukti'][0], 
+                // 'keterangan_sk' => $data['keterangan_sk'][0], 
+                'start_date' => \Carbon\Carbon::parse($data['start_date'][0]),
+                'end_date' => \Carbon\Carbon::parse($data['end_date'][0]),
+            ];
+        
+            // Loop through quarters
+            for ($quarter = 1; $quarter <= 4; $quarter++) {
+                $qStart = $quarterStarts[$quarter];
+                $qEnd = $quarterEnds[$quarter];
+        
+                if ($entry['end_date'] < $qStart || $entry['start_date'] > $qEnd) {
+                    // If outside the quarter, leave the columns empty
+                    $entry["q{$quarter}_start"] = null;
+                    $entry["q{$quarter}_end"] = null;
+                } else {
+                    // If inside the quarter, insert into columns
+                    $entry["q{$quarter}_start"] = max($entry['start_date'], $qStart);
+                    $entry["q{$quarter}_end"] = min($entry['end_date'], $qEnd);
+                }
             }
+        
+            // Set start and end SK dates
+            $entry['start_sk'] = $entry['start_date']->year . '-Q' . ceil($entry['start_date']->month / 3);
+            $entry['end_sk'] = $entry['end_date']->year . '-Q' . ceil($entry['end_date']->month / 3);
+            
 
-            sidang_kp::create($input);
+            // Add the entry to $quartersData array
+            $quartersData[] = $entry;
+            $quartersData[$key]['bukti'] = $data['bukti'];
 
-            return redirect('dashboard-mahasiswa-sidang-kp')->with('success', 'Daftar TA created successfully.');
-        } catch (QueryException $e) {
-            abort(403, 'ANDA BELUM MENDAFTAR KERJA PRAKTIK/DAFTAR SIDANG HANYA DAPAT SATU KALI!!!.');
-            // throw new \Exception('Terjadi kesalahan dalam menjalankan query. Sepertinya Anda belum mendaftar Tugas Akhir  ');
         }
+    
+        // Loop through the prepared $quartersData array and create entries in the database
+        foreach ($quartersData as $dataEntry) {
+            // Create entry in the database
+            QuarterDate::create($dataEntry);
+        }
+    
+        return redirect()->route('sekretariat2-search');
     }
-
-
-============================
-
-public function store(Request $request)
-{
-    // Validate form data
-    $data = $request->validate([
-        // Your existing validation rules
-    ]);
-
-    // Handle file upload
-    if ($request->hasFile('file')) {
-        $file = $request->file('file');
-        // You can add additional file validation rules here if needed
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        $file->storeAs('uploads', $fileName, 'public');
-
-        // Add the file name to your $data array or save it as needed
-        $data['file'] = $fileName;
-    }
-
-    // Your existing code for processing form data
-
-    // Create entry in the database
-    QuarterDate::create($data);
-
-    return redirect()->route('sekretariat2-search');
-}
-=======================
-
-use Illuminate\Http\Request;
-
-public function store(Request $request)
-{
-    // Validate form data
-    $data = $request->validate([
-        // Your existing validation rules
-    ]);
-
-    // Handle file upload
-    if ($request->hasFile('file')) {
-        $file = $request->file('file');
-        // You can add additional file validation rules here if needed
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        $file->storeAs('uploads', $fileName, 'public');
-
-        // Add the file name to your $data array
-        $data['file'] = $fileName;
-    }
-
-    // Initialize $quartersData outside the loop
-    $quartersData = [];
-
-    // Loop through the array of NIPs
-    foreach ($data['NIP'] as $key => $nip) {
-        // ... (your existing code to prepare $quartersData)
-
-        // Add the file information to the current $entry
-        $quartersData[$key]['file'] = $data['file'];
-    }
-
-    // Loop through the prepared $quartersData array and create entries in the database
-    foreach ($quartersData as $dataEntry) {
-        // Create entry in the database
-        QuarterDate::create($dataEntry);
-    }
-
-    return redirect()->route('sekretariat2-search');
-}

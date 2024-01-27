@@ -420,40 +420,73 @@ class ChartController extends Controller
 
     public function exportToExcel($year = null)
     {
-        try {
-            // Retrieve data from the database
-            $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-                ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk', 'test_sk_dosen.start_date', 'test_sk_dosen.end_date')
-                ->get();
+        // return Excel::download(new exportReport, 'excel_report.xlsx');
+
+        // $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+        // ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk', 'test_sk_dosen.start_date', 'test_sk_dosen.end_date')
+        // ->get();
+
+        // $data = $data->reject(function ($user) {
+        //     return in_array($user->level, ['sekretariat', 'sekretariat2']);
+        // });
     
-            // Exclude users with specific levels
-            $data = $data->reject(function ($user) {
-                return in_array($user->level, ['sekretariat', 'sekretariat2']);
-            });
+
+        // $export = new exportReport(User::class, $data, SheetDosen::class);
     
-            // Filter data based on the selected year or the last two years if no year is provided
-            if ($year) {
-                $data = $data->filter(function ($item) use ($year) {
-                    $startDateYear = Carbon::parse($item->start_date)->year;
-                    $endDateYear = Carbon::parse($item->end_date)->year;
-                    return ($startDateYear <= $year && $endDateYear >= $year);
-                });
-            } else {
-                $currentYear = Carbon::now()->year;
-                $data = $data->filter(function ($item) use ($currentYear) {
-                    $startDateYear = Carbon::parse($item->start_date)->year;
-                    $endDateYear = Carbon::parse($item->end_date)->year;
-                    return $startDateYear == $currentYear || $endDateYear == $currentYear || ($startDateYear < $currentYear && $endDateYear > $currentYear);
-                });
-            }
-    
-            // Use the export class to create an Excel file
-            return Excel::download(new exportReport($data), 'excel_report_tahun_' . $year . '.xlsx');
-        } catch (\Exception $e) {
-            // Handle exceptions, log errors, or return an appropriate response
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        // return Excel::download($export, 'multiple_tables_data.xlsx');
+        return Excel::download(new exportReport, 'excel_report_tahun_'.$year.'.xlsx');
+
+
     }
+
+    
+    // public function exportToExcel($year = null)
+    // {
+    //     try {
+    //         // Retrieve data from the database
+    //         $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
+    //             ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk', 'test_sk_dosen.start_date', 'test_sk_dosen.end_date')
+    //             ->get();
+    
+    //         // Exclude users with specific levels
+    //         $data = $data->reject(function ($user) {
+    //             return in_array($user->level, ['sekretariat', 'sekretariat2']);
+    //         });
+    
+    //         // Filter data based on the selected year or the last two years if no year is provided
+    //         if ($year) {
+    //             $data = $data->filter(function ($item) use ($year) {
+    //                 $startDateYear = Carbon::parse($item->start_date)->year;
+    //                 $endDateYear = Carbon::parse($item->end_date)->year;
+    //                 return ($startDateYear <= $year && $endDateYear >= $year);
+    //             });
+    //         } else {
+    //             $currentYear = Carbon::now()->year;
+    //             $data = $data->filter(function ($item) use ($currentYear) {
+    //                 $startDateYear = Carbon::parse($item->start_date)->year;
+    //                 $endDateYear = Carbon::parse($item->end_date)->year;
+    //                 return $startDateYear == $currentYear || $endDateYear == $currentYear || ($startDateYear < $currentYear && $endDateYear > $currentYear);
+    //             });
+    //         }
+
+    //         // Calculate semester1 and semester2 here
+    //         $calculatedData = $data->groupBy('sk')->map(function ($group) {
+    //             return $group->groupBy(function ($item) {
+    //                 $startDate = Carbon::parse($item->start_date);
+    //                 return ($startDate->month >= 1 && $startDate->month <= 6) ? 'semester1' : 'semester2';
+    //             });
+    //         });
+    
+    //         // Use the export class to create an Excel file
+    //         // return Excel::download(new exportReport($data), 'excel_report_tahun_' . $year . '.xlsx');
+    //         // return Excel::download(new exportReport($data, $year), 'excel_report_tahun_' . $year . '.xlsx');
+    //         return Excel::download(new exportReport($calculatedData), 'excel_report_tahun_' . $year . '.xlsx');
+
+    //     } catch (\Exception $e) {
+    //         // Handle exceptions, log errors, or return an appropriate response
+    //         return response()->json(['error' => $e->getMessage()], 500);
+    //     }
+    // }
 
     public function data_SK()
     {
