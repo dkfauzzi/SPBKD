@@ -76,7 +76,7 @@
                                                     </div>
 
                                                     <div class="form-group col-md-6">
-                                                        <label for="bukti">Bukti SK</label>
+                                                        <label for="bukti">Bukti Undangan</label>
                                                         <input type="file" class="form-control" name="bukti" >
                                                             {{-- <span>*File Upload yang diupload berupa pdf maksimal sebesar 25MB</span> --}}
                                                     </div>

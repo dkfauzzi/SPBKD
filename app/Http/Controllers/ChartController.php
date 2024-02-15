@@ -434,8 +434,8 @@ class ChartController extends Controller
         // $export = new exportReport(User::class, $data, SheetDosen::class);
     
         // return Excel::download($export, 'multiple_tables_data.xlsx');
-        return Excel::download(new exportReport, 'excel_report_tahun_'.$year.'.xlsx');
 
+        return Excel::download(new exportReport, 'excel_report_tahun_'.$year.'.xlsx');
 
     }
 

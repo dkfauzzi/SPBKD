@@ -107,8 +107,8 @@
                                         <label for="username">Role Pada Website</label>
                                         <select class="form-select" aria-label="Default select example" name="level">
                                             <option value="dekan">Dekan</option>
-                                            <option value="wd1">Wakil Dekan 1</option>
-                                            <option value="wd2">Wakil Dekan 2</option>
+                                            <option value="wakildekan1">Wakil Dekan 1</option>
+                                            <option value="wakildekan2">Wakil Dekan 2</option>
                                             <option value="kaprodi">Ketua Program Studi</option>
                                             <option value="ketuaKK">Ketua Kelompok Keahlian</option>
                                             <option value="dosen">Dosen</option>

@@ -52,7 +52,9 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
-            if ($user->level === 'dekan') {
+            $dekanLevels = ['dekan', 'wakildekan1', 'wakildekan2'];
+
+            if (in_array($user->level, $dekanLevels)) {
                 $request->session()->regenerate();
                 $request->session()->put('userLevel', $user->level);
                 return redirect()->intended('dekan-search');

@@ -20,13 +20,15 @@ class LoginController extends Controller
     {
         $NIP = $request->input('inputNIP');
         $password = $request->input('inputPassword');
-
-        if (Auth::attempt(['NIP' => $NIP, 'password' => $password, 'level' => 'dekan'])) {
-            Session::regenerate();
-            Session::put('loggedNIP', $NIP);
-            $loggedNIP = Session::get('loggedNIP');
-            Dekan::firstOrCreate(['NIP' => $loggedNIP]);
-            return redirect()->intended('dekan.dekan-search');
+        
+        if (Auth::attempt(['NIP' => $NIP, 'password' => $password, 'level' => 'dekan']) ||
+            Auth::attempt(['NIP' => $NIP, 'password' => $password, 'level' => 'wakildekan1']) ||
+            Auth::attempt(['NIP' => $NIP, 'password' => $password, 'level' => 'wakildekan2'])) {
+                Session::regenerate();
+                Session::put('loggedNIP', $NIP);
+                $loggedNIP = Session::get('loggedNIP');
+                Dekan::firstOrCreate(['NIP' => $loggedNIP]);
+                return redirect()->intended('dekan-search');
 
         } elseif (Auth::attempt(['NIP' => $NIP, 'password' => $password, 'level' => 'kaprodi'])) {
             Session::regenerate();

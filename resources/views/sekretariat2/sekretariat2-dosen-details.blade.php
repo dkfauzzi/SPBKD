@@ -128,7 +128,7 @@
                                             <th class="text-center"style="width:auto">Jenis SK</th>
                                             <th class="text-center"style="width:auto">Tanggal Mulai</th>
                                             <th class="text-center" style="width:auto">Triwulan</th>
-                                            <th class="text-center"style="width:auto">Bukti</th>
+                                            <th class="text-center"style="width:auto">Bukti Udangan</th>
                                             <th class="text-center"style="width:auto">Hapus</th>
                                         </tr>
                                     </thead>

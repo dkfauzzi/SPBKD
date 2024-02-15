@@ -228,7 +228,11 @@ class DataDosenController extends Controller
         $kkValues = User::pluck('KK')->unique(); 
         $levelValues = User::pluck('level')->unique(); 
 
-        return view('sekretariat2.sekretariat2-dosen-edit', compact('data', 'jadValues','prodiValues','kkValues','levelValues'));
+        $allLevels = ['dekan', 'wakildekan1', 'wakildekan2', 'dosen', 'sekretariat2', 'kaprodi', 'ketuaKK'];
+
+        $levelValues = $levelValues->merge($allLevels)->unique();
+
+        return view('sekretariat2.sekretariat2-dosen-edit', compact('data', 'jadValues','prodiValues','kkValues','levelValues', 'allLevels'));
     }
 
 

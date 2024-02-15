@@ -90,7 +90,7 @@ Route::get('/logout', [AuthController::class, 'logout']);
 
 
 //DEKAN
-Route::group(['middleware' => ['auth', 'rolecek:dekan,kaprodi,ketuaKK']], function () {
+Route::group(['middleware' => ['auth', 'rolecek:dekan,wakildekan1,wakildekan2,kaprodi,ketuaKK']], function () {
 
     // Search Dashboard (after login)
     Route::get('dekan-search', [DekanController::class, 'index']);

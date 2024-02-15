@@ -18,6 +18,10 @@ class Authenticate extends Middleware
             switch ($level) {
                 case 'dekan':
                     return route('dekan-login')->with('warning', 'Please log in to access this page.');
+                case 'wakildekan1':
+                    return route('dekan-login', ['level' => 'wakildekan1'])->with('warning', 'Please log in to access this page.');
+                case 'wakildekan2':
+                    return route('dekan-login', ['level' => 'wakildekan2'])->with('warning', 'Please log in to access this page.');  
                 case 'sekretariat':
                     return route('sekretariat-login')->with('warning', 'Please log in to access this page.');
                 case 'sekretariat2':
