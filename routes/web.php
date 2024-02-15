@@ -119,6 +119,10 @@ Route::group(['middleware' => ['auth', 'rolecek:dekan,wakildekan1,wakildekan2,ka
     Route::get('dekan-print-report', [DekanController::class, 'index'])->name('report.index');
     Route::get('dekan-print-report/{year}', [DekanController::class, 'report'])->name('report.generate');
 
+    //Excel
+    Route::get('dekan-export-excel/{year}', [DekanController::class, 'exportToExcel']);
+
+
     // Profile
     Route::get('profile', [DekanController::class, 'indexProfile'])->name('profile');
     Route::post('profile-update', [DekanController::class, 'updateProfile'])->name('profile-update');
@@ -172,6 +176,8 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     // Prints routes
     Route::get('print-report', [ChartController::class, 'index'])->name('report.index');
     Route::get('print-report/{year}', [ChartController::class, 'report'])->name('report.generate');
+
+    //Excel
     Route::get('export-excel/{year}', [ChartController::class, 'exportToExcel']);
 
     

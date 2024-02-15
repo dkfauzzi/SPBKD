@@ -24,11 +24,25 @@
                                         </button>
                                         <div class="dropdown-menu custom-dropdown" aria-labelledby="yearReport">
                                             @foreach($distinctYears as $year)
-                                                <a class="dropdown-item" href="{{ url('print-report/' . $year) }}" target="_blank">Tahun {{ $year }}</a>
+                                                <a class="dropdown-item" href="{{ url('dekan-print-report/' . $year) }}" target="_blank">Tahun {{ $year }}</a>
                                             @endforeach
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col">
+                                    <h4>Download Excel</h4>
+                                    <div class="dropdown">
+                                        <button class="btn btn-success dropdown-toggle" type="button" id="yearExcel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Pilih Tahun
+                                        </button>
+                                        <div class="dropdown-menu custom-dropdown" aria-labelledby="yearExcel">
+                                            @foreach($distinctYears as $year)
+                                                <a class="dropdown-item" href="{{ url('dekan-export-excel/' . $year) }}">Tahun {{ $year }} (Excel)</a>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -506,6 +520,16 @@
             var dropdownMenu = $(this).next('.dropdown-menu');
 
             // Toggle the visibility of the dropdown menu
+            dropdownMenu.toggleClass('show');
+        });
+
+        $('#yearExcel').on('click', function(e) {
+            e.preventDefault();
+
+            $(this).toggleClass('show');
+
+            var dropdownMenu = $(this).next('.dropdown-menu');
+
             dropdownMenu.toggleClass('show');
         });
 
