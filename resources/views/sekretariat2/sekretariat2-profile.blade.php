@@ -1,4 +1,4 @@
-@extends('layouts.layout-dekan')
+@extends('layouts.layout-sekretariat2')
 
 @section('content')
 
@@ -7,7 +7,7 @@
 
         @include('navbar')
 
-        @include('sidebar.sidebar-dekan')
+        @include('sidebar.sidebar')
 
         <!-- Main Content -->
         <div class="main-content" style="padding-top:80px">
@@ -17,18 +17,8 @@
                         <div class="card border border-2">
                             <div class="card-header">
                                 <h4>Profile {{$userDosen->nama}} | 
-                                    @if($userDosen->level === 'kaprodi')
-                                        Ketua Program Studi
-                                    @elseif($userDosen->level === 'dekan')
-                                        Dekan
-                                    @elseif($userDosen->level === 'wakildekan1')
-                                        Wakil Dekan 1
-                                    @elseif($userDosen->level === 'wakildekan2')
-                                        Wakil Dekan 2
-                                    @elseif($userDosen->level === 'ketuaKK')
-                                        Ketua Kelompok Keahlian
-                                    @elseif($userDosen->level === 'kaprodi')
-                                        Ketua Program Studi
+                                    @if($userDosen->level === 'sekretariat2')
+                                        Sekretariat
                                     @else
                                         
                                     @endif
@@ -59,7 +49,7 @@
                                                 <td><b>Email<span style="display: inline-block; margin-left: 12px;"></span>:</b> </td>
                                                 <td>{{$userDosen->email}}</td>
                                             </tr>
-                                            <tr style="border-bottom: 10px solid transparent">
+                                            {{-- <tr style="border-bottom: 10px solid transparent">
                                                 <td><b>Prodi<span style="display: inline-block; margin-left: 12px;"></span>:</b> </td>
                                                 <td>{{$userDosen->Prodi}}</td>
                                             </tr>
@@ -70,7 +60,7 @@
                                             <tr style="border-bottom: 10px solid transparent">
                                                 <td><b>KK<span style="display: inline-block; margin-left: 29px;"></span>:</b> </td>
                                                 <td>{{$userDosen->KK}}</td>
-                                            </tr>
+                                            </tr> --}}
                                           </table>
                                     </div>
                                 </div>
@@ -143,7 +133,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="needs-validation" action="{{ route('profile-update') }}" method="POST" enctype="multipart/form-data" novalidate>
+                <form class="needs-validation" action="{{ route('sekretariat2-profile-update') }}" method="POST" enctype="multipart/form-data" novalidate>
                     {{ csrf_field() }}
                     <div class="card-header row"><h3 class="section-title col-8">Edit Data Diri</h2></div>
                     @if(count($errors) > 0)
@@ -217,7 +207,7 @@
     <script>
         $('#addSKModal').on('show.bs.modal', function (event) {
             var modal = $(this);
-            modal.find('form').attr('action', "{{ route('profile-update') }}");
+            modal.find('form').attr('action', "{{ route('sekretariat2-profile-update') }}");
         });
     </script>
 @endpush

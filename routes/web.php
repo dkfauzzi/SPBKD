@@ -185,6 +185,10 @@ Route::group(['middleware' => ['auth', 'rolecek:sekretariat2']], function () {
     Route::get('sekretariat2-register', [RegisterController::class, 'create']); // Display the registration form
     Route::post('sekretariat2-search', [RegisterController::class, 'store'])->name('register.store');
     
+    // Profile
+    Route::get('sekretariat2-profile', [SekretariatController2::class, 'indexProfile'])->name('sekretariat2-profile');
+    Route::post('sekretariat2-profile-update', [SekretariatController2::class, 'updateProfile'])->name('sekretariat2-profile-update');
+
     Route::get('card', [CardController::class, 'index']);
 });
 

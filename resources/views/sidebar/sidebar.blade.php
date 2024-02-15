@@ -27,6 +27,10 @@
                     href=<?php echo url('sekretariat2-register'); ?>>
                     <i class="fas fa-plus-circle"></i><span>Register Akun Dosen</span></a>
             </li>
+            <li class="{{ Request::is('sekretariat2-profile') ? 'active' : '' }}"><a class="nav-link"
+                href=<?php echo url('sekretariat2-profile'); ?>>
+                <i class="fa fa-pencil"></i><span>Profile</span></a>
+        </li>
         </ul>
     </aside>
 </div>

@@ -79,7 +79,6 @@ class exportReport implements FromCollection, WithHeadings, WithMultipleSheets, 
 
     public function styles(Worksheet $sheet)
     {
-        // Apply styles to the heading row
         $sheet->getStyle('A1:H1')->applyFromArray([
             'font' => [
                 'bold' => true,
@@ -97,7 +96,6 @@ class exportReport implements FromCollection, WithHeadings, WithMultipleSheets, 
             ],
         ]);
 
-        // Apply styles to the data cells
         $sheet->getStyle('A2:H' . $sheet->getHighestRow())->applyFromArray([
             'borders' => [
                 'allBorders' => [
@@ -107,18 +105,17 @@ class exportReport implements FromCollection, WithHeadings, WithMultipleSheets, 
             ],
         ]);
 
-        // Apply color to cells under 'Total SKS' and 'Total SK'
         $sheet->getStyle('E2:E' . $sheet->getHighestRow())->applyFromArray([
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
-                'startColor' => ['rgb' => 'FFFF00'], // Yellow color
+                'startColor' => ['rgb' => 'FFFF00'], 
             ],
         ]);
 
         $sheet->getStyle('H2:H' . $sheet->getHighestRow())->applyFromArray([
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
-                'startColor' => ['rgb' => 'FFFF00'], // Yellow color
+                'startColor' => ['rgb' => 'FFFF00'], 
             ],
         ]);
     }

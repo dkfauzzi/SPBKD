@@ -280,5 +280,53 @@ class SekretariatController2 extends Controller
     }
 
 
+    //Prodile
+
+    public function indexProfile()
+    {
+        $user = Auth::user()->NIP;
+
+        $userDosen = User::where('NIP', '=', $user)->first();
+
+        $imagePath = $userDosen->image_path;
+
+        $dataDosen = QuarterDate::where('NIP', '=', $user)->get();
+
+        return view('sekretariat2.sekretariat2-profile', compact('user', 'userDosen', 'dataDosen'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $data = $request->validate([
+            'NIP' => 'required',
+            'nama' => 'required',
+            'email' => 'required',
+            'image' => 'nullable|image',
+        ]);
+        
+        $user = Auth::user();
+        
+        if ($request->hasFile('image')) {
+            // Delete existing image (if any)
+            if ($user->image_path) {
+                Storage::delete($user->image_path);
+            }
+
+            // Upload new image to the public/profile_image directory
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('profile_image', $imageName, 'public');
+
+        
+            $data['image_path'] = 'profile_image/' . $imageName;
+        }
+        
+        $user->update($data);
+        
+        return redirect()->route('sekretariat2-profile')->with('success', 'User updated successfully');
+        
+    }
+
+
 }
 

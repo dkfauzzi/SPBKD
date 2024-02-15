@@ -57,7 +57,6 @@ class SheetKegiatanSK implements  FromCollection, WithHeadings, WithStyles, With
 
     public function styles(Worksheet $sheet)
     {
-        // Apply styles to the heading row
         $sheet->getStyle('A1:G1')->applyFromArray([
             'font' => [
                 'bold' => true,
@@ -75,7 +74,6 @@ class SheetKegiatanSK implements  FromCollection, WithHeadings, WithStyles, With
             ],
         ]);
 
-        // Apply styles to the data cells
         $sheet->getStyle('A2:G' . $sheet->getHighestRow())->applyFromArray([
             'borders' => [
                 'allBorders' => [
@@ -85,18 +83,17 @@ class SheetKegiatanSK implements  FromCollection, WithHeadings, WithStyles, With
             ],
         ]);
 
-        // Apply color to cells under 'Total SKS' and 'Total SK'
         $sheet->getStyle('D2:D' . $sheet->getHighestRow())->applyFromArray([
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
-                'startColor' => ['rgb' => 'FFFF00'], // Yellow color
+                'startColor' => ['rgb' => 'FFFF00'], 
             ],
         ]);
 
         $sheet->getStyle('G2:G' . $sheet->getHighestRow())->applyFromArray([
             'fill' => [
                 'fillType' => Fill::FILL_SOLID,
-                'startColor' => ['rgb' => 'FFFF00'], // Yellow color
+                'startColor' => ['rgb' => 'FFFF00'], 
             ],
         ]);
     }
