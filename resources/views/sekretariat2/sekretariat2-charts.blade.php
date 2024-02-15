@@ -42,6 +42,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -509,41 +510,31 @@
 <script>
     $(document).ready(function() {
         $('#yearReport').on('click', function(e) {
-            // Prevent the default action of the button
             e.preventDefault();
 
-            // Toggle the dropdown menu
             $(this).toggleClass('show');
 
-            // Get the dropdown menu associated with the button
             var dropdownMenu = $(this).next('.dropdown-menu');
 
-            // Toggle the visibility of the dropdown menu
             dropdownMenu.toggleClass('show');
         });
 
         $('#yearExcel').on('click', function(e) {
-            // Prevent the default action of the button
             e.preventDefault();
 
-            // Toggle the dropdown menu
             $(this).toggleClass('show');
 
-            // Get the dropdown menu associated with the button
             var dropdownMenu = $(this).next('.dropdown-menu');
 
-            // Toggle the visibility of the dropdown menu
             dropdownMenu.toggleClass('show');
         });
 
-        // Close the dropdown when clicking outside of it
         $(document).on('click', function(e) {
             if (!$(e.target).closest('.dropdown').length) {
                 $('.dropdown-menu').removeClass('show');
             }
         });
 
-        /* Add this script after including jQuery and Bootstrap scripts */
         $(document).ready(function() {
             $('.dropdown').on('shown.bs.dropdown', function () {
                 $(this).css('z-index', 100000);

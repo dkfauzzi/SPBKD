@@ -9,85 +9,119 @@ use Illuminate\Http\Request;
 use App\Models\QuarterDate;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Font;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class exportReport implements FromCollection, WithHeadings
+
+
+class exportReport implements FromCollection, WithHeadings, WithMultipleSheets, WithStyles
 {
-    
-    
-    // public function sheets(): array
-    // {
-    //     $sheets = [];
+    protected $data;
+    protected $skData;
+    protected $dosenData;
+    protected $kkData;
+    protected $prodiData;
 
-    //     $sheets[] = new SheetDosen($this->dosenData);
+    public function __construct(Collection $data, Collection $skData, Collection $dosenData, Collection $kkData, Collection $prodiData)
+    {
+        $this->data = $data;
+        $this->skData = $skData;
+        $this->dosenData = $dosenData;
+        $this->kkData = $kkData;
+        $this->prodiData = $prodiData;
 
-    //     // $sheets[] = new AnotherTableSheet($this->anotherTableData);
-
-    //     return $sheets;
-    // }
+    }
 
     public function headings(): array
     {
         return [
             'NIP',
             'Nama',
-            'Semester 1 SKS',
-            'Semester 2 SKS',
+            'Jumlah Semester 1 SKS',
+            'Jumlah Semester 2 SKS',
             'Total SKS',
-            'Semester 1 SK',
-            'Semester 2 SK',
+            'Jumlah Semester 1 SK',
+            'Jumlah Semester 2 SK',
             'Total SK',
         ];
     }
 
     public function collection()
     {
-        $data = User::leftJoin('test_sk_dosen', 'users.NIP', '=', 'test_sk_dosen.NIP')
-                ->select('users.*', 'test_sk_dosen.sks', 'test_sk_dosen.sk', 'test_sk_dosen.start_date', 'test_sk_dosen.end_date')
-                ->get();
-
-            // Exclude users with specific levels
-            $data = $data->reject(function ($user) {
-                return in_array($user->level, ['sekretariat', 'sekretariat2']);
-            });
-
-        $groupedDataDosen = $data->groupBy('NIP')->map(function ($group) {
-            return $group->groupBy(function ($item) {
-                $startDate = Carbon::parse($item->start_date);
-                return ($startDate->month >= 1 && $startDate->month <= 6) ? 'semester1' : 'semester2';
-            });
-        });
-
-        $dosenData = collect();
-
-        $groupedDataDosen->each(function ($groups, $NIP) use ($dosenData) {
-            $semester1Data = $groups->get('semester1', collect());
-            $semester2Data = $groups->get('semester2', collect());
-    
-            $dosenData->push([
-                'NIP' => $NIP,
-                'nama' => $groups->first()->first()->nama ?? '',
-                'semester1_sks' => $semester1Data->sum('sks') ?? 0,
-                'semester2_sks' => $semester2Data->sum('sks') ?? 0,
-                'total_sks' => ($semester1Data->sum('sks') ?? 0) + ($semester2Data->sum('sks') ?? 0),
-                'semester1_sk' => $semester1Data->pluck('sk')->reject(function ($value) {
-                    return empty($value);
-                })->count() ?? 0,
-                'semester2_sk' => $semester2Data->pluck('sk')->reject(function ($value) {
-                    return empty($value);
-                })->count() ?? 0,
-                'total_sk' => ($semester1Data->pluck('sk')->reject(function ($value) {
-                    return empty($value);
-                })->count() ?? 0) + ($semester2Data->pluck('sk')->reject(function ($value) {
-                    return empty($value);
-                })->count() ?? 0)
-            ]);
-        });
-
-        return $dosenData;
+        return $this->data;
     }
 
+    public function sheets(): array
+    {
+        $sheets = [
+            new SheetKegiatanSK($this->skData, 'Kegiatan SK'),
+            new SheetProdi($this->prodiData, 'Program Studi'),
+            new SheetKK($this->kkData, 'Kelompok Keahlian'),
+            new SheetDosen($this->dosenData, 'Dosen'),
+
+        ];
+
+        // // Add the main data sheet
+        // $sheets[] = new SheetKegiatanSK($this->skData);
+        // $sheets[] = new SheetDosen($this->dosenData);
+        // $sheets[] = new SheetKK($this->kkData);
+        // $sheets[] = new SheetProdi($this->prodiData);
+
+        return $sheets;
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        // Apply styles to the heading row
+        $sheet->getStyle('A1:H1')->applyFromArray([
+            'font' => [
+                'bold' => true,
+                'color' => ['rgb' => 'FFFFFF'],
+            ],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['rgb' => '336699'],
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['rgb' => '000000'],
+                ],
+            ],
+        ]);
+
+        // Apply styles to the data cells
+        $sheet->getStyle('A2:H' . $sheet->getHighestRow())->applyFromArray([
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['rgb' => '000000'],
+                ],
+            ],
+        ]);
+
+        // Apply color to cells under 'Total SKS' and 'Total SK'
+        $sheet->getStyle('E2:E' . $sheet->getHighestRow())->applyFromArray([
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['rgb' => 'FFFF00'], // Yellow color
+            ],
+        ]);
+
+        $sheet->getStyle('H2:H' . $sheet->getHighestRow())->applyFromArray([
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['rgb' => 'FFFF00'], // Yellow color
+            ],
+        ]);
+    }
 }
 
 
